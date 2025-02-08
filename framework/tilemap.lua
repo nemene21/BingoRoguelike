@@ -1,8 +1,6 @@
 require "framework.ecs"
 require "framework.drawable"
 
-CHUNKSIZE = 16
-
 Tilemap = class(Entity)
 function Tilemap:new(texture_path, tilesize, tileposx, tileposy, width)
     Entity.new(self)
@@ -14,7 +12,7 @@ function Tilemap:new(texture_path, tilesize, tileposx, tileposy, width)
     self.tile_vars = self.texture_res:get():getHeight() / tilesize
     
     self.tilesize = tilesize
-    self.tilewidth = width or CHUNKSIZE
+    self.tilewidth = width
     self.tilepos = Vec(tileposx or 0, tileposy or 0)
 
     self.drawing_quad = lg.newQuad(

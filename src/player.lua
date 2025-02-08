@@ -3,6 +3,7 @@ require "framework.vector"
 require "framework.camera"
 require "framework.transform"
 require "framework.drawable"
+require "framework.input"
 
 Player = class(Entity)
 function Player:new(x, y)
@@ -19,13 +20,11 @@ end
 
 function Player:_process(delta)
     local input = Vec(
-        btoi(lk.isDown("d")) - btoi(lk.isDown("a")), 
-        btoi(lk.isDown("s")) - btoi(lk.isDown("w"))
+        btoi(is_pressed("right")) - btoi(is_pressed("left")), 
+        btoi(is_pressed("down")) - btoi(is_pressed("up"))
     )
     self.Trans:move(input:normalized() * 100.0 * delta)
     self.sprite.pos = self.Trans.pos
-
-    current_scene.tilemap:set_tilev((self.Trans.pos / current_scene.tilemap.tilesize):whole(), 3)
 end
 
 function Player:_draw()

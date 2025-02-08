@@ -10,8 +10,6 @@ function Game:new()
 end
 
 function Game:restart()
-    self.chunk = Chunk(0, 0)
-    self:add_entity(self.chunk)
     self:add_entity(Player())
 end
 

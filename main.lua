@@ -15,7 +15,6 @@ function love.load()
         end
     end
 
-
     RES = Vec(160, 90)
     lw.setMode(RES.x, RES.y)
     screen = lg.newCanvas(RES.x, RES.y)
@@ -27,6 +26,7 @@ function love.load()
 
     game = Game()
     set_current_scene(game)
+    game.chunk = Chunk(0, 0)
 end
 
 function love.update(delta)
@@ -58,10 +58,4 @@ function love.draw()
     lg.reset()
 
     render_debug()
-end
-
-function love.keypressed(key, scancode, isrepeat)
-    if key == "space" then
-        current_scene:test_chunk()
-    end
 end

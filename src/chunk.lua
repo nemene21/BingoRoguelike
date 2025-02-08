@@ -1,13 +1,20 @@
 require "framework.ecs"
 require "framework.tilemap"
 
-Chunk = class(Entity)
+CHUNKSIZE = 16
+
+Chunk = class()
 function Chunk:new(x, y)
-    Entity.new(self)
     self.x = x
     self.y = y
     self.filename = tostring(self.x)..","..tostring(self.y)..".chunk"
     self.entities = {}
+
+    if lf.getInfo(self.filename) == nil then
+        self:load()
+    else
+        self:generate()
+    end
 end
 
 function Chunk:save()
@@ -36,10 +43,31 @@ function Chunk:load()
     file:close()
 
     for i, entity in ipairs(chunk_data.entities) do
-        self.scene:add_entity(string2class(entity))
+        current_scene:add_entity(string2class(entity))
     end
 end
 
 function Chunk:add_entity(entity)
     table.insert(self.entities, entity)
+end
+
+function Chunk:generate()
+    local tilepos = Vec(self.x * CHUNKSIZE, self.y * CHUNKSIZE)
+    local tilemap = Tilemap(
+        "assets/tileset.png",
+        8,
+        tilepos.x,
+        tilepos.y,
+        CHUNKSIZE
+    )
+    current_scene:add_entity(tilemap)
+    self:add_entity(tilemap)
+
+    for x = tilepos.x, tilepos.x + CHUNKSIZE do
+        for y = tilepos.y, tilepos.y + CHUNKSIZE do
+            if lm.noise(x*0.05, y*0.05) > 0.5 then
+                tilemap:set_tile(x, y, 1)
+            end
+        end
+    end
 end
