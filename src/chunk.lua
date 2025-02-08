@@ -14,8 +14,11 @@ function Chunk:save()
     local chunk_data = {
         entities = {}
     }
-    for key, entity in pairs(self.entities) do
+    local entity
+    for i = #self.entities, 0 do
+        entity = self.entities[i]
         table.insert(chunk_data.entities, entity:stringify())
+        self.entities[i] = nil
         entity:kill()
     end
 

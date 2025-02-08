@@ -61,6 +61,7 @@ function Scene:add_entity(entity)
         register_comp(self, comp)
     end
     table.insert(self.entities, entity)
+    entity.scene = self
 end
 
 function Scene:process_entities(delta)
