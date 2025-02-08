@@ -26,7 +26,6 @@ function class(superclass)
     })
     making.__index = making
     making.__name = tostring(table.entries(class_registry) + 1)
-    print("__name: ", making.__name)
     class_registry[making.__name] = making
 
     return making

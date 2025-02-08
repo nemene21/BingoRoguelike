@@ -1,6 +1,7 @@
 require "framework.ecs"
 require "src.player"
 require "framework.tilemap"
+require "src.chunk"
 
 Game = class(Scene)
 function Game:new()
@@ -18,9 +19,16 @@ function Game:restart()
             end
         end
     end
-    
-    self:add_entity(tilemap)
 
-    local player = Player()
-    self:add_entity(player)
+    self.chunk = Chunk(0, 0)
+    self.chunk:add_entity(tilemap)
+    
+    self:add_entity(self.chunk)
+    self:add_entity(tilemap)
+    self:add_entity(Player())
+end
+
+function Game:test_chunk()
+    self.chunk:save()
+    self.chunk:load()
 end

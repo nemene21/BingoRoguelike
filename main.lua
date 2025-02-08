@@ -59,3 +59,9 @@ function love.draw()
 
     render_debug()
 end
+
+function love.keypressed(key, scancode, isrepeat)
+    if key == "space" then
+        current_scene:test_chunk()
+    end
+end

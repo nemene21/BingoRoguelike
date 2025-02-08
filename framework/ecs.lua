@@ -221,3 +221,7 @@ function Entity:_process_comps(delta)
         comp:_process(delta)
     end
 end
+
+function Entity:stringify()
+    return class2string(self, {})
+end

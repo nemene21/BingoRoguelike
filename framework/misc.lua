@@ -51,3 +51,4 @@ le = love.event
 lk = love.keyboard
 lt = love.timer
 lw = love.window
+lf = love.filesystem

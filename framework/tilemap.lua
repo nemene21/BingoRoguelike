@@ -56,3 +56,13 @@ function Tilemap:_draw()
     end
     lg.translate(-self.tilepos.x * self.tilesize, -self.tilepos.y * self.tilesize)
 end
+
+function Tilemap:stringify()
+    return class2string(self, {
+        self.texture_res.path,
+        self.tilesize,
+        self.tilepos.x,
+        self.tilepos.y,
+        self.tilewidth
+    }, "tiledata")
+end
