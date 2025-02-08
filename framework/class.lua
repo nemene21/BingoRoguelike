@@ -32,7 +32,7 @@ function class(superclass)
     return making
 end
 
-function serialize(tbl, init_args, ...)
+function class2string(tbl, init_args, ...)
     local data = {
         class_name = tbl.__name,
         init_args  = table.shallow_copy(init_args or {}),
@@ -45,7 +45,7 @@ function serialize(tbl, init_args, ...)
     return msgpack.pack(data)
 end
 
-function deserialize(data)
+function string2class(data)
     local offset, data = msgpack.unpack(data)
     local tbl = class_registry[data.class_name](unpack(data.init_args))
     for key, value in pairs(data.properties) do
