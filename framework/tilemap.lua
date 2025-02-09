@@ -40,16 +40,20 @@ end
 
 function Tilemap:_draw()
     lg.translate(self.tilepos.x * self.tilesize, self.tilepos.y * self.tilesize)
+    
+    local tex = self.texture_res:get()
+    local x, y
     for pos, tile in pairs(self.tiledata) do
-        local pos = {pos % self.tilewidth, (pos - pos % self.tilewidth) / self.tilewidth}
+        x, y = pos % self.tilewidth, (pos - pos % self.tilewidth) / self.tilewidth
+        
         self.drawing_quad:setViewport(
             self.tilesize * (tile[1] - 1),
             self.tilesize * (tile[2] - 1),
             self.tilesize, self.tilesize
         )
         lg.draw(
-            self.texture_res:get(), self.drawing_quad,
-            pos[1] * self.tilesize, pos[2] * self.tilesize
+            tex, self.drawing_quad,
+            x * self.tilesize, y * self.tilesize
         )
     end
     lg.translate(-self.tilepos.x * self.tilesize, -self.tilepos.y * self.tilesize)
