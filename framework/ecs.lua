@@ -45,6 +45,9 @@ function set_current_scene(scene)
     current_scene = scene
 end
 
+largest_ent_id = 1
+free_ent_ids = {}
+
 Scene = class()
 function Scene:new()
     self.entities = {}
@@ -60,14 +63,12 @@ function Scene:add_entity(entity)
     for name, comp in pairs(entity.comps) do
         register_comp(self, comp)
     end
-    table.insert(self.entities, entity)
+    self.entities[entity.id] = entity
     entity.scene = self
 end
 
 function Scene:process_entities(delta)
-    local entity = nil
-    for i = #self.entities, 1, -1 do
-        entity = self.entities[i]
+    for i, entity in pairs(self.entities) do
         if not entity.paused then
             entity:_process(delta)
             entity:_process_comps(delta)
@@ -75,19 +76,20 @@ function Scene:process_entities(delta)
 
         -- Remove entity and it's comps if necesarry
         if not entity.alive then
-            for name, comp in pairs(entity.comps) do
-                entity:remove(name)
-            end
-            table.remove(self.entities, i)
+            Scene:remove_entity(entity)
         end
     end
 end
 
-function Scene:draw_entities(delta)
-    local entity
-    for i = 1, #self.entities do
-        entity = self.entities[i]
+function Scene:remove_entity(entity)
+    for name, comp in pairs(entity.comps) do
+        entity:remove(name)
+    end
+    self.entities[entity.id] = nil
+end
 
+function Scene:draw_entities(delta)
+    for i, entity in pairs(self.entities) do
         if entity.visible then
             entity:_draw()
         end
@@ -163,6 +165,15 @@ function Entity:new()
     self.alive = true
     self.paused = false
     self.visible = true
+
+    local free_id_count = #free_ent_ids
+    if free_id_count == 0 then
+        largest_ent_id = largest_ent_id + 1
+        self.id = largest_ent_id
+    else
+        self.id = free_ent_ids[free_id_count]
+        free_ent_ids[free_id_count] = nil
+    end
 end
 
 function Entity:kill()

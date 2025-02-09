@@ -1,5 +1,6 @@
 imgui = require "cimgui"
 require "framework.input"
+require "framework.ecs"
 
 function update_debug(delta)
     imgui.love.Update(delta)
@@ -23,7 +24,7 @@ function render_debug()
     end
     imgui.Unindent(16)
 
-    imgui.Text("Ents:  "..tostring(#current_scene.entities))
+    imgui.Text("Ents ("..tostring(largest_ent_id - #free_ent_ids).."):")
     imgui.Text("Archetypes:")
 
     imgui.Indent(16)
