@@ -6,7 +6,8 @@ function enum(tbl)
         tbl[value] = i
     end
     setmetatable(tbl, {
-        __index = function(tbl, key) error("ERROR: Constant '"..tostring(key).."' not in enum"),
+        __index = function(tbl, key) error("ERROR: Constant '"..tostring(key).."' not in enum") end,
         __newindex = function() error("ERROR: Enums are immutable") end
     })
+    return tbl
 end

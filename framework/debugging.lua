@@ -3,7 +3,7 @@ imgui = require "cimgui"
 require "framework.input"
 require "framework.ecs"
 
-local code_buff = ffi.new("char[8192]", "Skibitty")
+local code_buff = ffi.new("char[8192]", "Code goes here")
 
 function update_debug(delta)
     imgui.love.Update(delta)
