@@ -10,9 +10,10 @@ function Chunk:new(x, y)
     self.filename = tostring(self.x)..","..tostring(self.y)..".chunk"
     self.entities = {}
 
-    if lf.getInfo(self.filename) == nil then
-        self:load()
-    else
+    --if lf.getInfo(self.filename) == nil then
+    --    self:load()
+    --else
+    do
         self:generate()
     end
 end
@@ -58,7 +59,7 @@ function Chunk:generate()
         8,
         tilepos.x,
         tilepos.y,
-        CHUNKSIZE
+        CHUNKSIZE+1
     )
     current_scene:add_entity(tilemap)
     self:add_entity(tilemap)

@@ -12,8 +12,3 @@ end
 function Game:restart()
     self:add_entity(Player())
 end
-
-function Game:test_chunk()
-    self.chunk:save()
-    self.chunk:load()
-end

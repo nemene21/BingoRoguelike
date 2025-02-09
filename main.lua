@@ -15,7 +15,7 @@ function love.load()
         end
     end
 
-    RES = Vec(160, 90)
+    RES = Vec(160, 90) * 4
     lw.setMode(RES.x, RES.y)
     screen = lg.newCanvas(RES.x, RES.y)
     screen:setFilter("nearest", "nearest")
@@ -26,7 +26,11 @@ function love.load()
 
     game = Game()
     set_current_scene(game)
-    game.chunk = Chunk(0, 0)
+    for x = 0, 3 do
+        for y = 0, 3 do
+            Chunk(x, y)
+        end
+    end
 end
 
 function love.update(delta)

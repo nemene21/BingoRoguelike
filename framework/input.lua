@@ -1,4 +1,6 @@
 require "framework.class"
+require "framework.signal"
+
 Input = class()
 function Input:new(key, source)
     self.source = source or "keyboard"
@@ -19,12 +21,30 @@ function Input:is_pressed()
 end
 
 local actions = {
-    test = {Input("t"), Input("p")},
+    test = {Input("t"), Input("p"), Input(1, "mouse")},
     left = {Input("a"), Input("left")},
     right = {Input("d"), Input("right")},
     down = {Input("s"), Input("down")},
     up = {Input("w"), Input("up")}
 }
+
+just_pressed = Signal()
+
+function love.keypressed(key, scancode, isrepeat)
+    for name, action in pairs(actions) do
+        if action.source == "keyboard" and action.key == key then
+            just_pressed:emit(name)
+        end
+    end
+end
+
+function check_mouse_input(key)
+    for name, action in pairs(actions) do
+        if action.source == "mouse" and action.key == key then
+            just_pressed:emit(name)
+        end
+    end
+end
 
 function is_pressed(action)
     local action = actions[action]

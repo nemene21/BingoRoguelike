@@ -1,4 +1,5 @@
 imgui = require "cimgui"
+require "framework.input"
 
 function update_debug(delta)
     imgui.love.Update(delta)
@@ -39,6 +40,9 @@ end
 
 love.mousepressed = function(x, y, button, ...)
     imgui.love.MousePressed(button)
+    if not imgui.love.GetWantCaptureMouse() then
+        check_mouse_input(button)
+    end
 end
 
 love.mousereleased = function(x, y, button, ...)
