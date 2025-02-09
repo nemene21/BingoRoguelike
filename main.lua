@@ -64,3 +64,7 @@ function love.draw()
 
     render_debug()
 end
+
+function love.quit()
+    imgui.love.Shutdown()
+end

@@ -10,6 +10,10 @@ function Input:new(key, source)
 end
 
 function Input:is_pressed()
+    if imgui.love.GetWantCaptureKeyboard() or imgui.love.GetWantCaptureMouse() then
+        return false
+    end
+
     if self.source == "joystick" then
         local joystick = love.joystick.getJoysticks()[1]
         if joystick == nil then return false end
@@ -30,7 +34,7 @@ local actions = {
     up = {Input("w"), Input("up")}
 }
 
-function love.keypressed(key, scancode, isrepeat)
+function check_keyboard_input(key)
     table.insert(pressed_inputs, Input(key, "keyboard"))
 end
 
