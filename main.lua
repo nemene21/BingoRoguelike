@@ -34,12 +34,15 @@ function love.load()
 end
 
 function love.update(delta)
+    process_time = love.timer.getTime()
     current_scene:process_entities(delta)
     update_debug(delta)
     input_step()
+    process_time = love.timer.getTime() - process_time
 end
 
 function love.draw()
+    draw_time = love.timer.getTime()
     lg.setCanvas(screen)
     lg.clear()
     lg.translate((RES * 0.5 - global_camera:get_origin():whole()):get())
@@ -62,6 +65,7 @@ function love.draw()
     lg.rectangle("line", 0, 0, RES.x, RES.y)
     lg.reset()
 
+    draw_time = love.timer.getTime() - draw_time
     render_debug()
 end
 

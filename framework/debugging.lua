@@ -3,11 +3,18 @@ imgui = require "cimgui"
 require "framework.input"
 require "framework.ecs"
 
+process_time = 0
+local process_time_sum = 0
+draw_time = 0
+local draw_time_sum = 0
+local frames = 0
+
 local code_buff = ffi.new("char[8192]", "Code goes here")
 
 function update_debug(delta)
     imgui.love.Update(delta)
     imgui.NewFrame()
+    frames = frames + 1
 end
 
 function render_debug()
@@ -24,6 +31,35 @@ function render_debug()
 
     imgui.Text("Drawcalls: "..tostring(lg.getStats().drawcalls))
     imgui.Text("FPS: "..tostring(lt.getFPS()))
+
+    process_time = math.floor(process_time * 1000)
+    draw_time = math.floor(draw_time * 1000)
+
+    local allowed_ms = math.floor(1000 / 60.0)
+    local color = process_time > allowed_ms and
+        imgui.ImVec4_Float(1, 0, 0, 1) or imgui.ImVec4_Float(0, 1, 0, 1)
+
+    imgui.PushStyleColor_Vec4(imgui.ImGuiCol_Text, color)
+    imgui.Text("Process time: "..tostring(process_time).."/"..tostring(allowed_ms).."ms")
+    imgui.PopStyleColor(1)
+
+    process_time_sum = process_time_sum + process_time
+    local avg_process_time = math.floor(process_time_sum / frames)
+
+    color = avg_process_time > allowed_ms and
+    imgui.ImVec4_Float(1, 0, 0, 1) or imgui.ImVec4_Float(0, 1, 0, 1)
+
+    imgui.PushStyleColor_Vec4(imgui.ImGuiCol_Text, color)
+    imgui.Text("Avg. process time:    "..tostring(avg_process_time).."/"..tostring(allowed_ms).."ms")
+    imgui.PopStyleColor(1)
+
+    color = draw_time > allowed_ms and
+    imgui.ImVec4_Float(1, 0, 0, 1) or imgui.ImVec4_Float(0, 1, 0, 1)
+
+    imgui.PushStyleColor_Vec4(imgui.ImGuiCol_Text, color)
+    imgui.Text("Draw time:    "..tostring(draw_time).."/"..tostring(allowed_ms).."ms")
+    imgui.PopStyleColor(1)
+
     imgui.Separator()
 
     imgui.Text("Comps ("..tostring(ncomps).."):")

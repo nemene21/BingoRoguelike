@@ -16,7 +16,7 @@ function Camera:activate()
 end
 
 function Camera:follow(pos, speed)
-    self.pos = dlerp(self.pos, pos, lt.getDelta() * (speed or 20))
+    self.pos:dlerpv(pos, lt.getDelta() * (speed or 20))
 end
 
 function Camera:get_origin()
@@ -34,7 +34,7 @@ function CameraComp:new()
 end
 
 function CameraComp:_process(delta)
-    local trans = self.entity:get("Trans")
+    local trans = self.entity.Trans
     if trans ~= nil then
         self.camera:follow(trans.pos)
     end

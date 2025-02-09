@@ -68,6 +68,7 @@ function Scene:add_entity(entity)
 end
 
 function Scene:process_entities(delta)
+    local max = 0
     for i, entity in pairs(self.entities) do
         if not entity.paused then
             entity:_process(delta)

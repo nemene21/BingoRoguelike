@@ -10,5 +10,5 @@ function TransComp:new(x, y, scalex, scaley, ang)
 end
 
 function TransComp:move(vec)
-    self.pos = self.pos + vec
+    self.pos:addv(vec)
 end

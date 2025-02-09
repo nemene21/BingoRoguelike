@@ -18,17 +18,17 @@ function Player:free()
     print("Dead D:")
 end
 
+local input = Vec()
 function Player:_process(delta)
-    local input = Vec(
-        btoi(is_pressed("right")) - btoi(is_pressed("left")), 
+    input:set(
+        btoi(is_pressed("right")) - btoi(is_pressed("left")),
         btoi(is_pressed("down")) - btoi(is_pressed("up"))
     )
-    self.Trans:move(input:normalized() * 100.0 * delta)
-    self.sprite.pos = self.Trans.pos
+    input:normalize()
+    input:mul(delta * 100.0)
 
-    if is_just_pressed("test") then
-        print("Skibidi toilet")
-    end
+    self.Trans:move(input)
+    self.sprite.pos:setv(self.Trans.pos)
 end
 
 function Player:_draw()
