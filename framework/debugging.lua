@@ -15,6 +15,11 @@ function update_debug(delta)
     imgui.love.Update(delta)
     imgui.NewFrame()
     frames = frames + 1
+
+    if frames > 60 then
+        frames = 1
+        process_time_sum = 0
+    end
 end
 
 function render_debug()
@@ -40,7 +45,7 @@ function render_debug()
         imgui.ImVec4_Float(1, 0, 0, 1) or imgui.ImVec4_Float(0, 1, 0, 1)
 
     imgui.PushStyleColor_Vec4(imgui.ImGuiCol_Text, color)
-    imgui.Text("Process time: "..tostring(process_time).."/"..tostring(allowed_ms).."ms")
+    imgui.Text("Process time:      "..tostring(process_time).."/"..tostring(allowed_ms).."ms")
     imgui.PopStyleColor(1)
 
     process_time_sum = process_time_sum + process_time
@@ -50,14 +55,14 @@ function render_debug()
     imgui.ImVec4_Float(1, 0, 0, 1) or imgui.ImVec4_Float(0, 1, 0, 1)
 
     imgui.PushStyleColor_Vec4(imgui.ImGuiCol_Text, color)
-    imgui.Text("Avg. process time:    "..tostring(avg_process_time).."/"..tostring(allowed_ms).."ms")
+    imgui.Text("Avg. process time: "..tostring(avg_process_time).."/"..tostring(allowed_ms).."ms")
     imgui.PopStyleColor(1)
 
     color = draw_time > allowed_ms and
     imgui.ImVec4_Float(1, 0, 0, 1) or imgui.ImVec4_Float(0, 1, 0, 1)
 
     imgui.PushStyleColor_Vec4(imgui.ImGuiCol_Text, color)
-    imgui.Text("Draw time:    "..tostring(draw_time).."/"..tostring(allowed_ms).."ms")
+    imgui.Text("Draw time:         "..tostring(draw_time).."/"..tostring(allowed_ms).."ms")
     imgui.PopStyleColor(1)
 
     imgui.Separator()
