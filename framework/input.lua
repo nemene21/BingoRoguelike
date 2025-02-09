@@ -1,6 +1,8 @@
 require "framework.class"
 require "framework.signal"
 
+local pressed_inputs = {}
+
 Input = class()
 function Input:new(key, source)
     self.source = source or "keyboard"
@@ -28,22 +30,16 @@ local actions = {
     up = {Input("w"), Input("up")}
 }
 
-just_pressed = Signal()
-
 function love.keypressed(key, scancode, isrepeat)
-    for name, action in pairs(actions) do
-        if action.source == "keyboard" and action.key == key then
-            just_pressed:emit(name)
-        end
-    end
+    table.insert(pressed_inputs, Input(key, "keyboard"))
 end
 
 function check_mouse_input(key)
-    for name, action in pairs(actions) do
-        if action.source == "mouse" and action.key == key then
-            just_pressed:emit(name)
-        end
-    end
+    table.insert(pressed_inputs, Input(key, "mouse"))
+end
+
+function love.joystickpressed(joystick, key)
+    table.insert(pressed_inputs, Input(key, "joystick"))
 end
 
 function is_pressed(action)
@@ -54,4 +50,22 @@ function is_pressed(action)
         end
     end
     return false
+end
+
+function is_just_pressed(action)
+    local action = actions[action]
+
+    for i, first in ipairs(action) do
+        for j, other in ipairs(pressed_inputs) do
+
+            if first.key == other.key and first.source == other.source then
+                return true
+            end
+        end
+    end        
+    return false
+end
+
+function input_step()
+    pressed_inputs = {}
 end

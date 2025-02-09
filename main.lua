@@ -36,6 +36,7 @@ end
 function love.update(delta)
     current_scene:process_entities(delta)
     update_debug(delta)
+    input_step()
 end
 
 function love.draw()

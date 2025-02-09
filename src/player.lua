@@ -25,6 +25,10 @@ function Player:_process(delta)
     )
     self.Trans:move(input:normalized() * 100.0 * delta)
     self.sprite.pos = self.Trans.pos
+
+    if is_just_pressed("test") then
+        print("Skibidi toilet")
+    end
 end
 
 function Player:_draw()
