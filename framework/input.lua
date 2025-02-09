@@ -10,18 +10,20 @@ function Input:new(key, source)
 end
 
 function Input:is_pressed()
-    if imgui.love.GetWantCaptureKeyboard() or imgui.love.GetWantCaptureMouse() then
-        return false
-    end
-
+    -- Check joystick input
     if self.source == "joystick" then
         local joystick = love.joystick.getJoysticks()[1]
         if joystick == nil then return false end
         return joystick:sDown(self.key)
-
+    
+    -- Check keyboard input (return false instantly if debug GUI is focused)
     elseif self.source == "keyboard" then
+        if imgui.love.GetWantCaptureKeyboard() then return false end
         return love.keyboard.isDown(self.key)
+
+    -- Check mouse input (return false instantly if debug GUI is focused)
     else
+        if imgui.love.GetWantCaptureMouse() then return false end
         return love.mouse.isDown(self.key)
     end
 end

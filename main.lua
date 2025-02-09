@@ -4,7 +4,7 @@ require "framework.debugging"
 require "src.game"
 
 function love.load()
-    if love.system.getOS() == "Windows" then
+--[[     if love.system.getOS() == "Windows" then
         local ffi = require'ffi'
         local dwm = ffi.load("dwmapi")
         ffi.cdef"void DwmFlush();"
@@ -13,7 +13,7 @@ function love.load()
             oldpresent()
             dwm.DwmFlush()
         end
-    end
+    end ]]
 
     RES = Vec(160, 90) * 4
     lw.setMode(RES.x, RES.y)

@@ -60,5 +60,5 @@ function Sprite:new(path)
 end
 
 function Sprite:draw()
-    lg.draw(self.img_res:get(), math.round(self.pos.x), math.round(self.pos.y))
+    lg.draw(self.img_res:get(), self.pos.x, self.pos.y)
 end
