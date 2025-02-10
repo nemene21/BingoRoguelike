@@ -8,6 +8,14 @@ function Res:new(manager, path)
     self.path = path
     self.manager = manager
     self.id = manager.bank[path].id
+
+    local proxy = newproxy(true)
+    getmetatable(proxy).__gc = function()
+        if self.free then
+            self:free()
+        end
+    end
+    self.__proxy = proxy
 end
 
 function Res:get()

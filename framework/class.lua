@@ -7,15 +7,6 @@ local function create(creating, ...)
     if instance.new then
         instance:new(...)
     end
-
-    local proxy = newproxy(true)
-    getmetatable(proxy).__gc = function()
-        if instance.free then
-            instance:free()
-        end
-    end
-    instance.__proxy = proxy
-
     return instance
 end
 
