@@ -9,7 +9,8 @@ Player = class(Entity)
 function Player:new(x, y)
     Entity.new(self)
     self:add(TransComp(x, y))
-    self:add(CameraComp())
+    self:add(CamComp())
+
     self.Cam.camera:activate()
     self:add_drawable("sprite", Sprite("assets/test.png"))
 end

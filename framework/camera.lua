@@ -26,14 +26,14 @@ end
 global_camera = Camera()
 
 -- <Camera comp>
-CameraComp = class(Comp)
+CamComp = class(Comp)
 
-function CameraComp:new()
+function CamComp:new()
     Comp.new(self, "Cam")
     self.camera = Camera()
 end
 
-function CameraComp:_process(delta)
+function CamComp:_process(delta)
     local trans = self.entity.Trans
     if trans ~= nil then
         self.camera:follow(trans.pos)
