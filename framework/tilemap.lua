@@ -57,6 +57,10 @@ function TileRenderer:new(tilemap)
     self.tilemap = tilemap
 end
 
+function TileRenderer:update_footprint()
+    self.footprint = self.shader_res.id + 1000 * self.tilemap.texture_res..id
+end
+
 function TileRenderer:_draw()
     local tilemap = self.tilemap
     lg.translate(tilemap.tilepos.x * tilemap.tilesize, tilemap.tilepos.y * tilemap.tilesize)
