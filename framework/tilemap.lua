@@ -17,6 +17,7 @@ function Tilemap:new(texture_path, tilesize, tileposx, tileposy, width)
     self.tilepos = Vec(tileposx or 0, tileposy or 0)
 
     self:add_drawable("renderer", TileRenderer(self))
+    self.renderer.layer = DrawLayers.BACKGROUND
 
     self.drawing_quad = lg.newQuad(
         0, 0,

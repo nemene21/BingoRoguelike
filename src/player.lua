@@ -10,7 +10,7 @@ function Player:new(x, y)
     x = x or 0
     y = y or 0
     Entity.new(self)
-    self:add(TransComp(x + lm.random() * 64, y + lm.random() * 64))
+    self:add(TransComp(x + lm.random() * 256, y + lm.random() * 256))
     self:add(CamComp())
 
     self.Cam.camera:activate()

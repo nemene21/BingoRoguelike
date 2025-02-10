@@ -7,6 +7,7 @@ function Res:new(manager, path)
     self.payload = manager.bank[path].res
     self.path = path
     self.manager = manager
+    self.id = manager.bank[path].id
 end
 
 function Res:get()
