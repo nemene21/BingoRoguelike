@@ -14,10 +14,6 @@ function Player:new(x, y)
     self:add_drawable("sprite", Sprite("assets/test.png"))
 end
 
-function Player:free()
-    print("Dead D:")
-end
-
 local input = Vec()
 function Player:_process(delta)
     input:set(
