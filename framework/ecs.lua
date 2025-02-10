@@ -1,6 +1,7 @@
 require "framework.class"
 require "framework.misc"
 require "framework.signal"
+require "framework.drawable"
 
 -- <Scene>
 local function register_comp(scene, comp)
@@ -92,7 +93,7 @@ end
 function Scene:draw_entities(delta)
     for i, entity in pairs(self.entities) do
         if entity.visible then
-            entity:_draw()
+            entity:_push_drawables()
         end
     end
 end
@@ -162,6 +163,7 @@ Entity = class()
 
 function Entity:new()
     self.comps = {}
+    self.drawables = {}
     self.scene = nil
     self.alive = true
     self.paused = false
@@ -190,7 +192,19 @@ function Entity:hide()
 end
 
 function Entity:_process(delta) end
-function Entity:_draw() end
+
+function Entity:_push_drawables()
+    if not self.visible then return end
+    
+    for i, drawable in ipairs(self.drawables) do
+        drawable:_push_to_layer()
+    end
+end
+
+function Entity:add_drawable(name, drawable)
+    table.insert(self.drawables, drawable)
+    self[name] = drawable
+end
 
 function Entity:add(comp)
     self.comps[comp.name] = comp

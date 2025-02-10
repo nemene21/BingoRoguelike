@@ -11,7 +11,7 @@ function Player:new(x, y)
     self:add(TransComp(x, y))
     self:add(CameraComp())
     self.Cam.camera:activate()
-    self.sprite = Sprite("assets/test.png")
+    self:add_drawable("sprite", Sprite("assets/test.png"))
 end
 
 function Player:free()
@@ -29,8 +29,4 @@ function Player:_process(delta)
 
     self.Trans:move(input)
     self.sprite.pos:setv(self.Trans.pos)
-end
-
-function Player:_draw()
-    self.sprite:draw()
 end

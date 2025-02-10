@@ -47,5 +47,5 @@ function ResManager:show_debug(name)
 end
 
 function ResManager:_on_free(path)
-    self.bank[path] = self.bank[path] - 1
+    self.ref_counts[path] = self.ref_counts[path] - 1
 end

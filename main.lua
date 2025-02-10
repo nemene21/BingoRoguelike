@@ -48,6 +48,7 @@ function love.draw()
     lg.translate((RES * 0.5 - global_camera:get_origin():whole()):get())
 
     current_scene:draw_entities(lt.getDelta())
+    draw_drawables()
 
     lg.reset()
 
