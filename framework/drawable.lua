@@ -16,7 +16,7 @@ end
 function draw_drawables()
     for i, layer in ipairs(draw_layers) do
         for j, drawable in ipairs(layer) do
-            drawable:draw()
+            drawable:_draw()
             layer[j] = nil
         end
     end
