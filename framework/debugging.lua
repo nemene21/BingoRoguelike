@@ -4,10 +4,15 @@ require "framework.input"
 require "framework.ecs"
 
 process_time = 0
-local process_time_sum = 0
 draw_time = 0
+
+local process_time_sum = 0
 local draw_time_sum = 0
 local frames = 0
+local avg_process_time = 0
+local avg_draw_time = 0
+
+local allowed_ms = math.floor(1000 / 60.0)
 
 local code_buff = ffi.new("char[8192]", "Code goes here")
 
@@ -17,9 +22,28 @@ function update_debug(delta)
     frames = frames + 1
 
     if frames > 60 then
-        frames = 1
+        avg_process_time = math.floor(process_time_sum / frames)
+        avg_draw_time = math.floor(draw_time_sum / frames)
         process_time_sum = 0
+        draw_time_sum = 0
+        frames = 1
     end
+end
+
+function show_stat_limited(name, stat, maximum, unit, flip)
+    local flip = flip or false
+
+    local unit = unit or ""
+    local color
+    if not flip then
+        color = stat > maximum and imgui.ImVec4_Float(1, 0, 0, 1) or imgui.ImVec4_Float(0, 1, 0, 1)
+    else
+        color = stat < maximum and imgui.ImVec4_Float(1, 0, 0, 1) or imgui.ImVec4_Float(0, 1, 0, 1)
+    end
+
+    imgui.PushStyleColor_Vec4(imgui.ImGuiCol_Text, color)
+    imgui.Text(name..tostring(stat).."/"..tostring(maximum)..unit)
+    imgui.PopStyleColor(1)
 end
 
 function render_debug()
@@ -35,35 +59,18 @@ function render_debug()
     end
 
     imgui.Text("Drawcalls: "..tostring(lg.getStats().drawcalls))
-    imgui.Text("FPS: "..tostring(lt.getFPS()))
+    show_stat_limited("FPS: ", lt.getFPS(), 60, nil, true)
 
     process_time = math.floor(process_time * 1000)
     draw_time = math.floor(draw_time * 1000)
 
-    local allowed_ms = math.floor(1000 / 60.0)
-    local color = process_time > allowed_ms and
-        imgui.ImVec4_Float(1, 0, 0, 1) or imgui.ImVec4_Float(0, 1, 0, 1)
-
-    imgui.PushStyleColor_Vec4(imgui.ImGuiCol_Text, color)
-    imgui.Text("Process time:      "..tostring(process_time).."/"..tostring(allowed_ms).."ms")
-    imgui.PopStyleColor(1)
-
     process_time_sum = process_time_sum + process_time
-    local avg_process_time = math.floor(process_time_sum / frames)
+    draw_time_sum = draw_time_sum + draw_time
 
-    color = avg_process_time > allowed_ms and
-    imgui.ImVec4_Float(1, 0, 0, 1) or imgui.ImVec4_Float(0, 1, 0, 1)
-
-    imgui.PushStyleColor_Vec4(imgui.ImGuiCol_Text, color)
-    imgui.Text("Avg. process time: "..tostring(avg_process_time).."/"..tostring(allowed_ms).."ms")
-    imgui.PopStyleColor(1)
-
-    color = draw_time > allowed_ms and
-    imgui.ImVec4_Float(1, 0, 0, 1) or imgui.ImVec4_Float(0, 1, 0, 1)
-
-    imgui.PushStyleColor_Vec4(imgui.ImGuiCol_Text, color)
-    imgui.Text("Draw time:         "..tostring(draw_time).."/"..tostring(allowed_ms).."ms")
-    imgui.PopStyleColor(1)
+    show_stat_limited("Process time:      ", process_time, allowed_ms, "ms")
+    show_stat_limited("Avg. process time: ", avg_process_time, allowed_ms, "ms")
+    show_stat_limited("Draw time:         ", draw_time, allowed_ms, "ms")
+    show_stat_limited("Avg. draw time:    ", avg_draw_time, allowed_ms, "ms")
 
     imgui.Separator()
 
@@ -80,6 +87,10 @@ function render_debug()
     imgui.Indent(16)
     imgui.Text("Archetype data to be..")
     imgui.Unindent(16)
+
+    imgui.Separator()
+    image_manager:show_debug("Image")
+    shader_manager:show_debug("Shader")
 
     imgui.Render()
     imgui.love.RenderDrawLists()
