@@ -13,6 +13,7 @@ function Player:new(x, y)
 
     self.Cam.camera:activate()
     self:add_drawable("sprite", Sprite("assets/test.png"))
+    self.sprite:set_shader("assets/test.glsl")
 end
 
 local input = Vec()

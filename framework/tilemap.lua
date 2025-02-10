@@ -1,6 +1,7 @@
 require "framework.ecs"
 require "framework.drawable"
 
+TileRenderer = class(Drawable)
 Tilemap = class(Entity)
 function Tilemap:new(texture_path, tilesize, tileposx, tileposy, width)
     Entity.new(self)
@@ -14,6 +15,8 @@ function Tilemap:new(texture_path, tilesize, tileposx, tileposy, width)
     self.tilesize = tilesize
     self.tilewidth = width
     self.tilepos = Vec(tileposx or 0, tileposy or 0)
+
+    self:add_drawable("renderer", TileRenderer(self))
 
     self.drawing_quad = lg.newQuad(
         0, 0,
@@ -38,27 +41,6 @@ function Tilemap:set_tilev(pos, type, variation)
     self:set_tile(pos.x, pos.y, type, variation)
 end
 
-function Tilemap:_draw()
-    lg.translate(self.tilepos.x * self.tilesize, self.tilepos.y * self.tilesize)
-    
-    local tex = self.texture_res:get()
-    local x, y
-    for pos, tile in pairs(self.tiledata) do
-        x, y = pos % self.tilewidth, (pos - pos % self.tilewidth) / self.tilewidth
-        
-        self.drawing_quad:setViewport(
-            self.tilesize * (tile[1] - 1),
-            self.tilesize * (tile[2] - 1),
-            self.tilesize, self.tilesize
-        )
-        lg.draw(
-            tex, self.drawing_quad,
-            x * self.tilesize, y * self.tilesize
-        )
-    end
-    lg.translate(-self.tilepos.x * self.tilesize, -self.tilepos.y * self.tilesize)
-end
-
 function Tilemap:stringify()
     return class2string(self, {
         self.texture_res.path,
@@ -67,4 +49,31 @@ function Tilemap:stringify()
         self.tilepos.y,
         self.tilewidth
     }, "tiledata")
+end
+
+function TileRenderer:new(tilemap)
+    Drawable.new(self)
+    self.tilemap = tilemap
+end
+
+function TileRenderer:_draw()
+    local tilemap = self.tilemap
+    lg.translate(tilemap.tilepos.x * tilemap.tilesize, tilemap.tilepos.y * tilemap.tilesize)
+    
+    local tex = tilemap.texture_res:get()
+    local x, y
+    for pos, tile in pairs(tilemap.tiledata) do
+        x, y = pos % tilemap.tilewidth, (pos - pos % tilemap.tilewidth) / tilemap.tilewidth
+        
+        tilemap.drawing_quad:setViewport(
+            tilemap.tilesize * (tile[1] - 1),
+            tilemap.tilesize * (tile[2] - 1),
+            tilemap.tilesize, tilemap.tilesize
+        )
+        lg.draw(
+            tex, tilemap.drawing_quad,
+            x * tilemap.tilesize, y * tilemap.tilesize
+        )
+    end
+    lg.translate(-tilemap.tilepos.x * tilemap.tilesize, -tilemap.tilepos.y * tilemap.tilesize)
 end
