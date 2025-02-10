@@ -10,5 +10,5 @@ function Game:new()
 end
 
 function Game:restart()
-    for i = 1, 1000 do self:add_entity(Player()) end
+    self:add_entity(Player())
 end

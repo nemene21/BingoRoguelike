@@ -19,7 +19,6 @@ end
 
 function draw_drawables()
     for i, layer in ipairs(draw_layers) do
-        -- print(#layer)
         table.sort(layer, drawable_comparator)
         for j, drawable in ipairs(layer) do
             lg.setShader(drawable.shader_res:get())

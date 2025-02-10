@@ -7,15 +7,12 @@ require "framework.input"
 
 Player = class(Entity)
 function Player:new(x, y)
-    x = x or 0
-    y = y or 0
     Entity.new(self)
-    self:add(TransComp(x + lm.random() * 256, y + lm.random() * 256))
+    self:add(TransComp(x, y))
     self:add(CamComp())
 
     self.Cam.camera:activate()
     self:add_drawable("sprite", Sprite("assets/test.png"))
-    if lm.random() > 0.5 then self.sprite:set_shader("assets/test.glsl") end
 end
 
 local input = Vec()

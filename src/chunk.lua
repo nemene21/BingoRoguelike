@@ -67,7 +67,7 @@ function Chunk:generate()
     for x = tilepos.x, tilepos.x + CHUNKSIZE do
         for y = tilepos.y, tilepos.y + CHUNKSIZE do
             if lm.noise(x*0.05, y*0.05) > 0.5 then
-                tilemap:set_tile(x, y, 1)
+                tilemap:set_tile(x, y, 1, nil, lm.random())
             end
         end
     end
