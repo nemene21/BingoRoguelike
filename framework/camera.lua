@@ -35,7 +35,7 @@ end
 
 function CamComp:_process(delta)
     local trans = self.entity.Trans
-    if trans ~= nil then
+    if trans then
         self.camera:follow(trans.pos)
     end
 end

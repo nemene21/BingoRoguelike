@@ -4,13 +4,13 @@ local class_registry = {}
 
 local function create(creating, ...)
     local instance = setmetatable({}, creating)
-    if instance.new ~= nil then
+    if instance.new then
         instance:new(...)
     end
 
     local proxy = newproxy(true)
     getmetatable(proxy).__gc = function()
-        if instance.free ~= nil then
+        if instance.free then
             instance:free()
         end
     end

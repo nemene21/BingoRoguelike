@@ -13,7 +13,7 @@ local function register_comp(scene, comp)
 
     -- Add comp's entity to any archetypes with that component
     local types = scene.comp_to_archetypes[comp.name]
-    if types ~= nil then
+    if types then
         for i = 1, #types do
             types[i]:attempt_register(comp.entity)
         end
@@ -33,7 +33,7 @@ local function unregister_comp(scene, comp)
 
     -- Remove comp's entity from any archetypes it was in
     local types = scene.comp_to_archetypes[comp.name]
-    if types ~= nil then
+    if types then
         for i = 1, #types do
             types[i]:attempt_unregister(comp.entity)
         end
@@ -212,7 +212,7 @@ function Entity:add(comp)
 
     comp.entity = self
 
-    if self.scene ~= nil then
+    if self.scene then
         register_comp(self.scene, comp)
     end
     return comp
@@ -223,7 +223,7 @@ function Entity:get(comp_name)
 end
 
 function Entity:remove(name)
-    if self.scene ~= nil then
+    if self.scene then
         unregister_comp(self.scene, self.comps[name])
     end
     self.comps[name] = nil
