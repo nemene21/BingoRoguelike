@@ -16,10 +16,12 @@ end
 function draw_drawables()
     for i, layer in ipairs(draw_layers) do
         for j, drawable in ipairs(layer) do
+            lg.setShader(drawable.shader:get())
             drawable:_draw()
             layer[j] = nil
         end
     end
+    lg.setShader()
 end
 
 image_manager = ResManager(lg.newImage)
