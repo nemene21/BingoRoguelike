@@ -1,5 +1,6 @@
 require "framework.ecs"
 require "framework.tilemap"
+require "src.chunk_loader"
 
 CHUNKSIZE = 16
 
@@ -36,11 +37,11 @@ function Chunk:unload()
         entities = {}
     }
     local entity
-    for i = #self.entities, 0 do
+    for i = #self.entities, 1, -1 do
         entity = self.entities[i]
+        entity:kill()
         table.insert(chunk_data.entities, entity:stringify())
         self.entities[i] = nil
-        entity:kill()
     end
 
     local file = lf.newFile(self.filename)
@@ -86,6 +87,7 @@ function Chunk:generate()
     end
 end
 
+local chunkpos = Vec()
 function process_chunks()
     -- Unload chunks that are too far
     local dist
@@ -97,6 +99,7 @@ function process_chunks()
 
             if dist > CHUNK_DIST then
                 chunk:unload()
+                loaded_chunks[key] = nil
             end
         end
     end

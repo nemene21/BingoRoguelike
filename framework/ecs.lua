@@ -70,16 +70,20 @@ end
 
 function Scene:process_entities(delta)
     local max = 0
+    local dead_entities = {}
     for i, entity in pairs(self.entities) do
         if not entity.paused then
             entity:_process(delta)
             entity:_process_comps(delta)
-        end
 
-        -- Remove entity and it's comps if necesarry
-        if not entity.alive then
-            Scene:remove_entity(entity)
+            if not entity.alive then
+                dead_entities[#dead_entities+1] = entity
+            end
         end
+    end
+
+    for _, entity in ipairs(dead_entities) do
+        self:remove_entity(entity)
     end
 end
 
@@ -89,6 +93,7 @@ function Scene:remove_entity(entity)
     for name, comp in pairs(entity.comps) do
         entity:remove(name)
     end
+    print(self.entities)
     self.entities[entity.id] = nil
 end
 

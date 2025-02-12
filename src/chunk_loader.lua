@@ -1,6 +1,6 @@
 require "framework.ecs"
 
-CHUNK_DIST = 2
+CHUNK_DIST = 1
 
 ChunkLoaderComp = class(Comp)
 function ChunkLoaderComp:new()

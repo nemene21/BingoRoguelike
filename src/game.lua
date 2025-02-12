@@ -11,10 +11,10 @@ function Game:new()
 end
 
 function Game:restart()
-    self:add_entity(Player())
+    self.player = Player()
+    self:add_entity(self.player)
 end
 
-local chunkpos = Vec()
 function Game:_process(delta)
     process_chunks()
 end

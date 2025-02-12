@@ -15,7 +15,7 @@ function love.load()
         end
     end ]]
 
-    RES = Vec(160, 90) -- * 4
+    RES = Vec(160, 90) * 4
     lw.setMode(RES.x, RES.y)
     screen = lg.newCanvas(RES.x, RES.y)
     screen:setFilter("nearest", "nearest")
