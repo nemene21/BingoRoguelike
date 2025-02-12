@@ -93,7 +93,6 @@ function Scene:remove_entity(entity)
     for name, comp in pairs(entity.comps) do
         entity:remove(name)
     end
-    print(self.entities)
     self.entities[entity.id] = nil
 end
 

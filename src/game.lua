@@ -11,7 +11,7 @@ function Game:new()
 end
 
 function Game:restart()
-    self.player = Player()
+    self.player = Player(100, 100)
     self:add_entity(self.player)
 end
 

@@ -1,7 +1,7 @@
 require "framework.ecs"
 require "framework.tilemap"
-require "src.chunk_loader"
 
+CHUNK_DIST = 2
 CHUNKSIZE = 16
 
 function ckey(x, y)
@@ -13,7 +13,7 @@ function from_ckey(str)
     return tonumber(x), tonumber(y)
 end
 
-local loaded_chunks = {}
+loaded_chunks = {}
 
 Chunk = class()
 function Chunk:new(x, y)
@@ -94,6 +94,7 @@ function process_chunks()
     for key, chunk in pairs(loaded_chunks) do
         for i, comp in ipairs(current_scene:query_comp("ChunkLoader")) do
             chunkpos:set(chunk.x, chunk.y)
+            -- chunkpos:add(0.5)
             chunkpos:sub(comp.chunkpos.x, comp.chunkpos.y)
             dist = chunkpos:length()
 

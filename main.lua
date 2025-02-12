@@ -15,7 +15,7 @@ function love.load()
         end
     end ]]
 
-    RES = Vec(160, 90) * 4
+    RES = Vec(160, 90) * 8
     lw.setMode(RES.x, RES.y)
     screen = lg.newCanvas(RES.x, RES.y)
     screen:setFilter("nearest", "nearest")
@@ -35,8 +35,8 @@ end
 
 function love.update(delta)
     process_time = love.timer.getTime()
-    current_scene:_process(delta)
     current_scene:process_entities(delta)
+    current_scene:_process(delta)
     update_debug(delta)
     input_step()
     process_time = love.timer.getTime() - process_time

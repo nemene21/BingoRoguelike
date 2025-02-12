@@ -24,7 +24,7 @@ function Player:_process(delta)
         btoi(is_pressed("down")) - btoi(is_pressed("up"))
     )
     input:normalize()
-    input:mul(delta * 100.0)
+    input:mul(delta * 300.0)
 
     self.Trans:move(input)
     self.sprite.pos:setv(self.Trans.pos)
