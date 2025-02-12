@@ -14,3 +14,14 @@ end
 function Game:restart()
     self:add_entity(Player())
 end
+
+local chunkpos = Vec()
+function Game:_process(delta)
+    -- Unload chunks that are too far
+    for key, chunk in pairs(chunks) do
+        for entity in self.chunk_archetype:iterate() do
+            chunkpos:set(chunk.x, chunk.y)
+            chunkpos:sub()
+        end
+    end
+end

@@ -83,6 +83,8 @@ function Scene:process_entities(delta)
     end
 end
 
+function Scene:_process(delta) end
+
 function Scene:remove_entity(entity)
     for name, comp in pairs(entity.comps) do
         entity:remove(name)

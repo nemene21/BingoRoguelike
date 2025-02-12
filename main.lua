@@ -35,6 +35,7 @@ end
 
 function love.update(delta)
     process_time = love.timer.getTime()
+    current_scene:_process(delta)
     current_scene:process_entities(delta)
     update_debug(delta)
     input_step()
