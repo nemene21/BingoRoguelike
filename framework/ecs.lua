@@ -93,6 +93,7 @@ function Scene:remove_entity(entity)
     for name, comp in pairs(entity.comps) do
         entity:remove(name)
     end
+    table.insert(free_ent_ids, entity)
     self.entities[entity.id] = nil
 end
 
