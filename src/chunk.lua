@@ -3,12 +3,25 @@ require "framework.tilemap"
 
 CHUNKSIZE = 16
 
+function ckey(x, y)
+    return x..","..y
+end
+
+function from_ckey(str)
+    local x, y = str:match("([^,]+),([^,]+)")
+    return tonumber(x), tonumber(y)
+end
+
+local loaded_chunks = {}
+
 Chunk = class()
 function Chunk:new(x, y)
     self.x = x
     self.y = y
     self.filename = tostring(self.x)..","..tostring(self.y)..".chunk"
     self.entities = {}
+
+    loaded_chunks[ckey(x, y)] = self
 
     --if lf.getInfo(self.filename) == nil then
     --    self:load()

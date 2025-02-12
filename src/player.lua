@@ -4,12 +4,14 @@ require "framework.camera"
 require "framework.transform"
 require "framework.drawable"
 require "framework.input"
+require "src.chunk_loader"
 
 Player = class(Entity)
 function Player:new(x, y)
     Entity.new(self)
     self:add(TransComp(x, y))
     self:add(CamComp())
+    self:add(ChunkLoaderComp())
 
     self.Cam.camera:activate()
     self:add_drawable("sprite", Sprite("assets/test.png"))
