@@ -100,11 +100,11 @@ function Scene:draw_entities(delta)
     end
 end
 
--- <Component>
-function query_comp(name)
-    return comps[name]
+function Scene:query_comp(name)
+    return self.comps[name]
 end
 
+-- <Component>
 Comp = class()
 function Comp:new(name)
     self.name = name

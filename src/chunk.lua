@@ -31,7 +31,7 @@ function Chunk:new(x, y)
     end
 end
 
-function Chunk:save()
+function Chunk:unload()
     local chunk_data = {
         entities = {}
     }
@@ -81,6 +81,22 @@ function Chunk:generate()
         for y = tilepos.y, tilepos.y + CHUNKSIZE do
             if lm.noise(x*0.05, y*0.05) > 0.5 then
                 tilemap:set_tile(x, y, 1, nil, lm.random())
+            end
+        end
+    end
+end
+
+function process_chunks()
+    -- Unload chunks that are too far
+    local dist
+    for key, chunk in pairs(loaded_chunks) do
+        for i, comp in ipairs(current_scene:query_comp("ChunkLoader")) do
+            chunkpos:set(chunk.x, chunk.y)
+            chunkpos:sub(comp.chunkpos.x, comp.chunkpos.y)
+            dist = chunkpos:length()
+
+            if dist > CHUNK_DIST then
+                chunk:unload()
             end
         end
     end
