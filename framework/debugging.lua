@@ -82,10 +82,12 @@ function render_debug()
     imgui.Unindent(16)
 
     imgui.Text("Ents ("..tostring(largest_ent_id - #free_ent_ids).."):")
-    imgui.Text("Archetypes:")
+    imgui.Text("Loaded chunks ("..tostring(table.entries(loaded_chunks)).."):")
 
     imgui.Indent(16)
-    imgui.Text("Archetype data to be..")
+    for key, chunk in pairs(loaded_chunks) do
+        imgui.Text(key)
+    end
     imgui.Unindent(16)
 
     imgui.Separator()

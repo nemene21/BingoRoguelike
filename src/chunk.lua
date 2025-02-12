@@ -19,15 +19,14 @@ Chunk = class()
 function Chunk:new(x, y)
     self.x = x
     self.y = y
-    self.filename = tostring(self.x)..","..tostring(self.y)..".chunk"
+    self.filename = "chunkdata/"..tostring(self.x)..","..tostring(self.y)..".chunk"
     self.entities = {}
 
     loaded_chunks[ckey(x, y)] = self
 
-    --if lf.getInfo(self.filename) == nil then
-    --    self:load()
-    --else
-    do
+    if lf.getInfo(self.filename) ~= nil then
+        self:load()
+    else
         self:generate()
     end
 end
@@ -57,8 +56,11 @@ function Chunk:load()
     local offset, chunk_data = msgpack.unpack(strdata)
     file:close()
 
+    local entity
     for i, entity in ipairs(chunk_data.entities) do
-        current_scene:add_entity(string2class(entity))
+        entity = string2class(entity)
+        current_scene:add_entity(entity)
+        self:add_entity(entity)
     end
 end
 
@@ -66,6 +68,7 @@ function Chunk:add_entity(entity)
     table.insert(self.entities, entity)
 end
 
+local seed = lm.random()*1000
 function Chunk:generate()
     local tilepos = Vec(self.x * CHUNKSIZE, self.y * CHUNKSIZE)
     local tilemap = Tilemap(
@@ -80,7 +83,7 @@ function Chunk:generate()
 
     for x = tilepos.x, tilepos.x + CHUNKSIZE do
         for y = tilepos.y, tilepos.y + CHUNKSIZE do
-            if lm.noise(x*0.05, y*0.05) > 0.5 then
+            if lm.noise(x*0.05+seed, y*0.05+seed) > 0.5 then
                 tilemap:set_tile(x, y, 1, nil, lm.random())
             end
         end
@@ -94,7 +97,6 @@ function process_chunks()
     for key, chunk in pairs(loaded_chunks) do
         for i, comp in ipairs(current_scene:query_comp("ChunkLoader")) do
             chunkpos:set(chunk.x, chunk.y)
-            -- chunkpos:add(0.5)
             chunkpos:sub(comp.chunkpos.x, comp.chunkpos.y)
             dist = chunkpos:length()
 

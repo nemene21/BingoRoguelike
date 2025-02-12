@@ -19,18 +19,13 @@ function love.load()
     lw.setMode(RES.x, RES.y)
     screen = lg.newCanvas(RES.x, RES.y)
     screen:setFilter("nearest", "nearest")
-    lw.setFullscreen(true)
+    -- lw.setFullscreen(true)
     lg.setDefaultFilter("nearest", "nearest")
 
     imgui.love.Init()
 
     game = Game()
     set_current_scene(game)
-    for x = 0, 3 do
-        for y = 0, 3 do
-            Chunk(x, y)
-        end
-    end
 end
 
 function love.update(delta)

@@ -44,6 +44,18 @@ function table.entries(tbl)
     return i
 end
 
+function clear_dir(directory)
+    local files = love.filesystem.getDirectoryItems(directory)
+
+    for _, filename in ipairs(files) do
+        local path = directory.."/"..filename
+
+        if love.filesystem.getInfo(path, "file") then
+            love.filesystem.remove(path)
+        end
+    end
+end
+
 function round_n(x, n)
     n = math.pow(10, n or 0)
     x = x * n
