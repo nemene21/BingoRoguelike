@@ -46,24 +46,28 @@ function Vec:divv(other)
     self.y = self.y / other.y
 end
 
-function Vec:add(num)
-    self.x = self.x + num
-    self.y = self.y + num
+function Vec:add(x, y)
+    local y = y or x
+    self.x = self.x + x
+    self.y = self.y + y
 end
 
-function Vec:sub(num)
-    self.x = self.x - num
-    self.y = self.y - num
+function Vec:sub(x, y)
+    local y = y or x
+    self.x = self.x - x
+    self.y = self.y - y
 end
 
-function Vec:mul(num)
-    self.x = self.x * num
-    self.y = self.y * num
+function Vec:mul(x, y)
+    local y = y or x
+    self.x = self.x * x
+    self.y = self.y * y
 end
 
-function Vec:div(num)
-    self.x = self.x / num
-    self.y = self.y / num
+function Vec:div(x, y)
+    local y = y or x
+    self.x = self.x / x
+    self.y = self.y / y
 end
 
 function Vec:setv(other)
@@ -72,6 +76,7 @@ function Vec:setv(other)
 end
 
 function Vec:set(x, y)
+    local y = y or x
     self.x = x
     self.y = y
 end
