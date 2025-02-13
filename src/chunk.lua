@@ -97,13 +97,13 @@ function Chunk:generate()
     self.tilemap = tilemap
 
     local noise_val
-    for x = tilepos.x, tilepos.x + CHUNKSIZE do
-        for y = tilepos.y, tilepos.y + CHUNKSIZE do
+    for x = tilepos.x, tilepos.x + CHUNKSIZE - 1 do
+        for y = tilepos.y, tilepos.y + CHUNKSIZE - 1 do
             noise_val = biome_noise:getNoise2D(x+seed, y+seed)
             if noise_val > 0 then
-                tilemap:set_tile(x, y, 1, nil, lm.random())
+                tilemap:set_tile(x, y, 1)
             else
-                tilemap:set_tile(x, y, 2, nil, lm.random())
+                tilemap:set_tile(x, y, 2)
             end
         end
     end

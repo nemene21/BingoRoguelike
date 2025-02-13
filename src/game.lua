@@ -11,7 +11,7 @@ function Game:new()
 end
 
 function Game:restart()
-    self.player = Player(100, 100)
+    self.player = Player(0, 0)
     self:add_entity(self.player)
 
     if not love.filesystem.getInfo("chunkdata", "directory") then

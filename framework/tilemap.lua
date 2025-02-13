@@ -44,6 +44,8 @@ function Tilemap:set_tilev(pos, type, variation, hp)
 end
 
 function Tilemap:damage_tile(x, y, damage)
+    x = x - self.tilepos.x
+    y = y - self.tilepos.y
     local tile = self.tiledata[x + y*self.tilewidth]
     if tile then
         tile[3] = tile[3] - damage
