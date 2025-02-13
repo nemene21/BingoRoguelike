@@ -1,5 +1,15 @@
 require "framework.ecs"
 require "framework.tilemap"
+local fnl = require "fnl.fnl"
+
+local biome_noise = fnl.createState()
+biome_noise:setNoiseType("cellular")
+biome_noise:setFrequency(0.02)
+biome_noise:setSeed(0)
+biome_noise:setLacunarity(0)
+biome_noise:setOctaves(0)
+biome_noise:setGain(100)
+biome_noise:setCellularReturnType("cellvalue")
 
 CHUNK_DIST = 2
 CHUNKSIZE = 16
@@ -68,7 +78,7 @@ function Chunk:add_entity(entity)
     table.insert(self.entities, entity)
 end
 
-local seed = lm.random()*1000
+local seed = 0 -- lm.random()*1000
 function Chunk:generate()
     local tilepos = Vec(self.x * CHUNKSIZE, self.y * CHUNKSIZE)
     local tilemap = Tilemap(
@@ -81,10 +91,14 @@ function Chunk:generate()
     current_scene:add_entity(tilemap)
     self:add_entity(tilemap)
 
+    local noise_val
     for x = tilepos.x, tilepos.x + CHUNKSIZE do
         for y = tilepos.y, tilepos.y + CHUNKSIZE do
-            if lm.noise(x*0.05+seed, y*0.05+seed) > 0.5 then
+            noise_val = biome_noise:getNoise2D(x+seed, y+seed)
+            if noise_val > 0 then
                 tilemap:set_tile(x, y, 1, nil, lm.random())
+            else
+                tilemap:set_tile(x, y, 2, nil, lm.random())
             end
         end
     end

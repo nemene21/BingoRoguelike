@@ -15,11 +15,11 @@ function love.load()
         end
     end ]]
 
-    RES = Vec(160, 90) * 8
+    RES = Vec(160, 90) * 4
     lw.setMode(RES.x, RES.y)
     screen = lg.newCanvas(RES.x, RES.y)
     screen:setFilter("nearest", "nearest")
-    -- lw.setFullscreen(true)
+    lw.setFullscreen(true)
     lg.setDefaultFilter("nearest", "nearest")
 
     imgui.love.Init()
