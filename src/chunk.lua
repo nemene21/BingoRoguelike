@@ -31,6 +31,7 @@ function Chunk:new(x, y)
     self.y = y
     self.filename = "chunkdata/"..tostring(self.x)..","..tostring(self.y)..".chunk"
     self.entities = {}
+    self.tilemap = nil
 
     loaded_chunks[ckey(x, y)] = self
 
@@ -71,6 +72,9 @@ function Chunk:load()
         entity = string2class(entity)
         current_scene:add_entity(entity)
         self:add_entity(entity)
+        if entity.__name == Tilemap.__name then
+            self.tilemap = entity
+        end
     end
 end
 
@@ -90,6 +94,7 @@ function Chunk:generate()
     )
     current_scene:add_entity(tilemap)
     self:add_entity(tilemap)
+    self.tilemap = tilemap
 
     local noise_val
     for x = tilepos.x, tilepos.x + CHUNKSIZE do
@@ -120,4 +125,8 @@ function process_chunks()
             end
         end
     end
+end
+
+function get_chunk_at_pos(x, y)
+    return loaded_chunks[ckey(math.floor((x/8)/CHUNKSIZE), math.floor((y/8)/CHUNKSIZE))]
 end

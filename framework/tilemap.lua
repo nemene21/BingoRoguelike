@@ -43,6 +43,17 @@ function Tilemap:set_tilev(pos, type, variation, hp)
     self:set_tile(pos.x, pos.y, type, variation, hp)
 end
 
+function Tilemap:damage_tile(x, y, damage)
+    local tile = self.tiledata[x + y*self.tilewidth]
+    if tile then
+        tile[3] = tile[3] - damage
+
+        if tile[3] < 0 then
+            self.tiledata[x + y*self.tilewidth] = nil
+        end
+    end
+end
+
 function Tilemap:stringify()
     return class2string(self, {
         self.texture_res.path,

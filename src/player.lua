@@ -26,6 +26,15 @@ function Player:_process(delta)
     input:normalize()
     input:mul(delta * 300.0)
 
+    if is_pressed("break") then
+        local chunk = get_chunk_at_pos(self.Trans.pos:get())
+        chunk.tilemap:damage_tile(
+            math.floor(self.Trans.pos.x / 8),
+            math.floor(self.Trans.pos.y / 8),
+            delta * 4
+        )
+    end
+
     self.Trans:move(input)
     self.sprite.pos:setv(self.Trans.pos)
 end

@@ -29,7 +29,7 @@ function Input:is_pressed()
 end
 
 local actions = {
-    test = {Input("t"), Input("p"), Input(1, "mouse")},
+    ["break"] = {Input(1, "mouse")},
     left = {Input("a"), Input("left")},
     right = {Input("d"), Input("right")},
     down = {Input("s"), Input("down")},
