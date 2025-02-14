@@ -6,7 +6,8 @@ require(path .. "cdef")
 
 local M = require(path .. "master")
 local ffi = require("ffi")
-local library_path = assert(package.searchpath("cimgui", package.cpath))
+local library_path = (package.searchpath("cimgui", package.cpath))
+assert(library_path)
 M.C = ffi.load(library_path)
 
 require(path .. "enums")

@@ -140,6 +140,5 @@ end
 
 function get_chunk_at_pos(x, y)
     local key = ckey(math.floor((x/8)/CHUNKSIZE), math.floor((y/8)/CHUNKSIZE))
-    print(key)
     return loaded_chunks[key]
 end
