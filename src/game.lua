@@ -11,13 +11,9 @@ function Game:new()
 end
 
 function Game:restart()
+    clear_world()
     self.player = Player(100, 100)
     self:add_entity(self.player)
-
-    if not love.filesystem.getInfo("chunkdata", "directory") then
-        love.filesystem.createDirectory("chunkdata")
-    end
-    clear_dir("chunkdata")
 end
 
 function Game:_process(delta)

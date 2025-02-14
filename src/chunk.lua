@@ -101,9 +101,9 @@ function Chunk:generate()
         for y = tilepos.y, tilepos.y + CHUNKSIZE do
             noise_val = biome_noise:getNoise2D(x+seed, y+seed)
             if noise_val > 0 then
-                tilemap:set_tile(x, y, 1, nil, lm.random())
+                tilemap:set_tile(x, y, 1)
             else
-                tilemap:set_tile(x, y, 2, nil, lm.random())
+                tilemap:set_tile(x, y, 3)
             end
         end
     end
@@ -127,6 +127,19 @@ function process_chunks()
     end
 end
 
+function clear_world()
+    if not love.filesystem.getInfo("chunkdata", "directory") then
+        love.filesystem.createDirectory("chunkdata")
+    end
+    for key, chunk in pairs(loaded_chunks) do
+        chunk:unload()
+        loaded_chunks[key] = nil
+    end
+    clear_dir("chunkdata")
+end
+
 function get_chunk_at_pos(x, y)
-    return loaded_chunks[ckey(math.floor((x/8)/CHUNKSIZE), math.floor((y/8)/CHUNKSIZE))]
+    local key = ckey(math.floor((x/8)/CHUNKSIZE), math.floor((y/8)/CHUNKSIZE))
+    print(key)
+    return loaded_chunks[key]
 end
