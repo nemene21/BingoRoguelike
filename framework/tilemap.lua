@@ -1,6 +1,13 @@
 require "framework.ecs"
 require "framework.drawable"
 
+Tilenames = enum({
+    "ROCK",
+    "LOG",
+    "PLANK",
+    "COUNT"
+})
+
 local TileRenderer = class(Drawable)
 local TileBreakRenderer = class(Drawable)
 Tilemap = class(Entity)

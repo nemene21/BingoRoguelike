@@ -2,6 +2,17 @@ require "framework.ecs"
 require "framework.tilemap"
 local fnl = require "fnl.fnl"
 
+local BIOME_DATA = {
+    {
+        name = "Cave",
+        base_tile = Tilenames.ROCK
+    },
+    {
+        name = "Nonsense test biome",
+        base_tile = Tilenames.PLANK
+    }
+}
+
 local biome_noise = fnl.createState()
 biome_noise:setNoiseType("cellular")
 biome_noise:setFrequency(0.02)
@@ -96,15 +107,14 @@ function Chunk:generate()
     self:add_entity(tilemap)
     self.tilemap = tilemap
 
-    local noise_val
+    local noise_val, biome_index, biome
     for x = tilepos.x, tilepos.x + CHUNKSIZE - 1 do
         for y = tilepos.y, tilepos.y + CHUNKSIZE - 1 do
-            noise_val = biome_noise:getNoise2D(x+seed, y+seed)
-            if noise_val > 0 then
-                tilemap:set_tile(x, y, 1)
-            else
-                tilemap:set_tile(x, y, 2)
-            end
+            noise_val = (biome_noise:getNoise2D(x+seed, y+seed) + 1) * 0.5
+            biome_index = math.ceil(#BIOME_DATA * noise_val)
+            biome = BIOME_DATA[biome_index]
+
+            self.tilemap:set_tile(x, y, biome.base_tile)
         end
     end
 end
