@@ -72,6 +72,10 @@ function screen2world(x, y)
     return x, y
 end
 
+function mouse_pos()
+    return screen2world(love.mouse.getPosition())
+end
+
 lg = love.graphics
 lm = love.math
 la = love.audio
