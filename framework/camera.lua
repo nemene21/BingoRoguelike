@@ -20,7 +20,7 @@ function Camera:follow(pos, speed)
 end
 
 function Camera:get_origin()
-    return self.pos + self.offset
+    return self.pos.x + self.offset.x, self.pos.y + self.offset.y
 end
 
 global_camera = Camera()

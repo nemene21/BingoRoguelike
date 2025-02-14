@@ -1,4 +1,3 @@
-
 function btoi(boolean)
     return boolean and 1 or 0
 end
@@ -61,6 +60,16 @@ function round_n(x, n)
     x = x * n
     if x >= 0 then x = math.floor(x + 0.5) else x = math.ceil(x - 0.5) end
     return x / n
+end
+
+function screen2world(x, y)
+    local w, h = lg.getDimensions()
+    local cx, cy = global_camera:get_origin()
+    x = x / w
+    y = y / h
+    x = x * RES.x + cx - RES.x * 0.5
+    y = y * RES.y + cy - RES.y * 0.5
+    return x, y
 end
 
 lg = love.graphics

@@ -25,12 +25,13 @@ function Player:_process(delta)
     )
     input:normalize()
     input:mul(delta * 300.0)
-
+    local mx, my = screen2world(love.mouse.getPosition())
+    print(mx, my)
     if is_pressed("break") then
-        local chunk = get_chunk_at_pos(self.Trans.pos:get())
+        local chunk = get_chunk_at_pos(mx, my)
         chunk.tilemap:damage_tile(
-            math.floor(self.Trans.pos.x / 8),
-            math.floor(self.Trans.pos.y / 8),
+            math.floor(mx / 8),
+            math.floor(my / 8),
             1
         )
     end
