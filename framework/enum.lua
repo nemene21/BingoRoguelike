@@ -1,14 +1,13 @@
 
 function enum(tbl)
-    local i = 1
-    for key, value in pairs(tbl) do
-        tbl[key] = nil
-        tbl[value] = i
-        i = i + 1
+    local enumerated = {}
+    for i, value in ipairs(tbl) do
+        enumerated[value] = i
+        print(i, value)
     end
     setmetatable(tbl, {
         __index = function(tbl, key) error("ERROR: Constant '"..tostring(key).."' not in enum") end,
         __newindex = function() error("ERROR: Enums are immutable") end
     })
-    return tbl
+    return enumerated
 end

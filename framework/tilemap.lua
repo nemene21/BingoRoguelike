@@ -1,7 +1,8 @@
 require "framework.ecs"
 require "framework.drawable"
 
-TileRenderer = class(Drawable)
+local TileRenderer = class(Drawable)
+local TileBreakRenderer = class(Drawable)
 Tilemap = class(Entity)
 function Tilemap:new(texture_path, tilesize, tileposx, tileposy, width)
     Entity.new(self)
@@ -18,7 +19,7 @@ function Tilemap:new(texture_path, tilesize, tileposx, tileposy, width)
     self.tilepos = Vec(tileposx or 0, tileposy or 0)
 
     self:add_drawable("renderer", TileRenderer(self))
-    self.renderer.layer = DrawLayers.BACKGROUND
+    self:add_drawable("break_renderer", TileBreakRenderer(self))
 
     self.drawing_quad = lg.newQuad(
         0, 0,
@@ -69,11 +70,13 @@ end
 function TileRenderer:new(tilemap)
     Drawable.new(self)
     self.tilemap = tilemap
+    self.layer = DrawLayers.TILES
 end
 
 function TileRenderer:update_footprint()
     self.footprint = 0
 end
+
 local BREAK_STAGES = 6
 function TileRenderer:_draw()
     local tilemap = self.tilemap
@@ -96,8 +99,26 @@ function TileRenderer:_draw()
             x * tilemap.tilesize, y * tilemap.tilesize
         )
     end
+    lg.translate(-tilemap.tilepos.x * tilemap.tilesize, -tilemap.tilepos.y * tilemap.tilesize)
+end
+
+function TileRenderer:update_footprint()
+    self.footprint = 1
+end
+
+function TileBreakRenderer:new(tilemap)
+    Drawable.new(self)
+    self.tilemap = tilemap
+    self.layer = DrawLayers.TILE_CRACKS
+end
+
+function TileBreakRenderer:_draw()
+    local tilemap = self.tilemap
+    lg.translate(tilemap.tilepos.x * tilemap.tilesize, tilemap.tilepos.y * tilemap.tilesize)
 
     local break_tex = tilemap.break_texture_res:get()
+    local x, y
+
     tilemap.drawing_quad:setViewport(0, 0, tilemap.tilesize, tilemap.tilesize, BREAK_STAGES * tilemap.tilesize, tilemap.tilesize)
     for pos, tile in pairs(tilemap.tiledata) do
         -- tile[3] -> tile hp (1:0)

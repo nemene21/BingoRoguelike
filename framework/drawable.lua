@@ -4,12 +4,14 @@ require "framework.enum"
 
 DrawLayers = enum({
     "BACKGROUND",
+    "TILES",
+    "TILE_CRACKS",
     "DEFAULT",
     "COUNT"
 })
 
 local draw_layers = {}
-for i = 1, DrawLayers.COUNT-1 do
+for i = 1, DrawLayers.COUNT do
     draw_layers[i] = {}
 end
 
