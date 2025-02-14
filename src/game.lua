@@ -7,7 +7,6 @@ require "src.chunk_loader"
 Game = class(Scene)
 function Game:new()
     Scene.new(self)
-    self:restart()
 end
 
 function Game:restart()

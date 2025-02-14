@@ -1,9 +1,9 @@
-require "framework.drawables"
+require "framework.drawable"
 
 ItemData = class()
 function ItemData:new(name, texture, maxstack)
     self.name = name or "NULL"
-    self.tex_res  = image_manager:get(texture or "assets/nil.png")
+    self.tex_res  = nil -- image_manager:get(texture or "assets/nil.png")
     self.maxstack = maxstack or 16
 end
 

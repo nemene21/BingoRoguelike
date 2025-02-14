@@ -7,9 +7,11 @@ DrawLayers = enum({
     "TILES",
     "TILE_CRACKS",
     "DEFAULT",
-    "COUNT"
+    "COUNT",
+    "UI"
 })
 
+local ui_draw_layer = {}
 local draw_layers = {}
 for i = 1, DrawLayers.COUNT do
     draw_layers[i] = {}
@@ -27,6 +29,15 @@ function draw_drawables()
             drawable:_draw()
             layer[j] = nil
         end
+    end
+    lg.setShader()
+end
+
+function draw_UI_drawables()
+    for j, drawable in ipairs(ui_draw_layer) do
+        lg.setShader(drawable.shader_res:get())
+        drawable:_draw()
+        ui_draw_layer[j] = nil
     end
     lg.setShader()
 end
@@ -61,9 +72,13 @@ end
 
 function Drawable:_push_to_layer()
     assert(self.layer ~= nil, "Drawable has no layer, did you forget Drawable.new(self)?")
-    assert(self.layer <= #draw_layers, "Draw layer "..tostring(self.layer).." doesn't exist!")
+    assert(self.layer <= #draw_layers+1, "Draw layer "..tostring(self.layer).." doesn't exist!")
     if not self.visible then return end
 
+    if self.layer == DrawLayers.UI then
+        table.insert(ui_draw_layer, self)
+        return
+    end
     table.insert(draw_layers[self.layer], self)
 end
 

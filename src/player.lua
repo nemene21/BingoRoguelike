@@ -5,6 +5,7 @@ require "framework.transform"
 require "framework.drawable"
 require "framework.input"
 require "src.chunk_loader"
+require "src.inventory"
 
 Player = class(Entity)
 function Player:new(x, y)
@@ -15,6 +16,8 @@ function Player:new(x, y)
 
     self.Cam.camera:activate()
     self:add_drawable("sprite", Sprite("assets/test.png"))
+
+    current_scene:add_entity(Slot(100, 100))
 end
 
 local input = Vec()

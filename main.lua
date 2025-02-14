@@ -26,6 +26,7 @@ function love.load()
 
     game = Game()
     set_current_scene(game)
+    game:restart()
 end
 
 function love.update(delta)
@@ -46,7 +47,9 @@ function love.draw()
 
     current_scene:draw_entities(lt.getDelta())
     draw_drawables()
+    lg.origin()
 
+    draw_UI_drawables()
     lg.reset()
 
     local screenpos = Vec(
