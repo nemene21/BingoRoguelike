@@ -31,7 +31,7 @@ function Player:_process(delta)
         chunk.tilemap:damage_tile(
             math.floor(self.Trans.pos.x / 8),
             math.floor(self.Trans.pos.y / 8),
-            delta * 4
+            1
         )
     end
 
