@@ -3,7 +3,6 @@ function enum(tbl)
     local enumerated = {}
     for i, value in ipairs(tbl) do
         enumerated[value] = i
-        print(i, value)
     end
     setmetatable(tbl, {
         __index = function(tbl, key) error("ERROR: Constant '"..tostring(key).."' not in enum") end,
