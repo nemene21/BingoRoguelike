@@ -17,7 +17,16 @@ function Player:new(x, y)
     self.Cam.camera:activate()
     self:add_drawable("sprite", Sprite("assets/test.png"))
 
-    current_scene:add_entity(Slot(8, 8))
+    self.inventory = {}
+    self:_init_inventory()
+end
+
+function Player:_init_inventory()
+    local slot
+    for i = 0, 4 do
+        slot = Slot(2 + i * 14, 2)
+        current_scene:add_entity(slot)
+    end
 end
 
 local input = Vec()
