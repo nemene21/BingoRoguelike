@@ -12,7 +12,7 @@ function item_compare(a, b)
 end
 
 function ItemData:copy()
-    local cpy = ItemData:new(self.name, self.tex_id, self.maxstack)
+    local cpy = ItemData(self.name, self.tex_id, self.maxstack)
     return cpy
 end
 

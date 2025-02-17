@@ -28,7 +28,7 @@ function Player:_init_inventory()
         current_scene:add_entity(slot)
         table.insert(self.inventory, slot)
 
-        slot.stack = ItemStack(get_item("stone"), 3)
+        slot:set_stack(ItemStack(get_item("stone"), 3))
     end
 end
 

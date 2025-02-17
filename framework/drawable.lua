@@ -156,6 +156,6 @@ function Spritesheet:update_footprint()
 end
 
 function Spritesheet:_draw()
-    self.quad:setViewport(self.framepos.x * self.width, self.framepos.y * self.width, self.height, self.width)
+    self.quad:setViewport(self.framepos.x * 8, self.framepos.y * 8, 8, 8)
     lg.draw(self.img_res:get(), self.quad, 0, 0)
 end

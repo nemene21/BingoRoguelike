@@ -10,13 +10,20 @@ function Slot:new(x, y)
     self.stack = nil
     self:add(TransComp(x, y))
 
+    self:add_drawable("item_sprite", Spritesheet("assets/itemsheet.png", 8, 8))
+    self.item_sprite.pos:setv(self.Trans.pos)
+    self.item_sprite.layer = DrawLayers.UI
+    self.item_sprite.framepos.x = ItemTextures.NULL
+    self.item_sprite.pos:add(0, -2)
+
     self:add_drawable("sprite", Sprite("assets/itemslot.png"))
     self.sprite.layer = DrawLayers.UI
     self.sprite.pos:setv(self.Trans.pos)
+end
 
-    self:add_drawable("item_sprite", Spritesheet("assets/itemsheet.png", 8 * ItemTextures.COUNT, 8))
-    self.item_sprite.pos:setv(self.Trans.pos)
-    self.item_sprite.framepos.x = ItemTextures.NULL
+function Slot:set_stack(stack)
+    self.stack = stack
+    self.item_sprite.framepos.x = stack.data.tex_id
 end
 
 function Slot:_process(delta)
