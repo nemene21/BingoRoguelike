@@ -85,6 +85,10 @@ function quad_has_point(qx, qy, w, h, x, y)
     return x > qx and x < qx + w and y > qy and y < qy + h
 end
 
+function centered_quad_has_point(qx, qy, w, h, x, y)
+    return x > qx - w * 0.5 and x < qx + w * 0.5 and y > qy - h * 0.5 and y < qy + h * 0.5
+end
+
 lg = love.graphics
 lm = love.math
 la = love.audio

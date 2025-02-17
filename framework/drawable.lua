@@ -21,24 +21,34 @@ local function drawable_comparator(a, b)
     return a.footprint > b.footprint
 end
 
+local function draw_layer(layer)
+    table.sort(layer, drawable_comparator)
+    
+    for j, drawable in ipairs(layer) do
+        lg.push()
+        lg.setShader(drawable.shader_res:get())
+        
+        lg.translate(drawable.pos:get())
+        
+        lg.scale(drawable.scale:get())
+        lg.translate(drawable.offset:get())
+        lg.rotate(drawable.angle)
+
+        drawable:_draw()
+        layer[j] = nil
+        lg.pop()
+    end
+end
+
 function draw_drawables()
     for i, layer in ipairs(draw_layers) do
-        table.sort(layer, drawable_comparator)
-        for j, drawable in ipairs(layer) do
-            lg.setShader(drawable.shader_res:get())
-            drawable:_draw()
-            layer[j] = nil
-        end
+        draw_layer(layer)
     end
     lg.setShader()
 end
 
 function draw_UI_drawables()
-    for j, drawable in ipairs(ui_draw_layer) do
-        lg.setShader(drawable.shader_res:get())
-        drawable:_draw()
-        ui_draw_layer[j] = nil
-    end
+    draw_layer(ui_draw_layer)
     lg.setShader()
 end
 
@@ -51,6 +61,11 @@ function Drawable:new()
     self.visible = true
     self.layer = DrawLayers.DEFAULT
     self.footprint = 0
+
+    self.pos = Vec()
+    self.scale = Vec(1, 1)
+    self.angle = 0
+    self.offset = Vec()
 end
 
 function Drawable:show()
@@ -85,10 +100,17 @@ end
 function Drawable:_draw() end
 
 Sprite = class(Drawable)
-function Sprite:new(path)
+function Sprite:new(path, centered)
     Drawable.new(self)
     self:set_texture(path)
-    self.pos = Vec()
+
+    if centered or true then
+        local img = self.img_res:get()
+        self.offset:set(
+            -img:getWidth() * 0.5,
+            -img:getHeight() * 0.5
+        )
+    end
 end
 
 function Sprite:update_footprint()
@@ -101,5 +123,39 @@ function Sprite:set_texture(path)
 end
 
 function Sprite:_draw()
-    lg.draw(self.img_res:get(), self.pos.x, self.pos.y)
+    lg.draw(self.img_res:get(), 0, 0)
+end
+
+Spritesheet = class(Drawable)
+function Spritesheet:new(path, width, height, centered)
+    Drawable.new(self)
+    self:set_texture(path)
+
+    self.framepos = Vec()
+
+    self.width  = width
+    self.height = height or width
+    local img = self.img_res:get()
+    self.quad = lg.newQuad(0, 0, width, height, img:getWidth(), img:getHeight())
+
+    if centered or true then
+        self.offset:set(
+            -self.width  * 0.5,
+            -self.height * 0.5
+        )
+    end
+end
+
+function Spritesheet:set_texture(path)
+    self.img_res = image_manager:get(path)
+    self:update_footprint()
+end
+
+function Spritesheet:update_footprint()
+    self.footprint = self.shader_res.id + 1000 * self.img_res.id
+end
+
+function Spritesheet:_draw()
+    self.quad:setViewport(self.framepos.x * self.width, self.framepos.y * self.width, self.height, self.width)
+    lg.draw(self.img_res:get(), self.quad, 0, 0)
 end

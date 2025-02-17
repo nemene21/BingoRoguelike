@@ -24,9 +24,9 @@ end
 function Player:_init_inventory()
     local slot
     for i = 0, 4 do
-        slot = Slot(2 + i * 14, 2)
+        slot = Slot(9 + i * 15, 9)
         current_scene:add_entity(slot)
-        table.insert(self.inventory)
+        table.insert(self.inventory, slot)
 
         slot.stack = ItemStack(get_item("stone"), 3)
     end

@@ -16,7 +16,7 @@ function ItemData:copy()
     return cpy
 end
 
-local ItemTextures = enum({
+ItemTextures = enum0({
     "NULL",
     "STONE",
     "WOOD",
@@ -24,7 +24,8 @@ local ItemTextures = enum({
     "STONE_SWORD",
     "DYNAMITE",
     "GLOWSTICK",
-    "HEALTH_POTION"
+    "HEALTH_POTION",
+    "COUNT"
 })
 
 local ITEM_REGISTRY = {
