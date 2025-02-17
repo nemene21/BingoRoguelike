@@ -63,17 +63,26 @@ function round_n(x, n)
 end
 
 function screen2world(x, y)
-    local w, h = lg.getDimensions()
     local cx, cy = global_camera:get_origin()
-    x = x / w
-    y = y / h
-    x = x * RES.x + cx - RES.x * 0.5
-    y = y * RES.y + cy - RES.y * 0.5
+    x = x + cx - RES.x * 0.5
+    y = y + cy - RES.y * 0.5
     return x, y
 end
 
+function global_mouse_pos()
+    return screen2world(mouse_pos())
+end
+
 function mouse_pos()
-    return screen2world(love.mouse.getPosition())
+    local x, y = love.mouse.getPosition()
+    local w, h = lg.getDimensions()
+    x = (x / w) * RES.x
+    y = (y / h) * RES.y
+    return x, y
+end
+
+function quad_has_point(qx, qy, w, h, x, y)
+    return x > qx and x < qx + w and y > qy and y < qy + h
 end
 
 lg = love.graphics

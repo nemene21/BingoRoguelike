@@ -17,7 +17,7 @@ function Player:new(x, y)
     self.Cam.camera:activate()
     self:add_drawable("sprite", Sprite("assets/test.png"))
 
-    current_scene:add_entity(Slot(100, 100))
+    current_scene:add_entity(Slot(8, 8))
 end
 
 local input = Vec()
@@ -28,7 +28,7 @@ function Player:_process(delta)
     )
     input:normalize()
     input:mul(delta * 300.0)
-    local mx, my = mouse_pos()
+    local mx, my = global_mouse_pos()
 
     if is_pressed("break") then
         local chunk = get_chunk_at_pos(mx, my)

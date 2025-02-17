@@ -30,10 +30,10 @@ end
 
 local actions = {
     ["break"] = {Input(1, "mouse")},
-    left = {Input("a"), Input("left")},
+    left  = {Input("a"), Input("left")},
     right = {Input("d"), Input("right")},
-    down = {Input("s"), Input("down")},
-    up = {Input("w"), Input("up")}
+    down  = {Input("s"), Input("down")},
+    up    = {Input("w"), Input("up")}
 }
 
 function check_keyboard_input(key)
