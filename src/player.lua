@@ -22,6 +22,10 @@ function Player:new(x, y)
 end
 
 function Player:_init_inventory()
+    self.mouse_slot = MouseSlot()
+    self.mouse_slot:set_stack(ItemStack(get_item("stone_pickaxe")))
+    current_scene:add_entity(self.mouse_slot)
+    
     local slot
     for i = 0, 4 do
         slot = Slot(9 + i * 15, 9)
@@ -29,6 +33,7 @@ function Player:_init_inventory()
         table.insert(self.inventory, slot)
 
         slot:set_stack(ItemStack(get_item("stone"), 3))
+        slot:set_mouse_slot(self.mouse_slot)
     end
 end
 

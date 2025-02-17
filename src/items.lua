@@ -29,7 +29,8 @@ ItemTextures = enum0({
 })
 
 local ITEM_REGISTRY = {
-    stone = ItemData("Stone", ItemTextures.STONE)
+    stone = ItemData("Stone", ItemTextures.STONE),
+    stone_pickaxe = ItemData("Stone pickaxe", ItemTextures.STONE_PICKAXE, 1),
 }
 
 function get_item(name)

@@ -14,11 +14,15 @@ function Slot:new(x, y)
     self.item_sprite.pos:setv(self.Trans.pos)
     self.item_sprite.layer = DrawLayers.UI
     self.item_sprite.framepos.x = ItemTextures.NULL
-    self.item_sprite.pos:add(0, -2)
+    self.item_sprite.pos:add(0, -1)
 
     self:add_drawable("sprite", Sprite("assets/itemslot.png"))
     self.sprite.layer = DrawLayers.UI
     self.sprite.pos:setv(self.Trans.pos)
+end
+
+function Slot:set_mouse_slot(slot)
+    self.mouse_slot = slot
 end
 
 function Slot:set_stack(stack)
@@ -33,5 +37,25 @@ function Slot:_process(delta)
     self.sprite.scale:set(1)
     if centered_quad_has_point(pos.x, pos.y, SLOTSIZE, SLOTSIZE, mx, my) then
         self.sprite.scale:set(1.2)
+        if is_just_pressed("click") then
+            self:_clicked()
+        end
     end
+end
+
+function Slot:_clicked()
+    local mouse_stack = self.mouse_slot.stack
+    self.mouse_slot:set_stack(self.stack)
+    self:set_stack(mouse_stack)
+end
+
+MouseSlot = class(Slot)
+function MouseSlot:new()
+    Slot.new(self, 0, 0)
+    self.sprite:hide()
+end
+
+function MouseSlot:_process(delta)
+    self.Trans.pos:set(mouse_pos())
+    self.item_sprite.pos:setv(self.Trans.pos)
 end
