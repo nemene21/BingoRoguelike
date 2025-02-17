@@ -58,12 +58,9 @@ function love.draw()
     )
     local cam_pos = global_camera.pos
     lg.scale(lg.getWidth() / RES.x, lg.getHeight() / RES.y)
-    lg.translate(-deci_to_rounded(cam_pos.x), -deci_to_rounded(cam_pos.y))
     lg.draw(screen)
 
-    lg.translate(deci_to_rounded(cam_pos.x), deci_to_rounded(cam_pos.y))
     lg.setColor(0, 0, 0, 1)
-    lg.rectangle("line", 0, 0, RES.x, RES.y)
     lg.reset()
 
     draw_time = love.timer.getTime() - draw_time
