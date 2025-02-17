@@ -1,9 +1,9 @@
 require "framework.drawable"
 
 ItemData = class()
-function ItemData:new(name, texture, maxstack)
+function ItemData:new(name, tex_id, maxstack)
     self.name = name or "NULL"
-    self.tex_res  = nil -- image_manager:get(texture or "assets/nil.png")
+    self.tex_id = tex_id or ItemTextures.NULL
     self.maxstack = maxstack or 16
 end
 
@@ -12,12 +12,28 @@ function item_compare(a, b)
 end
 
 function ItemData:copy()
-    return ItemData:new(self.name, self.texture, self.maxstack)
+    local cpy = ItemData:new(self.name, self.tex_id, self.maxstack)
+    return cpy
 end
 
+local ItemTextures = enum({
+    "NULL",
+    "STONE",
+    "WOOD",
+    "STONE_PICKAXE",
+    "STONE_SWORD",
+    "DYNAMITE",
+    "GLOWSTICK",
+    "HEALTH_POTION"
+})
+
 local ITEM_REGISTRY = {
-    stone_block = ItemData("Stone")
+    stone = ItemData("Stone", ItemTextures.STONE)
 }
+
+function get_item(name)
+    return ITEM_REGISTRY[name]:copy()
+end
 
 ItemStack = class()
 function ItemStack:new(data, amount)

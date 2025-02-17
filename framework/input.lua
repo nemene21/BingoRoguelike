@@ -30,6 +30,7 @@ end
 
 local actions = {
     ["break"] = {Input(1, "mouse")},
+    click = {Input(1, "mouse")},
     left  = {Input("a"), Input("left")},
     right = {Input("d"), Input("right")},
     down  = {Input("s"), Input("down")},
@@ -68,7 +69,7 @@ function is_just_pressed(action)
                 return true
             end
         end
-    end        
+    end
     return false
 end
 
