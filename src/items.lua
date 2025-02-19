@@ -40,7 +40,7 @@ end
 ItemStack = class()
 function ItemStack:new(data, amount)
     self.data = data
-    self.amount = amount or 0
+    self.amount = amount or 1
 end
 
 function ItemStack:split()
@@ -51,6 +51,7 @@ end
 
 function ItemStack:take_from(stack)
     self:add(stack.data, 1)
+    stack.amount = stack.amount - 1
 end
 
 function ItemStack:take_all_from(stack)

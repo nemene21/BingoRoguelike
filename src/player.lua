@@ -25,6 +25,7 @@ function Player:_init_inventory()
     self.mouse_slot = MouseSlot()
     self.mouse_slot:set_stack(ItemStack(get_item("stone_pickaxe")))
     current_scene:add_entity(self.mouse_slot)
+    print(self.mouse_slot.amount)
     
     local slot
     for i = 0, 4 do

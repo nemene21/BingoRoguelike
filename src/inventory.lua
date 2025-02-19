@@ -25,9 +25,21 @@ function Slot:set_mouse_slot(slot)
     self.mouse_slot = slot
 end
 
+function Slot:clear()
+    self.stack = nil
+    self.item_sprite:hide()
+end
+
+function Slot:update_data()
+    if self.stack == nil then self:clear() return nil end
+    if self.stack.amount == 0 then self:clear() return nil end
+    self.item_sprite.framepos.x = self.stack.data.tex_id
+    self.item_sprite:show()
+end
+
 function Slot:set_stack(stack)
     self.stack = stack
-    self.item_sprite.framepos.x = stack.data.tex_id
+    self:update_data()
 end
 
 function Slot:_process(delta)
@@ -45,8 +57,18 @@ end
 
 function Slot:_clicked()
     local mouse_stack = self.mouse_slot.stack
-    self.mouse_slot:set_stack(self.stack)
-    self:set_stack(mouse_stack)
+    if mouse_stack == nil or self.stack == nil then
+        self.mouse_slot:set_stack(self.stack)
+        self:set_stack(mouse_stack)
+
+    elseif item_compare(mouse_stack.data, self.stack.data) then
+        self.stack:take_all_from(mouse_stack)
+        self.mouse_slot:update_data()
+        print(self.mouse_slot.amount)
+    else
+        self.mouse_slot:set_stack(self.stack)
+        self:set_stack(mouse_stack)
+    end
 end
 
 MouseSlot = class(Slot)
