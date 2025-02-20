@@ -31,6 +31,7 @@ end
 local actions = {
     ["break"] = {Input(1, "mouse")},
     click = {Input(1, "mouse")},
+    secondary_click = {Input(2, "mouse")},
     left  = {Input("a"), Input("left")},
     right = {Input("d"), Input("right")},
     down  = {Input("s"), Input("down")},

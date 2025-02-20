@@ -61,6 +61,8 @@ function Slot:_process(delta)
         self.sprite.scale:set(1.2)
         if is_just_pressed("click") then
             self:_clicked()
+        elseif is_just_pressed("secondary_click") then
+            self:_secondary_clicked()
         end
     end
 end
@@ -77,6 +79,15 @@ function Slot:_clicked()
     else
         self.mouse_slot:set_stack(self.stack)
         self:set_stack(mouse_stack)
+    end
+    self:update_data()
+end
+
+function Slot:_secondary_clicked()
+    local mouse_stack = self.mouse_slot.stack
+    if mouse_stack and self.stack then
+        self.stack:take_from(mouse_stack)
+        self.mouse_slot:update_data()
     end
     self:update_data()
 end
