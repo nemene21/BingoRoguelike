@@ -88,6 +88,14 @@ function Slot:_secondary_clicked()
     if mouse_stack and self.stack then
         self.stack:take_from(mouse_stack)
         self.mouse_slot:update_data()
+
+    elseif mouse_stack and not self.stack then
+        self:set_stack(ItemStack(mouse_stack.data:copy()), 1)
+        mouse_stack.amount = mouse_stack.amount - 1
+        self.mouse_slot:update_data()
+    
+    elseif not mouse_stack and self.stack then
+        self.mouse_slot:set_stack(self.stack:split())
     end
     self:update_data()
 end

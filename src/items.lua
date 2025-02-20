@@ -44,18 +44,24 @@ function ItemStack:new(data, amount)
 end
 
 function ItemStack:split()
-    self.amount = math.floor(self.amount / 2)
     local new_stack = ItemStack(self.data:copy(), math.ceil(self.amount / 2))
+    self.amount = math.floor(self.amount / 2)
     return new_stack
 end
 
 function ItemStack:take_from(stack)
-    self:add(stack.data, 1)
-    stack.amount = stack.amount - 1
+    if stack.amount == 0 then return false end
+
+    if self:add(stack.data, 1) then
+        stack.amount = stack.amount - 1
+        return true
+    end
 end
 
 function ItemStack:take_all_from(stack)
-    while self:take_from(stack) do end
+    while true do
+        if not self:take_from(stack) then return nil end
+    end
 end
 
 function ItemStack:add(adding)
