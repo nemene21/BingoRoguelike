@@ -31,6 +31,7 @@ end
 
 function Slot:clear()
     self.stack = nil
+    self.amount_label:hide()
     self.item_sprite:hide()
 end
 
@@ -39,9 +40,10 @@ function Slot:update_data()
     if self.stack.amount == 0 then self:clear() return nil end
     self.item_sprite.framepos.x = self.stack.data.tex_id
     self.item_sprite:show()
+    self.amount_label:show()
 
     self.amount_label.text = tostring(self.stack.amount)
-    self.amount_label.pos:setv(self.sprite.pos)
+    self.amount_label.pos:setv(self.Trans.pos)
     self.amount_label.pos:add(2)
 end
 
@@ -76,6 +78,7 @@ function Slot:_clicked()
         self.mouse_slot:set_stack(self.stack)
         self:set_stack(mouse_stack)
     end
+    self:update_data()
 end
 
 MouseSlot = class(Slot)
@@ -88,6 +91,6 @@ end
 function MouseSlot:_process(delta)
     self.Trans.pos:set(mouse_pos())
     self.item_sprite.pos:setv(self.Trans.pos)
-    self.amount_label.pos:setv(self.item_sprite.pos)
+    self.amount_label.pos:setv(self.Trans.pos)
     self.amount_label.pos:add(2)
 end

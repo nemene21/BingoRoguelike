@@ -15,6 +15,17 @@ function Label:new(text, x, y, font)
     self.pos:set(x or 0, y or 0)
 end
 
+function draw_text_outline(text, font, x, y, color, outline_color)
+    if outline_color then lg.setColor(unpack(outline_color)) else lg.setColor(0, 0, 0, 1) end
+    lg.print(text, font, x - 1, y)
+    lg.print(text, font, x + 1, y)
+    lg.print(text, font, x, y + 1)
+    lg.print(text, font, x, y - 1)
+
+    if color then lg.setColor(unpack(color)) else lg.setColor(1, 1, 1, 1) end
+    lg.print(text, font, x, y)
+end
+
 function Label:_draw()
-    lg.print(self.text, self.font_res:get(), 0, 0)
+    draw_text_outline(self.text, self.font_res:get(), 0, 0, {1, 1, 1, 1})
 end
