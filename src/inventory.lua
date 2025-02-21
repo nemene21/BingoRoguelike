@@ -4,6 +4,8 @@ require "framework.label"
 
 local SLOTSIZE = 12
 
+local SLOT_NUM_OFFSET = Vec(7, 2)
+
 local SlotRenderer = class(Drawable)
 Slot = class(Entity)
 function Slot:new(x, y)
@@ -11,7 +13,7 @@ function Slot:new(x, y)
     self.stack = nil
     self:add(TransComp(x, y))
     
-    self:add_drawable("amount_label", Label())
+    self:add_drawable("amount_label", Label(nil, 0, 0, Vec(-1, 0)))
     self.amount_label.scale:set(0.5)
 
     self:add_drawable("item_sprite", Spritesheet("assets/itemsheet.png", 8, 8))
@@ -42,9 +44,9 @@ function Slot:update_data()
     self.item_sprite:show()
     self.amount_label:show()
 
-    self.amount_label.text = tostring(self.stack.amount)
+    self.amount_label:set_text(tostring(self.stack.amount))
     self.amount_label.pos:setv(self.Trans.pos)
-    self.amount_label.pos:add(2)
+    self.amount_label.pos:addv(SLOT_NUM_OFFSET)
 end
 
 function Slot:set_stack(stack)
@@ -110,6 +112,6 @@ end
 function MouseSlot:_process(delta)
     self.Trans.pos:set(mouse_pos())
     self.item_sprite.pos:setv(self.Trans.pos)
-    self.amount_label.pos:setv(self.Trans.pos)
+    self.amount_label.pos:setv(self.Trans.pos + SLOT_NUM_OFFSET)
     self.amount_label.pos:add(2)
 end

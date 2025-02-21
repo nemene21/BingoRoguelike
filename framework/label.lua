@@ -6,13 +6,26 @@ end)
 DEFAULT_FONT = "assets/nokia.ttf"
 
 Label = class(Drawable)
-function Label:new(text, x, y, font)
+function Label:new(text, x, y, centering, font)
     Drawable.new(self)
     self.layer = DrawLayers.UI
-    self.text = text or ""
     self.font_res = font_manager:get(font or DEFAULT_FONT)
+    self.centering = centering or Vec()
+    self:set_text(text or "")
 
     self.pos:set(x or 0, y or 0)
+end
+
+function Label:set_text(text)
+    self.text = text
+    self:update_offset()
+end
+
+function Label:update_offset()
+    self.offset:set(
+        self.centering.x * self.font_res:get():getWidth (self.text),
+        self.centering.y * self.font_res:get():getHeight(self.text)
+    )
 end
 
 function draw_text_outline(text, font, x, y, color, outline_color)
