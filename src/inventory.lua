@@ -47,6 +47,8 @@ function Slot:update_data()
     self.amount_label:set_text(tostring(self.stack.amount))
     self.amount_label.pos:setv(self.Trans.pos)
     self.amount_label.pos:addv(SLOT_NUM_OFFSET)
+
+    if self.stack.amount == 1 then self.amount_label:hide() end
 end
 
 function Slot:set_stack(stack)
