@@ -51,6 +51,14 @@ function Tilemap:set_tilev(pos, type, variation, hp)
     self:set_tile(pos.x, pos.y, type, variation, hp)
 end
 
+function Tilemap:get_tile(x, y)
+    return self.tiledata[x + y*self.tilewidth]
+end
+
+function Tilemap:get_tilev(vec)
+    return self:get_tile(vec.x, vec.y)
+end
+
 function Tilemap:damage_tile(x, y, damage)
     x = x - self.tilepos.x
     y = y - self.tilepos.y
