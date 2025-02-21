@@ -26,6 +26,7 @@ local function draw_layer(layer)
     
     for j, drawable in ipairs(layer) do
         lg.push()
+        lg.setColor(unpack(drawable.color))
         lg.setShader(drawable.shader_res:get())
         
         lg.translate(drawable.pos:get())
@@ -61,6 +62,7 @@ function Drawable:new()
     self.visible = true
     self.layer = DrawLayers.DEFAULT
     self.footprint = 0
+    self.color = {1, 1, 1, 1}
 
     self.pos = Vec()
     self.scale = Vec(1, 1)

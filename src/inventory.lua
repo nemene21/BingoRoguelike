@@ -112,6 +112,6 @@ end
 function MouseSlot:_process(delta)
     self.Trans.pos:set(mouse_pos())
     self.item_sprite.pos:setv(self.Trans.pos)
-    self.amount_label.pos:setv(self.Trans.pos + SLOT_NUM_OFFSET)
-    self.amount_label.pos:add(2)
+    self.amount_label.pos:setv(self.Trans.pos)
+    self.amount_label.pos:addv(SLOT_NUM_OFFSET)
 end

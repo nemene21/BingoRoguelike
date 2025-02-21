@@ -40,5 +40,5 @@ function draw_text_outline(text, font, x, y, color, outline_color)
 end
 
 function Label:_draw()
-    draw_text_outline(self.text, self.font_res:get(), 0, 0, {1, 1, 1, 1})
+    draw_text_outline(self.text, self.font_res:get(), 0, 0, self.color)
 end
