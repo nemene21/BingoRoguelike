@@ -12,6 +12,9 @@ local BIOME_DATA = {
         base_tile = Tilenames.PLANK
     }
 }
+local cave_noise = fnl.createState()
+cave_noise:setNoiseType("perlin")
+cave_noise:setFrequency(0.075)
 
 local biome_noise = fnl.createState()
 biome_noise:setNoiseType("cellular")
@@ -93,7 +96,7 @@ function Chunk:add_entity(entity)
     table.insert(self.entities, entity)
 end
 
-local seed = 0 -- lm.random()*1000
+local seed = lm.random()*1000
 function Chunk:generate()
     local tilepos = Vec(self.x * CHUNKSIZE, self.y * CHUNKSIZE)
     local tilemap = Tilemap(
@@ -107,14 +110,18 @@ function Chunk:generate()
     self:add_entity(tilemap)
     self.tilemap = tilemap
 
-    local noise_val, biome_index, biome
+    local noise_val, biome_noise_val, biome_index, biome
     for x = tilepos.x, tilepos.x + CHUNKSIZE - 1 do
         for y = tilepos.y, tilepos.y + CHUNKSIZE - 1 do
-            noise_val = (biome_noise:getNoise2D(x+seed, y+seed) + 1) * 0.5
-            biome_index = math.ceil(#BIOME_DATA * noise_val)
+            noise_val = (cave_noise:getNoise2D(x+seed, y+seed) + 1) * 0.5
+            if noise_val > 0.5 or math.abs(x) < 5 then goto continue end
+
+            biome_noise_val = (biome_noise:getNoise2D(x+seed, y+seed) + 1) * 0.5
+            biome_index = math.ceil(#BIOME_DATA * biome_noise_val)
             biome = BIOME_DATA[biome_index]
 
             self.tilemap:set_tile(x, y, biome.base_tile)
+            ::continue::
         end
     end
 end
