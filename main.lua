@@ -49,7 +49,6 @@ function love.draw()
     draw_drawables()
     lg.origin()
 
-    draw_UI_drawables()
     lg.reset()
 
     local screenpos = Vec(
@@ -60,8 +59,10 @@ function love.draw()
     lg.scale(lg.getWidth() / RES.x, lg.getHeight() / RES.y)
     lg.draw(screen)
 
+    draw_UI_drawables()
     lg.setColor(0, 0, 0, 1)
     lg.reset()
+
 
     draw_time = love.timer.getTime() - draw_time
     render_debug()

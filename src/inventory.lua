@@ -12,6 +12,7 @@ function Slot:new(x, y)
     self:add(TransComp(x, y))
     
     self:add_drawable("amount_label", Label())
+    self.amount_label.scale:set(0.5)
 
     self:add_drawable("item_sprite", Spritesheet("assets/itemsheet.png", 8, 8))
     self.item_sprite.pos:setv(self.Trans.pos)
@@ -22,7 +23,6 @@ function Slot:new(x, y)
     self:add_drawable("sprite", Sprite("assets/itemslot.png"))
     self.sprite.layer = DrawLayers.UI
     self.sprite.pos:setv(self.Trans.pos)
-
 end
 
 function Slot:set_mouse_slot(slot)
