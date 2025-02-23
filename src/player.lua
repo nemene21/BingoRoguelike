@@ -64,4 +64,5 @@ function Player:_process(delta)
         )
     end
     self.sprite.pos:setv(self.Trans.pos)
+    self.sprite.flipx = self.Trans.vel.x < 0
 end

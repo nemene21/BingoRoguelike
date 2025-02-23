@@ -2,6 +2,10 @@ function btoi(boolean)
     return boolean and 1 or 0
 end
 
+function btoi2(boolean)
+    return boolean and 1 or -1
+end
+
 function lerp(a, b, c)
     return a + (b - a) * c
 end
