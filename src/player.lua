@@ -10,7 +10,7 @@ require "src.inventory"
 Player = class(Entity)
 function Player:new(x, y)
     Entity.new(self)
-    self:add(TransComp(x, y))
+    self:add(TransComp(x, y, true))
     self:add(CamComp())
     self:add(ChunkLoaderComp())
 

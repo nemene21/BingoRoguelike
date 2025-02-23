@@ -52,6 +52,8 @@ function Tilemap:set_tilev(pos, type, variation, hp)
 end
 
 function Tilemap:get_tile(x, y)
+    x = x - self.tilepos.x
+    y = y - self.tilepos.y
     return self.tiledata[x + y*self.tilewidth]
 end
 
