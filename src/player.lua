@@ -37,14 +37,14 @@ function Player:_init_inventory()
     end
 end
 
-local input = Vec()
+local GRAVITY = 800
 function Player:_process(delta)
-    input:set(
-        btoi(is_pressed("right")) - btoi(is_pressed("left")),
-        btoi(is_pressed("down")) - btoi(is_pressed("up"))
-    )
-    input:normalize()
-    input:mul(delta * 300.0)
+    local xinput =  btoi(is_pressed("right")) - btoi(is_pressed("left"))
+    xinput = xinput * 256
+    self.Trans.vel.x = dlerp(self.Trans.vel.x, xinput, 30 * delta)
+
+    self.Trans.vel:add(0, delta * GRAVITY)
+
     local mx, my = global_mouse_pos()
 
     if is_pressed("break") then
@@ -55,7 +55,5 @@ function Player:_process(delta)
             1
         )
     end
-
-    self.Trans:move(input)
     self.sprite.pos:setv(self.Trans.pos)
 end

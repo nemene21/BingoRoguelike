@@ -9,11 +9,17 @@ function TransComp:new(x, y, collides, scalex, scaley, ang)
     self.scale = Vec(scalex or 1, scaley or 1)
     self.angle = ang
     self.vel = Vec()
+    self.kb = Vec()
+    self.movement = Vec()
     self.collides = collides or false
+    self.touching = Vec()
 end
 
-function TransComp:_process()
-    self:move(self.vel)
+function TransComp:_process(delta)
+    self.movement:setv(self.vel)
+    self.movement:addv(self.kb)
+    self.movement:mul(delta)
+    self:move(self.movement)
 end
 
 local collision_point = Vec()
@@ -42,18 +48,42 @@ function TransComp:do_collision(movx, movy)
     local collides_at = self:get_collision(movx, movy)
     
     if collides_at then
-        if movx ~= 0 then self.pos.x = collides_at.x end
-        if movy ~= 0 then self.pos.y = collides_at.y end
+        if movx ~= 0 then
+            self.pos.x = collides_at.x
+            self.touching.x = movx
+        end
+        if movy ~= 0 then
+            self.pos.y = collides_at.y
+            self.touching.y = movy
+        end
     end
 end
 
+function TransComp:on_floor()
+    return self.touching.y > 0
+end
+
+function TransComp:on_ceil()
+    return self.touching.y < 0
+end
+
+function TransComp:on_left_wall()
+    return self.touching.x < 0
+end
+
+function TransComp:on_right_wall()
+    return self.touching.x > 0
+end
+
+function TransComp:on_wall()
+    return self.touching.x ~= 0
+end
+
 function TransComp:move(vec)
+    self.touching:set(0)
+
     self.pos.x = self.pos.x + vec.x
     self:do_collision(vec.x, 0)
     self.pos.y = self.pos.y + vec.y
     self:do_collision(0, vec.y)
-end
-
-function TransComp:_draw_debug()
-    
 end
