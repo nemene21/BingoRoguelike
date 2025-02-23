@@ -40,10 +40,18 @@ end
 local GRAVITY = 800
 function Player:_process(delta)
     local xinput =  btoi(is_pressed("right")) - btoi(is_pressed("left"))
-    xinput = xinput * 256
+    xinput = xinput * 128
     self.Trans.vel.x = dlerp(self.Trans.vel.x, xinput, 30 * delta)
 
     self.Trans.vel:add(0, delta * GRAVITY)
+    if self.Trans:on_floor() then self.Trans.vel.y = 1 end
+    if self.Trans:on_ceil() then self.Trans.vel:mul(1, -0.2) end
+
+    if is_just_pressed("jump") then
+        self.Trans.vel.y = -256
+    end
+
+    if self.Trans.vel.y > 256 then self.Trans.vel.y = 256 end
 
     local mx, my = global_mouse_pos()
 

@@ -35,9 +35,10 @@ function TransComp:get_collision(movx, movy)
     if tilemap:get_tile(tilex, tiley) then
         collision_point:set(tilex, tiley)
         collision_point:mul(tilemap.tilesize)
-        collision_point:sub(1)
-        if movx < 0 then collision_point.x = collision_point.x + tilemap.tilesize + 2 end
-        if movy < 0 then collision_point.y = collision_point.y + tilemap.tilesize + 2 end
+        collision_point:sub(0.1)
+
+        if movx < 0 then collision_point.x = collision_point.x + tilemap.tilesize + 0.2 end
+        if movy < 0 then collision_point.y = collision_point.y + tilemap.tilesize + 0.2 end
         return collision_point
     else return nil end
 end
