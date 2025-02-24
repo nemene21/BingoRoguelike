@@ -26,8 +26,6 @@ local function draw_layer(layer)
     local delta = lt.getDelta()
     
     for j, drawable in ipairs(layer) do
-        drawable:_process(delta)
-
         lg.push()
         lg.setColor(unpack(drawable.color))
         lg.setShader(drawable.shader_res:get())

@@ -35,6 +35,10 @@ function love.update(delta)
     current_scene:_process(delta)
     update_debug(delta)
     input_step()
+    
+    current_scene:push_entity_drawables(lt.getDelta())
+    process_drawables(delta)
+    
     process_time = love.timer.getTime() - process_time
 end
 
@@ -45,7 +49,6 @@ function love.draw()
     local camx, camy = global_camera:get_origin()
     lg.translate(RES.x * 0.5 - camx, RES.y * 0.5 - camy)
 
-    current_scene:draw_entities(lt.getDelta())
     draw_drawables()
     lg.origin()
 

@@ -97,7 +97,7 @@ function Scene:remove_entity(entity)
     self.entities[entity.id] = nil
 end
 
-function Scene:draw_entities(delta)
+function Scene:push_entity_drawables(delta)
     for i, entity in pairs(self.entities) do
         if entity.visible then
             entity:_push_drawables()
