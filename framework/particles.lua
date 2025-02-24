@@ -7,7 +7,10 @@ ParticleSys = class(Drawable)
 function ParticleSys:new(path)
     Drawable.new(self)
     self.particles = {}
+    self:set_data(path)
+end
 
+function ParticleSys:set_data(path)
     local data = json.decode(love.filesystem.read(path))
     for key, val in pairs(data) do self[key] = val end
 
@@ -22,6 +25,12 @@ function ParticleSys:new(path)
         self.spawn_timer:restart()
     end)
     self.spawn_timer:start()
+    self:update_batch()
+end
+
+function ParticleSys:update_batch()
+    local max_particles = self.amount_max * (self.lifetime_max * self.firerate_max) + 1
+    self.batch = lg.newSpriteBatch(self.tex_res:get(), max_particles)
 end
 
 function ParticleSys:process_particle(pcl, delta)
@@ -119,10 +128,11 @@ function ParticleSys:_draw()
     h = h * 0.5
 
     if self.local_coords then lg.translate(-self.pos.x, -self.pos.y) end
-    local tex = self.tex_res:get()
 
+    self.batch:clear()
     for i, pcl in ipairs(self.particles) do
-        lg.setColor(unpack(pcl.curr_color))
-        lg.draw(tex, pcl.x, pcl.y, pcl.angle, pcl.curr_scale, pcl.curr_scale, w, h)
+        self.batch:setColor(unpack(pcl.curr_color))
+        self.batch:add(pcl.x, pcl.y, pcl.angle, pcl.curr_scale, pcl.curr_scale, w, h)
     end
+    lg.draw(self.batch)
 end
