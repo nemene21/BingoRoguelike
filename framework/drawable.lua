@@ -51,6 +51,14 @@ function draw_drawables()
     lg.setShader()
 end
 
+function process_drawables(delta)
+    for i, layer in ipairs(draw_layers) do
+        for j, drawable in ipairs(layer) do
+            drawable:_process(delta)
+        end
+    end
+end
+
 function draw_UI_drawables()
     draw_layer(ui_draw_layer)
     lg.setShader()

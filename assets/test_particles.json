@@ -4,6 +4,8 @@
     "time_scale": 1,
     "firerate_min": 1000,
     "firerate_max": 1000,
+    "amount_min": 100,
+    "amount_max": 100,
     "lifetime_min": 1,
     "lifetime_max": 1,
 

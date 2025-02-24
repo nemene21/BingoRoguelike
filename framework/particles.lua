@@ -15,7 +15,9 @@ function ParticleSys:new(path)
 
     self.spawn_timer = Timer(1 / self.firerate_min)
     self.spawn_timer.on_timeout:connect(function()
-        self:_spawn()
+        for i = 1, lm.random(self.amount_min, self.amount_max) do
+            self:_spawn()
+        end
         self.spawn_timer.max_time = 1 / lerp(self.firerate_min, self.firerate_max, lm.random())
         self.spawn_timer:restart()
     end)
@@ -117,9 +119,10 @@ function ParticleSys:_draw()
     h = h * 0.5
 
     if self.local_coords then lg.translate(-self.pos.x, -self.pos.y) end
+    local tex = self.tex_res:get()
 
     for i, pcl in ipairs(self.particles) do
         lg.setColor(unpack(pcl.curr_color))
-        lg.draw(self.tex_res:get(), pcl.x, pcl.y, pcl.angle, pcl.curr_scale, pcl.curr_scale, w, h)
+        lg.draw(tex, pcl.x, pcl.y, pcl.angle, pcl.curr_scale, pcl.curr_scale, w, h)
     end
 end
