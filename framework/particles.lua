@@ -41,8 +41,8 @@ function ParticleSys:_spawn()
 
     pcl.scale = lerp(self.scale_min, self.scale_max, lm.random())
 
-    pcl.angle = lerp(self.angle_min, self.angle_max, lm.random())
-    pcl.angle_vel = lerp(self.start_angle_velocity_min, self.start_angle_velocity_max, lm.random())
+    pcl.angle = math.rad(lerp(self.angle_min, self.angle_max, lm.random()))
+    pcl.angle_vel = math.rad(lerp(self.start_angle_velocity_min, self.start_angle_velocity_max, lm.random()))
 
     pcl.lf = lerp(self.lifetime_min, self.lifetime_max, lm.random())
     pcl.lf_max = pcl.lf
@@ -73,8 +73,12 @@ function ParticleSys:_process(delta)
 end
 
 function ParticleSys:_draw()
+    local w, h = self.tex_res:get():getDimensions()
+    w = w * 0.5
+    h = h * 0.5
+
     for i, pcl in ipairs(self.particles) do
-        lg.draw(self.tex_res:get(), pcl.x, pcl.y, pcl.angle, pcl.scale, pcl.scale)
+        lg.draw(self.tex_res:get(), pcl.x, pcl.y, pcl.angle, pcl.scale, pcl.scale, w, h)
     end
     lg.circle("fill", 0, 0, 2)
 end

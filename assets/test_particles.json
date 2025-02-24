@@ -4,8 +4,8 @@
     "time_scale": 1,
     "firerate_min": 10,
     "firerate_max": 0.5,
-    "lifetime_min": 0.5,
-    "lifetime_max": 0.5,
+    "lifetime_min": 1,
+    "lifetime_max": 1,
 
     "local_coords": true,
 
@@ -19,10 +19,10 @@
     "scale_end": 0,
     "scale_curve": "NONE",
 
-    "angle_min": -180,
-    "angle_max": 180,
-    "start_angle_velocity_min": -33,
-    "start_angle_velocity_max": 33,
+    "angle_min": 0,
+    "angle_max": 0,
+    "start_angle_velocity_min": 180,
+    "start_angle_velocity_max": 180,
 
     "color_min": [0, 0, 0, 255],
     "color_max": [255, 255, 255, 255],
