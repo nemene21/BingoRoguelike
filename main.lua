@@ -27,9 +27,17 @@ function love.load()
     game = Game()
     set_current_scene(game)
     game:restart()
+
+    POST_PROCESS_SHADER = lg.newShader("assets/post_processing.glsl", nil)
+    local filenames = {}
+    for i = 1, 64 do filenames[i] = "assets/color_pallete/"..tostring(i)..".png" end
+    local color_pallete_lut = lg.newVolumeImage(filenames)
+    POST_PROCESS_SHADER:send("color_pallete", color_pallete_lut)
 end
 
+local MIN_DELTA = 1 / 30
 function love.update(delta)
+    local delta = math.min(delta, MIN_DELTA)
     process_time = love.timer.getTime()
     current_scene:process_entities(delta)
     current_scene:_process(delta)
@@ -60,12 +68,14 @@ function love.draw()
     )
     local cam_pos = global_camera.pos
     lg.scale(lg.getWidth() / RES.x, lg.getHeight() / RES.y)
+
+    lg.setShader(POST_PROCESS_SHADER)
     lg.draw(screen)
+    lg.setShader()
 
     draw_UI_drawables()
     lg.setColor(0, 0, 0, 1)
     lg.reset()
-
 
     draw_time = love.timer.getTime() - draw_time
     render_debug()

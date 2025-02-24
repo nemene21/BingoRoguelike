@@ -23,7 +23,6 @@ function Player:new(x, y)
     self:_init_inventory()
 
     self:add_drawable("test_sys", ParticleSys("assets/test_particles.json"))
-    self.test_sys.layer = DrawLayers.BACKGROUND
 end
 
 function Player:_init_inventory()

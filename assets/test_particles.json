@@ -2,10 +2,10 @@
     "texture_path": "assets/particle.png",
 
     "time_scale": 1,
-    "firerate_min": 1000,
-    "firerate_max": 1000,
-    "amount_min": 100,
-    "amount_max": 100,
+    "firerate_min": 8,
+    "firerate_max": 10,
+    "amount_min": 1,
+    "amount_max": 2,
     "lifetime_min": 1,
     "lifetime_max": 1,
 
@@ -14,7 +14,7 @@
     "start_velocity_min": 48,
     "start_velocity_max": 64,
     "direction": 0,
-    "spread": 33,
+    "spread": 360,
 
     "scale_min": 0.5,
     "scale_max": 1,

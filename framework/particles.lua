@@ -3,6 +3,8 @@ require "framework.timer"
 
 local json = require "json.json"
 
+local particle_pool = {}
+
 ParticleSys = class(Drawable)
 function ParticleSys:new(path)
     Drawable.new(self)
@@ -51,7 +53,7 @@ function ParticleSys:process_particle(pcl, delta)
 end
 
 function ParticleSys:_spawn()
-    local pcl = {}
+    local pcl = table.remove(particle_pool) or {}
     pcl.x = 0
     pcl.y = 0
 
@@ -82,19 +84,17 @@ function ParticleSys:_spawn()
     g_blend = lerp(shared_color_blend, g_blend, self.color_deviation)
     b_blend = lerp(shared_color_blend, b_blend, self.color_deviation)
 
-    pcl.color = {
-        lerp(self.color_min[1], self.color_max[1], r_blend) / 255,
-        lerp(self.color_min[2], self.color_max[2], g_blend) / 255,
-        lerp(self.color_min[3], self.color_max[3], b_blend) / 255,
-        lerp(self.color_min[4], self.color_max[4], a_blend) / 255
-    }
+    if not pcl.color then pcl.color = {} end
+    pcl.color[1] = lerp(self.color_min[1], self.color_max[1], r_blend) / 255
+    pcl.color[2] = lerp(self.color_min[2], self.color_max[2], g_blend) / 255
+    pcl.color[3] = lerp(self.color_min[3], self.color_max[3], b_blend) / 255
+    pcl.color[4] = lerp(self.color_min[4], self.color_max[4], a_blend) / 255
 
-    pcl.color_end = {
-        self.color_end[1] or pcl.color[1],
-        self.color_end[2] or pcl.color[2],
-        self.color_end[3] or pcl.color[3],
-        self.color_end[4] or pcl.color[4]
-    }
+    if not pcl.color_end then pcl.color_end = {} end
+    pcl.color_end[1] = (self.color_end[1] or (pcl.color[1] * 255)) / 255
+    pcl.color_end[2] = (self.color_end[2] or (pcl.color[2] * 255)) / 255
+    pcl.color_end[3] = (self.color_end[3] or (pcl.color[3] * 255)) / 255
+    pcl.color_end[4] = (self.color_end[4] or (pcl.color[4] * 255)) / 255
     pcl.curr_color = {}
 
     table.insert(self.particles, pcl)
@@ -112,6 +112,7 @@ function ParticleSys:_process(delta)
     local pcl_count = #self.particles
     while self.particles[i] ~= nil do
         if self.particles[i].lf <= 0 then
+            table.insert(particle_pool, self.particles[i])
             self.particles[i] = self.particles[pcl_count]
             self.particles[pcl_count] = nil
 
@@ -134,5 +135,6 @@ function ParticleSys:_draw()
         self.batch:setColor(unpack(pcl.curr_color))
         self.batch:add(pcl.x, pcl.y, pcl.angle, pcl.curr_scale, pcl.curr_scale, w, h)
     end
+    lg.setColor(1, 1, 1, 1)
     lg.draw(self.batch)
 end
