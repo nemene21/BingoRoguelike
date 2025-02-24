@@ -22,7 +22,7 @@ function Player:new(x, y)
     self.inventory = {}
     self:_init_inventory()
 
-    self:add_drawable("test_sys", ParticleSys())
+    self:add_drawable("test_sys", ParticleSys("assets/test_particles.json"))
 end
 
 function Player:_init_inventory()
@@ -64,9 +64,11 @@ function Player:_process(delta)
         chunk.tilemap:damage_tile(
             math.floor(mx / 8),
             math.floor(my / 8),
-            0.1
+            0.5
         )
     end
     self.sprite.pos:setv(self.Trans.pos)
     self.sprite.flipx = self.Trans.vel.x < 0
+
+    self.test_sys.pos:setv(self.Trans.pos)
 end
