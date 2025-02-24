@@ -2,12 +2,14 @@ require "framework.ecs"
 
 Timer = class()
 function Timer:new(time, auto)
-    self.time = time
-    self.time_max = time
+    self.time = time or 1
+    self.max_time = time
     self.timescale = 1
 
     self.auto = auto or false
     self.running = false
+
+    if auto then self:start() end
 
     self.on_timeout = Signal()
 end
@@ -30,7 +32,7 @@ function Timer:tick(dt)
     
     if self.time < 0 then
         self.time = 0
-        self._on_timeout.emit()
+        self.on_timeout:emit()
 
         if self.auto then self:restart() end
     end

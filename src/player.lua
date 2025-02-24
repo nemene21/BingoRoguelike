@@ -4,6 +4,8 @@ require "framework.camera"
 require "framework.transform"
 require "framework.drawable"
 require "framework.input"
+require "framework.particles"
+
 require "src.chunk_loader"
 require "src.inventory"
 
@@ -19,6 +21,8 @@ function Player:new(x, y)
 
     self.inventory = {}
     self:_init_inventory()
+
+    self:add_drawable("test_sys", ParticleSys())
 end
 
 function Player:_init_inventory()
@@ -60,7 +64,7 @@ function Player:_process(delta)
         chunk.tilemap:damage_tile(
             math.floor(mx / 8),
             math.floor(my / 8),
-            1
+            0.1
         )
     end
     self.sprite.pos:setv(self.Trans.pos)

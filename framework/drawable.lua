@@ -23,8 +23,11 @@ end
 
 local function draw_layer(layer)
     table.sort(layer, drawable_comparator)
+    local delta = lt.getDelta()
     
     for j, drawable in ipairs(layer) do
+        drawable:_process(delta)
+
         lg.push()
         lg.setColor(unpack(drawable.color))
         lg.setShader(drawable.shader_res:get())
@@ -101,6 +104,7 @@ function Drawable:_push_to_layer()
     table.insert(draw_layers[self.layer], self)
 end
 
+function Drawable:_process(delta) end
 function Drawable:_draw() end
 
 Sprite = class(Drawable)
