@@ -26,7 +26,14 @@ function ParticleSys:process_particle(pcl, delta)
 
     pcl.lf = pcl.lf - delta
 
-    pcl.curr_scale = pcl.scale * (pcl.lf / pcl.lf_max)
+    local blend = pcl.lf / pcl.lf_max
+    pcl.curr_scale = pcl.scale * blend
+
+    local color_blend = 1 - blend
+    pcl.curr_color[1] = lerp(pcl.color[1], pcl.color_end[1], color_blend)
+    pcl.curr_color[2] = lerp(pcl.color[2], pcl.color_end[2], color_blend)
+    pcl.curr_color[3] = lerp(pcl.color[3], pcl.color_end[3], color_blend)
+    pcl.curr_color[4] = lerp(pcl.color[4], pcl.color_end[4], color_blend)
 end
 
 function ParticleSys:_spawn()
@@ -69,6 +76,7 @@ function ParticleSys:_spawn()
         self.color_end[3] or pcl.color[3],
         self.color_end[4] or pcl.color[4]
     }
+    pcl.curr_color = {}
 
     table.insert(self.particles, pcl)
 end
@@ -101,7 +109,7 @@ function ParticleSys:_draw()
     h = h * 0.5
 
     for i, pcl in ipairs(self.particles) do
-        lg.setColor(unpack(pcl.color))
+        lg.setColor(unpack(pcl.curr_color))
         lg.draw(self.tex_res:get(), pcl.x, pcl.y, pcl.angle, pcl.curr_scale, pcl.curr_scale, w, h)
     end
     lg.circle("fill", 0, 0, 2)
