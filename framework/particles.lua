@@ -13,10 +13,13 @@ function ParticleSys:new(path)
 
     self.tex_res = image_manager:get(self.texture_path)
 
-    self.spawn_timer = Timer(0.1, true)
+    self.spawn_timer = Timer(1 / self.firerate_min)
     self.spawn_timer.on_timeout:connect(function()
         self:_spawn()
+        self.spawn_timer.max_time = 1 / lerp(self.firerate_min, self.firerate_max, lm.random())
+        self.spawn_timer:restart()
     end)
+    self.spawn_timer:start()
 end
 
 function ParticleSys:process_particle(pcl, delta)
@@ -40,6 +43,11 @@ function ParticleSys:_spawn()
     local pcl = {}
     pcl.x = 0
     pcl.y = 0
+
+    if self.local_coords then
+        pcl.x = pcl.x + self.pos.x
+        pcl.y = pcl.y + self.pos.y
+    end
 
     local vel = lerp(self.start_velocity_min, self.start_velocity_max, lm.random())
     local direction = self.direction + lm.random(-self.spread, self.spread) * 0.5
@@ -108,9 +116,10 @@ function ParticleSys:_draw()
     w = w * 0.5
     h = h * 0.5
 
+    if self.local_coords then lg.translate(-self.pos.x, -self.pos.y) end
+
     for i, pcl in ipairs(self.particles) do
         lg.setColor(unpack(pcl.curr_color))
         lg.draw(self.tex_res:get(), pcl.x, pcl.y, pcl.angle, pcl.curr_scale, pcl.curr_scale, w, h)
     end
-    lg.circle("fill", 0, 0, 2)
 end
