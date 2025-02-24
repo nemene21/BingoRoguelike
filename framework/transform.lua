@@ -42,7 +42,7 @@ end
 
 local collision_point = Vec()
 function TransComp:get_collision(point, movx, movy)
-    local chunk = get_chunk_at_pos(self.pos:get())
+    local chunk = get_chunk_at_pos(self.pos.x + point[1], self.pos.y + point[2])
     if not chunk then return false end
 
     local tilemap = chunk.tilemap
