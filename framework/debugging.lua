@@ -98,6 +98,13 @@ function render_debug()
     imgui.love.RenderDrawLists()
 end
 
+function particle_editor()
+    imgui.Begin("Particle Editor")
+    local thing = ffi.new("float[1]", 0.5)
+    imgui.SliderFloat("Test", thing, 0, 1)
+    imgui.End()
+end
+
 love.mousemoved = function(x, y, ...)
     imgui.love.MouseMoved(x, y)
     if not imgui.love.GetWantCaptureMouse() then
