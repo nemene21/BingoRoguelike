@@ -29,9 +29,10 @@ function add_light(pos, intensity)
     })
 end
 
+local point_queue = Queue()
 local function calculate_light(light)
     local light_vals = {}
-    local queue = Queue()
+    point_queue:clear()
 
     queue:push(hash(light_vals.x + 1, light_vals.y))
     queue:push(hash(light_vals.x - 1, light_vals.y))
@@ -39,7 +40,7 @@ local function calculate_light(light)
     queue:push(hash(light_vals.x, light_vals.y - 1))
 
     while not queue:empty() do
-
+        
     end
 end
 

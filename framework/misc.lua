@@ -11,6 +11,10 @@ function Queue:new()
     self:clear()
 end
 
+function Queue:empty()
+    return self.arr[self.tail] == nil
+end
+
 function Queue:clear()
     self.arr = {}
     self.tail = 1
