@@ -1,0 +1,33 @@
+{
+    "texture_path": "assets/dust_particle.png",
+
+    "time_scale": 1,
+    "firerate_min": 8,
+    "firerate_max": 10,
+    "amount_min": 1,
+    "amount_max": 2,
+    "lifetime_min": 1,
+    "lifetime_max": 1,
+
+    "local_coords": true,
+
+    "start_velocity_min": 48,
+    "start_velocity_max": 64,
+    "direction": 0,
+    "spread": 360,
+
+    "scale_min": 0.5,
+    "scale_max": 1,
+    "scale_end": 0,
+    "scale_curve": "NONE",
+
+    "angle_min": 0,
+    "angle_max": 0,
+    "start_angle_velocity_min": 180,
+    "start_angle_velocity_max": 180,
+
+    "color_min": [0, 0, 0, 255],
+    "color_max": [255, 255, 255, 255],
+    "color_end": [null, null, null, 0],
+    "color_deviation": 0.5
+}

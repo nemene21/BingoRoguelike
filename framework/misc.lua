@@ -6,6 +6,31 @@ function btoi2(boolean)
     return boolean and 1 or -1
 end
 
+Queue = class()
+function Queue:new()
+    self:clear()
+end
+
+function Queue:clear()
+    self.arr = {}
+    self.tail = 1
+    self.head = 0
+end
+
+function Queue:push(el)
+    self.head = self.head + 1
+    self.arr[self.head] = el
+end
+
+function Queue:pop()
+    local el = self.arr[self.tail]
+    if not el then return nil end
+
+    self.arr[self.tail] = nil
+    self.tail = self.tail + 1
+    return el
+end
+
 function lerp(a, b, c)
     return a + (b - a) * c
 end
@@ -70,6 +95,13 @@ function screen2world(x, y)
     local cx, cy = global_camera:get_origin()
     x = x + cx - RES.x * 0.5
     y = y + cy - RES.y * 0.5
+    return x, y
+end
+
+function world2screen(x, y)
+    local cx, cy = global_camera:get_origin()
+    x = x + RES.x * 0.5 - cx
+    y = y + RES.y * 0.5 - cy
     return x, y
 end
 

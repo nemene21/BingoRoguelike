@@ -67,8 +67,9 @@ function Player:_process(delta)
             0.5
         )
     end
+    local mx, my = global_mouse_pos()
     self.sprite.pos:setv(self.Trans.pos)
-    self.sprite.flipx = self.Trans.vel.x < 0
+    self.sprite.flipx = mx < self.Trans.pos.x
 
     self.test_sys.pos:setv(self.Trans.pos)
 end

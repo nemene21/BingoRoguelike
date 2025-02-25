@@ -78,7 +78,7 @@ function love.draw()
     lg.reset()
 
     draw_time = love.timer.getTime() - draw_time
-    particle_editor()
+    -- particle_editor()
     render_debug()
 end
 
