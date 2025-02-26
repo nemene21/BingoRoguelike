@@ -1,14 +1,41 @@
+require "love.image"
+require "framework.class"
+require "framework.misc"
 
-love.
+local channel_in = love.thread.getChannel("light_request")
+local channel_out = love.thread.getChannel("light_result")
 
 local sqrt2 = math.sqrt(2)
+local lightmap = love.image.newImageData(20, 12)
+
+local NEIGHBOR_KERNEL = {
+    { 1,  0}, { 0,  1},
+    {-1,  0}, { 0, -1},
+    { 1,  1}, { 1, -1},
+    {-1, -1}, {-1,  1}
+}
+
+local OFFSET = 1000
+local WIDTH  = 2001
+
+local function hash(x, y)
+    x = x + OFFSET
+    y = y + OFFSET
+    return x + y * WIDTH
+end
+
+local function unhash(hash)
+    local y = math.floor(hash / WIDTH)
+    local x = hash % WIDTH
+    return x - OFFSET, y - OFFSET
+end
 
 local point_queue = Queue()
 local function calculate_light(light, occlusion_map)
     local light_vals = {}
     point_queue:clear()
 
-    if tile_occluded(light.x, light.y) then return light_vals end
+    if occlusion_map[hash(light.x, light.y)] then return light_vals end
 
     point_queue:push(hash(light.x + 1, light.y))
     point_queue:push(hash(light.x - 1, light.y))
@@ -62,4 +89,29 @@ local function calculate_light(light, occlusion_map)
         ::continue::
     end
     return light_vals
+end
+
+while true do
+    local lights, occlusion_map = unpack(channel_in:demand())
+
+    -- Clearing the lightmap
+    lightmap:mapPixel(function(x, y, r, g, b, a)
+        return 0, 0, 0, 1
+    end)
+
+    for i, light in ipairs(lights) do
+        local light_vals = calculate_light(light, occlusion_map)
+
+        local x, y
+        for key, value in pairs(light_vals) do
+            x, y = unhash(key)
+
+            if x >= 0 and x < 20 and y >= 0 and y < 12 then
+                if value > 0.5 then
+                    lightmap:setPixel(x, y, 1, 1, 1, 1)
+                end
+            end
+        end
+    end
+    channel_out:push(lightmap:getString())
 end
