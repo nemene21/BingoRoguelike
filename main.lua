@@ -55,8 +55,10 @@ end
 
 function love.draw()
     draw_time = love.timer.getTime()
-    lg.setCanvas(screen)
     lg.clear(0.1, 0.1, 0.1, 1)
+
+    lg.setCanvas(screen)
+    lg.clear(0, 0, 0, 0)
     local camx, camy = global_camera:get_origin()
     lg.translate(RES.x * 0.5 - camx, RES.y * 0.5 - camy)
 

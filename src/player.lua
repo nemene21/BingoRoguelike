@@ -73,7 +73,5 @@ function Player:_process(delta)
     self.sprite.flipx = mx < self.Trans.pos.x
 
     self.test_sys.pos:setv(self.Trans.pos)
-    for i = 1, 32 do
-        add_light(self.Trans.pos, 5)
-    end
+    add_light(self.Trans.pos, 5)
 end
