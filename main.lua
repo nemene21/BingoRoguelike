@@ -1,6 +1,7 @@
 
 require "framework.ecs"
 require "framework.debugging"
+require "framework.lighting"
 require "src.game"
 
 function love.load()
@@ -47,6 +48,7 @@ function love.update(delta)
     current_scene:push_entity_drawables(lt.getDelta())
     process_drawables(delta)
     
+    calculate_lights()
     process_time = love.timer.getTime() - process_time
 end
 
@@ -74,12 +76,19 @@ function love.draw()
     lg.setShader()
 
     draw_UI_drawables()
+
+    lg.setBlendMode("multiply", "premultiplied")
+    lg.scale(8, 8)
+    lg.draw(lightmap_image, 0, 0)
+
     lg.setColor(0, 0, 0, 1)
     lg.reset()
 
     draw_time = love.timer.getTime() - draw_time
     -- particle_editor()
     render_debug()
+
+
 end
 
 function love.quit()

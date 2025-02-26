@@ -1,6 +1,14 @@
 msgpack = require "msgpack.luajit-msgpack-pure"
-require "framework.misc"
 local class_registry = {}
+
+
+function table.entries(tbl)
+    local i = 0
+    for k, v in pairs(tbl) do
+        i = i + 1
+    end
+    return i
+end
 
 local function create(creating, ...)
     local instance = setmetatable({}, creating)

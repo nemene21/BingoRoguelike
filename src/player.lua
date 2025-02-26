@@ -8,6 +8,7 @@ require "framework.particles"
 
 require "src.chunk_loader"
 require "src.inventory"
+require "framework.lighting"
 
 Player = class(Entity)
 function Player:new(x, y)
@@ -72,4 +73,5 @@ function Player:_process(delta)
     self.sprite.flipx = mx < self.Trans.pos.x
 
     self.test_sys.pos:setv(self.Trans.pos)
+    add_light(self.Trans.pos, 5)
 end

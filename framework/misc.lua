@@ -1,38 +1,10 @@
+
 function btoi(boolean)
     return boolean and 1 or 0
 end
 
 function btoi2(boolean)
     return boolean and 1 or -1
-end
-
-Queue = class()
-function Queue:new()
-    self:clear()
-end
-
-function Queue:empty()
-    return self.arr[self.tail] == nil
-end
-
-function Queue:clear()
-    self.arr = {}
-    self.tail = 1
-    self.head = 0
-end
-
-function Queue:push(el)
-    self.head = self.head + 1
-    self.arr[self.head] = el
-end
-
-function Queue:pop()
-    local el = self.arr[self.tail]
-    if not el then return nil end
-
-    self.arr[self.tail] = nil
-    self.tail = self.tail + 1
-    return el
 end
 
 function lerp(a, b, c)
@@ -127,6 +99,35 @@ end
 
 function centered_quad_has_point(qx, qy, w, h, x, y)
     return x > qx - w * 0.5 and x < qx + w * 0.5 and y > qy - h * 0.5 and y < qy + h * 0.5
+end
+
+Queue = class()
+function Queue:new()
+    self:clear()
+end
+
+function Queue:empty()
+    return self.arr[self.tail] == nil
+end
+
+function Queue:clear()
+    self.arr = {}
+    self.tail = 1
+    self.head = 0
+end
+
+function Queue:push(el)
+    self.head = self.head + 1
+    self.arr[self.head] = el
+end
+
+function Queue:pop()
+    local el = self.arr[self.tail]
+    if not el then return nil end
+
+    self.arr[self.tail] = nil
+    self.tail = self.tail + 1
+    return el
 end
 
 lg = love.graphics
