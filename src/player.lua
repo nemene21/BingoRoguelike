@@ -50,7 +50,12 @@ function Player:_process(delta)
     self.Trans.vel.x = dlerp(self.Trans.vel.x, xinput, 30 * delta)
 
     self.Trans.vel:add(0, delta * GRAVITY)
-    if self.Trans:on_floor() then self.Trans.vel.y = 1 end
+    if self.Trans:on_floor() then
+        if self.Trans.vel.y > 100 then
+            self.sprite.scale:set(1.5, 0.5)
+        end
+        self.Trans.vel.y = 1
+    end
     if self.Trans:on_ceil() then self.Trans.vel:mul(1, -0.2) end
 
     if is_just_pressed("jump") then
@@ -72,7 +77,17 @@ function Player:_process(delta)
     local mx, my = global_mouse_pos()
     self.sprite.pos:setv(self.Trans.pos)
     self.sprite.flipx = mx < self.Trans.pos.x
-    self.sprite.angle = math.sin(lt.getTime() * PI * 10) * self.Trans.vel.x * 0.0025
+
+    if self.Trans:on_floor() then
+        self.sprite.angle = math.sin(lt.getTime() * PI * 10) * self.Trans.vel.x * 0.0025
+    else
+        -- self.sprite.angle = self.Trans.vel.y * 0.0025
+    end
+
+    local squash_amount = math.abs(self.Trans.vel.y) * 0.0025
+    self.sprite.scale:dlerp(
+        1 - squash_amount, 1 + squash_amount, delta * 20
+    )
 
     self.walk_particles.pos:setv(self.Trans.pos)
     self.walk_particles.pos:add(0, 3)
