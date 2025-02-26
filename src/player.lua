@@ -65,7 +65,7 @@ function Player:_process(delta)
         chunk.tilemap:damage_tile(
             math.floor(mx / 8),
             math.floor(my / 8),
-            0.5
+            0.1
         )
     end
     local mx, my = global_mouse_pos()
@@ -73,5 +73,5 @@ function Player:_process(delta)
     self.sprite.flipx = mx < self.Trans.pos.x
 
     self.test_sys.pos:setv(self.Trans.pos)
-    add_light(self.Trans.pos, 5)
+    add_light(self.Trans.pos, 8)
 end

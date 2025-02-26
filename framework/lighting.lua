@@ -21,8 +21,8 @@ end
 
 function add_light(pos, intensity)
     local x, y = world2screen(pos:get())
-    x = math.floor(x / 8)
-    y = math.floor(y / 8)
+    x = math.floor(x / 8 + 0.5)
+    y = math.floor(y / 8 + 0.5)
 
     table.insert(lights, {
         x = x, y = y,
@@ -41,25 +41,29 @@ local function tile_occluded(x, y)
     local chunk = get_chunk_at_pos(screen2world(x * 8, y * 8))
     if not chunk then return false end
 
-    for x2 = -1, 1 do
-        for y2 = -1, 1 do
-            chunk = get_chunk_at_pos(screen2world(x * 8, y * 8))
-            local tilex, tiley = screen2world(x * 8, y * 8)
-            tilex = math.floor(tilex / 8)
-            tiley = math.floor(tiley / 8)
+    for x2 = 0, 1 do
+        for y2 = 0, 1 do
+            local tilex, tiley = screen2world((x + x2) * 8, (y + y2) * 8)
 
+            chunk = get_chunk_at_pos(tilex, tiley)
             if not chunk then return false end
+
+            tilex = math.floor(tilex * 0.125)
+            tiley = math.floor(tiley * 0.125)
             if not chunk.tilemap:get_tile(tilex, tiley) then return false end
         end
     end
+    return true
 end
 
 local sqrt2 = math.sqrt(2)
 
 local point_queue = Queue()
-local function calculate_light(light)
+local function calculate_light(light, occlusion_map)
     local light_vals = {}
     point_queue:clear()
+
+    if tile_occluded(light.x, light.y) then return light_vals end
 
     point_queue:push(hash(light.x + 1, light.y))
     point_queue:push(hash(light.x - 1, light.y))
@@ -72,6 +76,11 @@ local function calculate_light(light)
     while not point_queue:empty() do
         current = point_queue:pop()
         cx, cy = unhash(current)
+
+        if tile_occluded(cx, cy) then -- Tile occluded
+            light_vals[current] = 0
+            goto continue
+        end
 
         local brightest = -1
         local dist = -1
@@ -92,21 +101,20 @@ local function calculate_light(light)
 
         light_vals[current] = brightest - dist
         if light_vals[current] > 1 then
-            if not tile_occluded(cx, cy) then
-                local neighbor
-                neighbor = hash(cx + 1, cy)
-                if light_vals[neighbor] == nil then point_queue:push(neighbor) end
+            local neighbor
+            neighbor = hash(cx + 1, cy)
+            if light_vals[neighbor] == nil then point_queue:push(neighbor) end
 
-                neighbor = hash(cx - 1, cy)
-                if light_vals[neighbor] == nil then point_queue:push(neighbor) end
+            neighbor = hash(cx - 1, cy)
+            if light_vals[neighbor] == nil then point_queue:push(neighbor) end
 
-                neighbor = hash(cx, cy + 1)
-                if light_vals[neighbor] == nil then point_queue:push(neighbor) end
+            neighbor = hash(cx, cy + 1)
+            if light_vals[neighbor] == nil then point_queue:push(neighbor) end
 
-                neighbor = hash(cx, cy - 1)
-                if light_vals[neighbor] == nil then point_queue:push(neighbor) end
-            end
+            neighbor = hash(cx, cy - 1)
+            if light_vals[neighbor] == nil then point_queue:push(neighbor) end
         end
+        ::continue::
     end
     return light_vals
 end
@@ -116,15 +124,22 @@ function calculate_lights()
         return 0, 0, 0, 1
     end)
 
+    local occlusion_map = {}
+    for key, chunk in pairs(loaded_chunks) do
+        for index, tile in pairs(chunk.tilemap.tiledata) do
+            
+        end
+    end
+
     for i, light in ipairs(lights) do
-        local light_vals = calculate_light(light)
+        local light_vals = calculate_light(light, occlusion_map)
 
         local x, y
         for key, value in pairs(light_vals) do
             x, y = unhash(key)
 
             if x >= 0 and x < 20 and y >= 0 and y < 12 then
-                lightmap:setPixel(x, y, 1, 1, 1, 1)
+                lightmap:setPixel(x, y, value, value, value, 1)
             end
         end
     end

@@ -55,7 +55,7 @@ end
 function love.draw()
     draw_time = love.timer.getTime()
     lg.setCanvas(screen)
-    lg.clear()
+    lg.clear(0.1, 0.1, 0.1, 1)
     local camx, camy = global_camera:get_origin()
     lg.translate(RES.x * 0.5 - camx, RES.y * 0.5 - camy)
 
@@ -78,7 +78,6 @@ function love.draw()
     lg.setShader()
 
     draw_UI_drawables()
-
 
     lg.setColor(0, 0, 0, 1)
     lg.reset()
