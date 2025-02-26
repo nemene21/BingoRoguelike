@@ -102,7 +102,9 @@ end
 
 function ParticleSys:_process(delta)
     local delta = delta * self.time_scale
-    self.spawn_timer:tick(delta)
+    if self.emitting then
+        self.spawn_timer:tick(delta)
+    end
 
     for i, pcl in ipairs(self.particles) do
         self:process_particle(pcl, delta)

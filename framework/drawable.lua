@@ -4,9 +4,11 @@ require "framework.enum"
 
 DrawLayers = enum({
     "BACKGROUND",
+    "VFX_UNDER",
+    "DEFAULT",
+    "VFX_OVER",
     "TILES",
     "TILE_CRACKS",
-    "DEFAULT",
     "COUNT",
     "UI"
 })

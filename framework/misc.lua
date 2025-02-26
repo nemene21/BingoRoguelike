@@ -1,4 +1,6 @@
 
+PI = 3.14159265359
+
 function btoi(boolean)
     return boolean and 1 or 0
 end

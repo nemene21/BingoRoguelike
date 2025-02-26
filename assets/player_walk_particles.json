@@ -2,8 +2,8 @@
     "texture_path": "assets/dust_particle.png",
 
     "time_scale": 1,
-    "firerate_min": 5,
-    "firerate_max": 8,
+    "firerate_min": 12,
+    "firerate_max": 16,
     "amount_min": 1,
     "amount_max": 2,
     "lifetime_min": 0.2,

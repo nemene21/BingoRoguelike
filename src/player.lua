@@ -18,12 +18,13 @@ function Player:new(x, y)
     self:add(ChunkLoaderComp())
 
     self.Cam.camera:activate()
+    self:add_drawable("walk_particles", ParticleSys("assets/player_walk_particles.json"))
+    self.walk_particles.layer = DrawLayers.VFX_UNDER
     self:add_drawable("sprite", Sprite("assets/test.png"))
 
     self.inventory = {}
     self:_init_inventory()
 
-    self:add_drawable("test_sys", ParticleSys("assets/test_particles.json"))
 end
 
 function Player:_init_inventory()
@@ -71,7 +72,10 @@ function Player:_process(delta)
     local mx, my = global_mouse_pos()
     self.sprite.pos:setv(self.Trans.pos)
     self.sprite.flipx = mx < self.Trans.pos.x
+    self.sprite.angle = math.sin(lt.getTime() * PI * 10) * self.Trans.vel.x * 0.0025
 
-    self.test_sys.pos:setv(self.Trans.pos)
+    self.walk_particles.pos:setv(self.Trans.pos)
+    self.walk_particles.pos:add(0, 3)
+    self.walk_particles.emitting = math.abs(self.Trans.vel.x) > 16
     add_light(self.Trans.pos, 5)
 end

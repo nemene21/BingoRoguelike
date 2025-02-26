@@ -13,8 +13,9 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
         float up    = Texel(texture, texture_coords + vec2(0, -pixel_height)).a;
         float down  = Texel(texture, texture_coords + vec2(0,  pixel_height)).a;
 
-        if (left + right + up + down > 0) {
-            return vec4(0, 0, 0, 1);
+        float alpha = left + right + up + down;
+        if (alpha > 0) {
+            return vec4(0, 0, 0, alpha);
         }
     }
     
