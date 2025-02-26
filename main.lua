@@ -61,7 +61,9 @@ function love.draw()
 
     draw_drawables()
     lg.origin()
-
+    lg.scale(8, 8)
+    lg.setBlendMode("multiply", "premultiplied")
+    lg.draw(lightmap_image, 0, 0)
     lg.reset()
 
     local screenpos = Vec(
@@ -77,9 +79,6 @@ function love.draw()
 
     draw_UI_drawables()
 
-    lg.setBlendMode("multiply", "premultiplied")
-    lg.scale(8, 8)
-    lg.draw(lightmap_image, 0, 0)
 
     lg.setColor(0, 0, 0, 1)
     lg.reset()
@@ -87,8 +86,6 @@ function love.draw()
     draw_time = love.timer.getTime() - draw_time
     -- particle_editor()
     render_debug()
-
-
 end
 
 function love.quit()

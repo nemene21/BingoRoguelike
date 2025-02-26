@@ -37,6 +37,23 @@ local NEIGHBOR_KERNEL = {
     {-1, -1}, {-1,  1}
 }
 
+local function tile_occluded(x, y)
+    local chunk = get_chunk_at_pos(screen2world(x * 8, y * 8))
+    if not chunk then return false end
+
+    for x2 = -1, 1 do
+        for y2 = -1, 1 do
+            chunk = get_chunk_at_pos(screen2world(x * 8, y * 8))
+            local tilex, tiley = screen2world(x * 8, y * 8)
+            tilex = math.floor(tilex / 8)
+            tiley = math.floor(tiley / 8)
+
+            if not chunk then return false end
+            if not chunk.tilemap:get_tile(tilex, tiley) then return false end
+        end
+    end
+end
+
 local sqrt2 = math.sqrt(2)
 
 local point_queue = Queue()
@@ -75,18 +92,20 @@ local function calculate_light(light)
 
         light_vals[current] = brightest - dist
         if light_vals[current] > 1 then
-            local neighbor
-            neighbor = hash(cx + 1, cy)
-            if light_vals[neighbor] == nil then point_queue:push(neighbor) end
+            if not tile_occluded(cx, cy) then
+                local neighbor
+                neighbor = hash(cx + 1, cy)
+                if light_vals[neighbor] == nil then point_queue:push(neighbor) end
 
-            neighbor = hash(cx - 1, cy)
-            if light_vals[neighbor] == nil then point_queue:push(neighbor) end
+                neighbor = hash(cx - 1, cy)
+                if light_vals[neighbor] == nil then point_queue:push(neighbor) end
 
-            neighbor = hash(cx, cy + 1)
-            if light_vals[neighbor] == nil then point_queue:push(neighbor) end
+                neighbor = hash(cx, cy + 1)
+                if light_vals[neighbor] == nil then point_queue:push(neighbor) end
 
-            neighbor = hash(cx, cy - 1)
-            if light_vals[neighbor] == nil then point_queue:push(neighbor) end
+                neighbor = hash(cx, cy - 1)
+                if light_vals[neighbor] == nil then point_queue:push(neighbor) end
+            end
         end
     end
     return light_vals
