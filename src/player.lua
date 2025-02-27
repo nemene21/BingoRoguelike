@@ -107,10 +107,13 @@ function Player:_process(delta)
     if is_just_pressed("slot_4") then self.slot_on = 4 end
     if is_just_pressed("slot_5") then self.slot_on = 5 end
 
+    self.slot_on = self.slot_on + get_scroll()
+    if self.slot_on > 5 then self.slot_on = 1 end
+    if self.slot_on < 1 then self.slot_on = 5 end 
+
     if self.Trans.vel.y > 256 then self.Trans.vel.y = 256 end
 
     local mx, my = global_mouse_pos()
-
     if is_pressed("break") then
         local chunk = get_chunk_at_pos(mx, my)
         chunk.tilemap:damage_tile(

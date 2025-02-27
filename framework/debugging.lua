@@ -129,7 +129,7 @@ end
 love.wheelmoved = function(x, y)
     imgui.love.WheelMoved(x, y)
     if not imgui.love.GetWantCaptureMouse() then
-
+        add_scroll(y)
     end
 end
 

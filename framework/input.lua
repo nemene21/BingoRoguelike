@@ -2,6 +2,13 @@ require "framework.class"
 require "framework.signal"
 
 local pressed_inputs = {}
+local scroll = 0
+
+function get_scroll() return scroll end
+
+function add_scroll(adding)
+    scroll = scroll + adding
+end
 
 Input = class()
 function Input:new(key, source)
@@ -37,6 +44,9 @@ local actions = {
     slot_3 = {Input("3")},
     slot_4 = {Input("4")},
     slot_5 = {Input("5")},
+
+    scroll_up = {Input("wu", "mouse")},
+    scroll_down = {Input("wd", "mouse")},
 
     click = {Input(1, "mouse")},
     secondary_click = {Input(2, "mouse")},
@@ -84,4 +94,5 @@ end
 
 function input_step()
     pressed_inputs = {}
+    scroll = 0
 end
