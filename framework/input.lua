@@ -30,6 +30,7 @@ end
 
 local actions = {
     ["break"] = {Input(1, "mouse")},
+    ["inventory open"] = {Input("e")},
 
     click = {Input(1, "mouse")},
     secondary_click = {Input(2, "mouse")},

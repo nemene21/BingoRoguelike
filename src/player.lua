@@ -27,7 +27,9 @@ end
 
 function Player:_init_inventory()
     self.inventory = {}
+    self.inventory_no_hotbar = {}
     self.hotbar = {}
+    self.inventory_open = false
 
     self.mouse_slot = MouseSlot()
     self.mouse_slot:set_stack(ItemStack(get_item("stone_pickaxe")))
@@ -53,9 +55,11 @@ function Player:_init_inventory()
             slot = Slot(inventory_origin + x * slot_margin, inventory_origin + y * slot_margin + hotbar_distance)
             current_scene:add_entity(slot)
             table.insert(self.inventory, slot)
+            table.insert(self.inventory_no_hotbar, slot)
     
             slot:set_stack(ItemStack(get_item("stone"), 5))
             slot:set_mouse_slot(self.mouse_slot)
+            slot:hide()
         end
     end
 end
@@ -77,6 +81,14 @@ function Player:_process(delta)
 
     if is_just_pressed("jump") then
         self.Trans.vel.y = -256
+    end
+
+    if is_just_pressed("inventory open") then
+        self.inventory_open = not self.inventory_open
+
+        for i, slot in ipairs(self.inventory_no_hotbar) do
+            slot.visible = self.inventory_open
+        end
     end
 
     if self.Trans.vel.y > 256 then self.Trans.vel.y = 256 end
