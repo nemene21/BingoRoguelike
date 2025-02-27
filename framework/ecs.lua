@@ -198,6 +198,14 @@ function Entity:hide()
     self.visible = false
 end
 
+function Entity:pause()
+    self.paused = true
+end
+
+function Entity:unpause()
+    self.paused = false
+end
+
 function Entity:_process(delta) end
 
 function Entity:_push_drawables()

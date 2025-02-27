@@ -60,6 +60,7 @@ function Player:_init_inventory()
             slot:set_stack(ItemStack(get_item("stone"), 5))
             slot:set_mouse_slot(self.mouse_slot)
             slot:hide()
+            slot:pause()
         end
     end
 end
@@ -88,6 +89,7 @@ function Player:_process(delta)
 
         for i, slot in ipairs(self.inventory_no_hotbar) do
             slot.visible = self.inventory_open
+            slot.paused  = not self.inventory_open
         end
     end
 
