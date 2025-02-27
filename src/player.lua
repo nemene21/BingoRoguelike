@@ -31,6 +31,8 @@ function Player:_init_inventory()
     self.hotbar = {}
     self.inventory_open = false
 
+    self.slot_on = 1
+
     self.mouse_slot = MouseSlot()
     self.mouse_slot:set_stack(ItemStack(get_item("stone_pickaxe")))
     current_scene:add_entity(self.mouse_slot)
@@ -63,6 +65,9 @@ function Player:_init_inventory()
             slot:pause()
         end
     end
+
+    self:add_drawable("slot_on_outline", Sprite("assets/slot_on_outline.png"))
+    self.slot_on_outline.layer = DrawLayers.UI
 end
 
 local GRAVITY = 800
@@ -92,6 +97,15 @@ function Player:_process(delta)
             slot.paused  = not self.inventory_open
         end
     end
+
+    self.slot_on_outline.pos:setv(self.hotbar[self.slot_on].Trans.pos)
+    self.slot_on_outline.scale:setv(self.hotbar[self.slot_on].sprite.scale)
+
+    if is_just_pressed("slot_1") then self.slot_on = 1 end
+    if is_just_pressed("slot_2") then self.slot_on = 2 end
+    if is_just_pressed("slot_3") then self.slot_on = 3 end
+    if is_just_pressed("slot_4") then self.slot_on = 4 end
+    if is_just_pressed("slot_5") then self.slot_on = 5 end
 
     if self.Trans.vel.y > 256 then self.Trans.vel.y = 256 end
 

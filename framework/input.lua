@@ -32,6 +32,12 @@ local actions = {
     ["break"] = {Input(1, "mouse")},
     ["inventory open"] = {Input("e")},
 
+    slot_1 = {Input("1")},
+    slot_2 = {Input("2")},
+    slot_3 = {Input("3")},
+    slot_4 = {Input("4")},
+    slot_5 = {Input("5")},
+
     click = {Input(1, "mouse")},
     secondary_click = {Input(2, "mouse")},
 
