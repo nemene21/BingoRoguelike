@@ -22,24 +22,41 @@ function Player:new(x, y)
     self.walk_particles.layer = DrawLayers.VFX_UNDER
     self:add_drawable("sprite", Sprite("assets/test.png"))
 
-    self.inventory = {}
     self:_init_inventory()
-
 end
 
 function Player:_init_inventory()
+    self.inventory = {}
+    self.hotbar = {}
+
     self.mouse_slot = MouseSlot()
     self.mouse_slot:set_stack(ItemStack(get_item("stone_pickaxe")))
     current_scene:add_entity(self.mouse_slot)
+
+    local slot_margin = 15
+    local hotbar_distance = 6
+    local inventory_origin = 9
     
     local slot
     for i = 0, 4 do
-        slot = Slot(9 + i * 15, 9)
+        slot = Slot(inventory_origin + i * slot_margin, inventory_origin)
         current_scene:add_entity(slot)
         table.insert(self.inventory, slot)
+        table.insert(self.hotbar, slot)
 
         slot:set_stack(ItemStack(get_item("stone"), 5))
         slot:set_mouse_slot(self.mouse_slot)
+    end
+
+    for x = 0, 4 do
+        for y = 1, 3 do
+            slot = Slot(inventory_origin + x * slot_margin, inventory_origin + y * slot_margin + hotbar_distance)
+            current_scene:add_entity(slot)
+            table.insert(self.inventory, slot)
+    
+            slot:set_stack(ItemStack(get_item("stone"), 5))
+            slot:set_mouse_slot(self.mouse_slot)
+        end
     end
 end
 
