@@ -74,3 +74,24 @@ function ItemStack:add(adding)
     self.amount = self.amount + 1
     return true
 end
+
+FloorItem = class(Entity)
+function FloorItem:new(stack, x, y)
+    Entity.new(self)
+    self:add(TransComp(x, y))
+
+    self.stack = stack
+    self:add_drawable("sprite", Spritesheet("assets/itemsheet.png", 8, 8))
+    self.sprite.framepos.x = stack.data.tex_id
+end
+
+function FloorItem:_process(delta)
+    self.sprite.pos:setv(self.Trans.pos)
+
+    -- print(self.Trans.pos:get())
+
+    local player = current_scene.player
+    if not player then return nil end
+
+    
+end

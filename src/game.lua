@@ -14,6 +14,7 @@ function Game:restart()
     self.player = Player(100, 100)
 
     self:add_entity(self.player)
+    self:add_entity(FloorItem(ItemStack(get_item("stone")), 100, 100))
 end
 
 function Game:_process(delta)

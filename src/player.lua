@@ -2,7 +2,7 @@ require "framework.ecs"
 require "framework.vector"
 require "framework.camera"
 require "framework.transform"
-require "framework.drawable"
+require "framework.sprite"
 require "framework.input"
 require "framework.particles"
 
