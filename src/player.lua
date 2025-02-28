@@ -89,6 +89,10 @@ function Player:_process(delta)
         self.Trans.vel.y = -256
     end
 
+    if is_just_released("jump") then
+        self.Trans.vel.y = self.Trans.vel.y * 0.25
+    end
+
     if is_just_pressed("inventory open") then
         self.inventory_open = not self.inventory_open
 

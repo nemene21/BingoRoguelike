@@ -2,6 +2,7 @@ require "framework.class"
 require "framework.signal"
 
 local pressed_inputs = {}
+local released_inputs = {}
 local scroll = 0
 
 function get_scroll() return scroll end
@@ -60,8 +61,16 @@ function check_keyboard_input(key)
     table.insert(pressed_inputs, Input(key, "keyboard"))
 end
 
+function check_keyboard_released(key)
+    table.insert(released_inputs, Input(key, "keyboard"))
+end
+
 function check_mouse_input(key)
     table.insert(pressed_inputs, Input(key, "mouse"))
+end
+
+function check_mouse_released(key)
+    table.insert(released_inputs, Input(key, "mouse"))
 end
 
 function love.joystickpressed(joystick, key)
@@ -92,7 +101,22 @@ function is_just_pressed(action)
     return false
 end
 
+function is_just_released(action)
+    local action = actions[action]
+
+    for i, first in ipairs(action) do
+        for j, other in ipairs(released_inputs) do
+
+            if first.key == other.key and first.source == other.source then
+                return true
+            end
+        end
+    end
+    return false
+end
+
 function input_step()
     pressed_inputs = {}
+    released_inputs = {}
     scroll = 0
 end

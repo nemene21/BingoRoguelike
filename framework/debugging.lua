@@ -122,7 +122,7 @@ end
 love.mousereleased = function(x, y, button, ...)
     imgui.love.MouseReleased(button)
     if not imgui.love.GetWantCaptureMouse() then
-
+        check_mouse_released(button)
     end
 end
 
@@ -143,7 +143,7 @@ end
 love.keyreleased = function(key, ...)
     imgui.love.KeyReleased(key)
     if not imgui.love.GetWantCaptureKeyboard() then
-        -- your code here 
+        check_keyboard_released(key)
     end
 end
 
