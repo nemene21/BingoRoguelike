@@ -78,7 +78,7 @@ end
 FloorItem = class(Entity)
 function FloorItem:new(stack, x, y)
     Entity.new(self)
-    self:add(TransComp(x, y))
+    self:add(TransComp(x, y, PointCollider(0, 4)))
 
     self.stack = stack
     self:add_drawable("sprite", Spritesheet("assets/itemsheet.png", 8, 8))
@@ -87,11 +87,11 @@ end
 
 function FloorItem:_process(delta)
     self.sprite.pos:setv(self.Trans.pos)
+    self.Trans.vel.y = self.Trans.vel.y + 800 * delta
+    if self.Trans:on_floor() then self.Trans.vel.y = 0 end
 
-    -- print(self.Trans.pos:get())
+    if self.Trans.vel.y > 256 then self.Trans.vel.y = 256 end
 
     local player = current_scene.player
     if not player then return nil end
-
-    
 end

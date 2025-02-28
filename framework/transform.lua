@@ -13,6 +13,10 @@ function RectCollider(x, y, width, height)
     return points
 end
 
+function PointCollider(x, y)
+    return {{x, y}}
+end
+
 
 TransComp = class(Comp)
 function TransComp:new(x, y, collider, scalex, scaley, ang)

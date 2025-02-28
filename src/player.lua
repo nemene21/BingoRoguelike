@@ -48,7 +48,6 @@ function Player:_init_inventory()
         table.insert(self.inventory, slot)
         table.insert(self.hotbar, slot)
 
-        slot:set_stack(ItemStack(get_item("stone"), 5))
         slot:set_mouse_slot(self.mouse_slot)
     end
 
@@ -145,4 +144,21 @@ function Player:_process(delta)
     self.walk_particles.pos:add(0, 3)
     self.walk_particles.emitting = math.abs(self.Trans.vel.x) > 16
     add_light(self.Trans.pos, 5)
+end
+
+function Player:give_item(stack)
+    for i, slot in ipairs(self.inventory) do
+        if stack.amount <= 0 then
+            break
+        end
+
+        if not slot.stack then goto continue end
+        print(slot.stack.data.name, stack.data.name)
+
+        if item_compare(slot.stack.data, stack.data) then
+            slot.stack:take_all_from(stack)
+            slot:update_data()
+        end
+        ::continue::
+    end
 end

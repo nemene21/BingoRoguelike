@@ -8,6 +8,11 @@ Tilenames = enum({
     "COUNT"
 })
 
+local TILE_DATA = {}
+TILE_DATA[Tilenames.ROCK] = {
+    drop = "stone"
+}
+
 local TileRenderer = class(Drawable)
 local TileBreakRenderer = class(Drawable)
 Tilemap = class(Entity)
@@ -62,14 +67,18 @@ function Tilemap:get_tilev(vec)
 end
 
 function Tilemap:damage_tile(x, y, damage)
-    x = x - self.tilepos.x
-    y = y - self.tilepos.y
-    local tile = self.tiledata[x + y*self.tilewidth]
+    local tx = x - self.tilepos.x
+    local ty = y - self.tilepos.y
+    local tile = self.tiledata[tx + ty*self.tilewidth]
     if tile then
         tile[3] = tile[3] - damage
 
         if tile[3] < 0 then
-            self.tiledata[x + y*self.tilewidth] = nil
+            self.tiledata[tx + ty*self.tilewidth] = nil
+            current_scene:add_entity(
+                FloorItem(ItemStack(get_item("stone")),
+                x * self.tilesize + self.tilesize * 0.5, y * self.tilesize + self.tilesize * 0.5)
+            )
         end
     end
 end
