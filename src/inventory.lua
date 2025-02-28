@@ -21,6 +21,7 @@ function Slot:new(x, y)
     self.item_sprite.layer = DrawLayers.UI
     self.item_sprite.framepos.x = ItemTextures.NULL
     self.item_sprite.pos:add(0, -1)
+    self.item_sprite:hide()
 
     self:add_drawable("sprite", Sprite("assets/itemslot.png"))
     self.sprite.layer = DrawLayers.UI

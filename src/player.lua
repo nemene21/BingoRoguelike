@@ -51,14 +51,13 @@ function Player:_init_inventory()
         slot:set_mouse_slot(self.mouse_slot)
     end
 
-    for x = 0, 4 do
-        for y = 1, 3 do
+    for y = 1, 3 do
+        for x = 0, 4 do
             slot = Slot(inventory_origin + x * slot_margin, inventory_origin + y * slot_margin + hotbar_distance)
             current_scene:add_entity(slot)
             table.insert(self.inventory, slot)
             table.insert(self.inventory_no_hotbar, slot)
     
-            slot:set_stack(ItemStack(get_item("stone"), 5))
             slot:set_mouse_slot(self.mouse_slot)
             slot:hide()
             slot:pause()
@@ -153,7 +152,8 @@ function Player:give_item(stack)
         end
 
         if not slot.stack then
-            slot.stack = stack
+            slot.stack = ItemStack(stack.data, stack.amount)
+            stack.amount = 0
             slot:update_data()
             break
         end

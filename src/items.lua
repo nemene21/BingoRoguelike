@@ -101,5 +101,6 @@ function FloorItem:_process(delta)
         if self.stack.amount == 0 then
             self:kill()
         end
+        self:kill()
     end
 end

@@ -25,6 +25,12 @@ function Vec:get()
     return self.x, self.y
 end
 
+function Vec:distance_to(other)
+    local diffx = other.x - self.x
+    local diffy = other.y - self.y
+    return math.sqrt(diffx*diffx + diffy*diffy)
+end
+
 function Vec:addv(other)
     self.x = self.x + other.x
     self.y = self.y + other.y
