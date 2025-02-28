@@ -152,13 +152,19 @@ function Player:give_item(stack)
             break
         end
 
-        if not slot.stack then goto continue end
-        print(slot.stack.data.name, stack.data.name)
-
+        if not slot.stack then
+            slot.stack = stack
+            slot:update_data()
+            break
+        end
+ 
         if item_compare(slot.stack.data, stack.data) then
             slot.stack:take_all_from(stack)
             slot:update_data()
         end
-        ::continue::
     end
+end
+
+function give(name, amount)
+    current_scene.player:give_item(ItemStack(get_item(name), amount))
 end

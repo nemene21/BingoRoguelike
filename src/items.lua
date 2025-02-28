@@ -94,4 +94,12 @@ function FloorItem:_process(delta)
 
     local player = current_scene.player
     if not player then return nil end
+
+    local dist = self.Trans.pos:distance_to(player.Trans.pos)
+    if dist < 8 then
+        player:give_item(self.stack)
+        if self.stack.amount == 0 then
+            self:kill()
+        end
+    end
 end
