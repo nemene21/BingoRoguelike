@@ -3,6 +3,7 @@ require "framework.ecs"
 require "framework.debugging"
 require "framework.lighting"
 require "src.game"
+require "src.chunk_loader"
 
 function love.load()
 --[[     if love.system.getOS() == "Windows" then
@@ -16,7 +17,7 @@ function love.load()
         end
     end ]]
 
-    RES = Vec(160, 90)
+    RES = Vec(160, 90) * 4
     lw.setMode(RES.x, RES.y)
     screen = lg.newCanvas(RES.x, RES.y)
     screen:setFilter("nearest", "nearest")
