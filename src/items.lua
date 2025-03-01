@@ -1,5 +1,4 @@
 require "framework.drawable"
-require "framework."
 
 ItemData = class()
 function ItemData:new(name, tex_id, maxstack)
@@ -80,7 +79,7 @@ FloorItem = class(Entity)
 function FloorItem:new(stack, x, y)
     Entity.new(self)
     self:add(TransComp(x, y, PointCollider(0, 4)))
-    self:add(ChunkLoader())
+    -- self:add(ChunkLoader())
 
     self.stack = stack
     self:add_drawable("sprite", Spritesheet("assets/itemsheet.png", 8, 8))
@@ -103,7 +102,6 @@ function FloorItem:_process(delta)
         if self.stack.amount == 0 then
             self:kill()
         end
-        self:kill()
     end
 end
 
