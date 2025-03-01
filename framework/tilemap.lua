@@ -81,7 +81,7 @@ function Tilemap:damage_tile(x, y, damage)
     local data = TILE_DATA[tile[1]]
     if not data then return end
     if not data.loot_table then return end
-    loot_table_data[data.loot_table]:drop(x * 8, y * 8)
+    loot_table_data[data.loot_table]:drop(x*self.tilesize + self.tilesize*0.5, y*self.tilesize + self.tilesize*0.5)
 end
 
 function Tilemap:stringify()
