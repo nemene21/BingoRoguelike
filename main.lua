@@ -24,7 +24,7 @@ function love.load()
     lg.setDefaultFilter("nearest", "nearest")
 
     imgui.love.Init()
-    love.window.setVSync(0)
+    -- love.window.setVSync(0)
 
     game = Game()
     set_current_scene(game)

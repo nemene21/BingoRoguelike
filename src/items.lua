@@ -104,3 +104,29 @@ function FloorItem:_process(delta)
         self:kill()
     end
 end
+
+LootTable = class()
+function LootTable:new(drops)
+    self.drops = drops
+end
+
+function LootTable:drop(x, y)
+    local item_stack
+    local floor_item
+
+    for name, amount in pairs(self.drops) do
+        item_stack = ItemStack(get_item(name), amount)
+        floor_item = FloorItem(item_stack, x, y)
+
+        current_scene:add_entity(floor_item)
+    end
+end
+
+LootTables = enum({
+    "ROCK"
+})
+
+loot_table_data = {}
+loot_table_data[LootTables.ROCK] = LootTable({
+    stone = 5
+})

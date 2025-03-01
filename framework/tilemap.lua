@@ -1,5 +1,6 @@
 require "framework.ecs"
 require "framework.drawable"
+require "src.items"
 
 Tilenames = enum({
     "ROCK",
@@ -10,7 +11,7 @@ Tilenames = enum({
 
 local TILE_DATA = {}
 TILE_DATA[Tilenames.ROCK] = {
-    drop = "stone"
+    loot_table = LootTables.ROCK
 }
 
 local TileRenderer = class(Drawable)
@@ -70,17 +71,17 @@ function Tilemap:damage_tile(x, y, damage)
     local tx = x - self.tilepos.x
     local ty = y - self.tilepos.y
     local tile = self.tiledata[tx + ty*self.tilewidth]
-    if tile then
-        tile[3] = tile[3] - damage
 
-        if tile[3] < 0 then
-            self.tiledata[tx + ty*self.tilewidth] = nil
-            current_scene:add_entity(
-                FloorItem(ItemStack(get_item("stone")),
-                x * self.tilesize + self.tilesize * 0.5, y * self.tilesize + self.tilesize * 0.5)
-            )
-        end
-    end
+    if not tile then return end
+    tile[3] = tile[3] - damage
+
+    if tile[3] > 0 then return end
+    self.tiledata[tx + ty*self.tilewidth] = nil
+
+    local data = TILE_DATA[tile[1]]
+    if not data then return end
+    if not data.loot_table then return end
+    loot_table_data[data.loot_table]:drop(x * 8, y * 8)
 end
 
 function Tilemap:stringify()
