@@ -1,6 +1,3 @@
-require "framework.class"
-require "framework.signal"
-
 local pressed_inputs = {}
 local released_inputs = {}
 local scroll = 0

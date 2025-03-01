@@ -1,11 +1,10 @@
 
-require "framework.ecs"
-require "framework.debugging"
-require "framework.lighting"
-require "src.game"
-require "src.chunk_loader"
+require "framework.misc"
 
 function love.load()
+    load_directory("src")
+    load_directory("framework")
+    
 --[[     if love.system.getOS() == "Windows" then
         local ffi = require'ffi'
         local dwm = ffi.load("dwmapi")

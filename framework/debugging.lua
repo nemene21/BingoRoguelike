@@ -1,7 +1,5 @@
 local ffi = require("ffi")
 imgui = require "cimgui"
-require "framework.input"
-require "framework.ecs"
 
 process_time = 0
 draw_time = 0

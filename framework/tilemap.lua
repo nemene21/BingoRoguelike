@@ -1,7 +1,3 @@
-require "framework.ecs"
-require "framework.drawable"
-require "src.items"
-
 Tilenames = enum({
     "ROCK",
     "LOG",

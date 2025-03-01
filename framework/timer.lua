@@ -1,5 +1,3 @@
-require "framework.ecs"
-
 Timer = class()
 function Timer:new(time, auto)
     self.time = time or 1

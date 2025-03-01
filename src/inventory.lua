@@ -1,7 +1,3 @@
-require "src.items"
-require "framework.ecs"
-require "framework.label"
-
 local SLOTSIZE = 12
 
 local SLOT_NUM_OFFSET = Vec(7, 2)

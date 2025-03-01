@@ -1,6 +1,3 @@
-require "framework.drawable"
-require "framework.timer"
-
 local json = require "json.json"
 
 local particle_pool = {}

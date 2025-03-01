@@ -1,5 +1,32 @@
 
 PI = 3.14159265359
+require "framework.class"
+
+-- From my good friend cheeseman :), also modified by yours truly
+function load_directory(dir, recurse)
+    local init_funcs = {}
+    local items = love.filesystem.getDirectoryItems(dir)
+    for _, item in ipairs(items) do
+        local path = dir .. "/" .. item
+        local info = love.filesystem.getInfo(path)
+        if info then
+            if info.type == "file" then
+                if path:match("%.lua$") then
+                    local require_path = path:gsub("%.lua$", ""):gsub("%/", ".")
+                    local init_func = require(require_path)
+                    if init_func then
+                        table.insert(init_funcs, init_func)
+                    end
+                end
+            elseif info.type == "directory" and recurse then
+                load_directory(path, recurse)
+            end
+        end
+    end
+    for i, func in ipairs(init_funcs) do
+        func()
+    end
+end
 
 function btoi(boolean)
     return boolean and 1 or 0

@@ -1,14 +1,3 @@
-require "framework.ecs"
-require "framework.vector"
-require "framework.camera"
-require "framework.transform"
-require "framework.sprite"
-require "framework.input"
-require "framework.particles"
-
-require "src.chunk_loader"
-require "src.inventory"
-require "framework.lighting"
 
 Player = class(Entity)
 function Player:new(x, y)

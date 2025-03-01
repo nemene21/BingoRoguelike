@@ -1,5 +1,3 @@
-require "framework.ecs"
-
 ChunkHandlerComp = class(Comp)
 function ChunkHandlerComp:new()
     Entity.new(Comp)

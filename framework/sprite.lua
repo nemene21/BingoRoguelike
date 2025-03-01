@@ -1,5 +1,3 @@
-require "framework.drawable"
-
 Sprite = class(Drawable)
 function Sprite:new(path, centered)
     Drawable.new(self)

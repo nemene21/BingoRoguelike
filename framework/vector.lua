@@ -1,6 +1,3 @@
-require "framework.class"
-require "framework.misc"
-
 Vec = class()
 
 function Vec:new(x, y)

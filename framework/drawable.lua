@@ -1,7 +1,3 @@
-require "framework.class"
-require "framework.resource_manager"
-require "framework.enum"
-
 DrawLayers = enum({
     "BACKGROUND",
     "VFX_UNDER",

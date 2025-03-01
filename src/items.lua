@@ -1,5 +1,3 @@
-require "framework.drawable"
-
 ItemData = class()
 function ItemData:new(name, tex_id, maxstack)
     self.name = name or "NULL"
@@ -79,7 +77,7 @@ FloorItem = class(Entity)
 function FloorItem:new(stack, x, y)
     Entity.new(self)
     self:add(TransComp(x, y, PointCollider(0, 4)))
-    -- self:add(ChunkLoader())
+    self:add(ChunkHandler())
 
     self.stack = stack
     self:add_drawable("sprite", Spritesheet("assets/itemsheet.png", 8, 8))

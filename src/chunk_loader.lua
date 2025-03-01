@@ -1,6 +1,3 @@
-require "framework.ecs"
-require "src.chunk"
-
 ChunkLoaderComp = class(Comp)
 function ChunkLoaderComp:new()
     Comp.new(self, "ChunkLoader")

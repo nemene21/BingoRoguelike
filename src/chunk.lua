@@ -1,29 +1,35 @@
-require "framework.ecs"
-require "framework.tilemap"
 local fnl = require "fnl.fnl"
 
-local BIOME_DATA = {
-    {
-        name = "Cave",
-        base_tile = Tilenames.ROCK
-    },
-    {
-        name = "Nonsense test biome",
-        base_tile = Tilenames.PLANK
-    }
-}
-local cave_noise = fnl.createState()
-cave_noise:setNoiseType("perlin")
-cave_noise:setFrequency(0.075)
+local BIOME_DATA
+local cave_noise
+local biome_noise
 
-local biome_noise = fnl.createState()
-biome_noise:setNoiseType("cellular")
-biome_noise:setFrequency(0.02)
-biome_noise:setSeed(0)
-biome_noise:setLacunarity(0)
-biome_noise:setOctaves(0)
-biome_noise:setGain(100)
-biome_noise:setCellularReturnType("cellvalue")
+local function init()
+    BIOME_DATA = {
+        {
+            name = "Cave",
+            base_tile = Tilenames.ROCK
+        },
+        {
+            name = "Nonsense test biome",
+            base_tile = Tilenames.PLANK
+        }
+    }
+    cave_noise = fnl.createState()
+    cave_noise:setNoiseType("perlin")
+    cave_noise:setFrequency(0.075)
+
+    biome_noise = fnl.createState()
+    biome_noise:setNoiseType("cellular")
+    biome_noise:setFrequency(0.02)
+    biome_noise:setSeed(0)
+    biome_noise:setLacunarity(0)
+    biome_noise:setOctaves(0)
+    biome_noise:setGain(100)
+    biome_noise:setCellularReturnType("cellvalue")
+
+    chunkpos = Vec()
+end
 
 CHUNK_DIST = 2
 CHUNKSIZE = 16
@@ -61,11 +67,10 @@ function Chunk:unload()
         entities = {}
     }
     local entity
-    for i = #self.entities, 1, -1 do
-        entity = self.entities[i]
+    for entity, _ in pairs(self.entities) do
         entity:kill()
         table.insert(chunk_data.entities, entity:stringify())
-        self.entities[i] = nil
+        self.entities[entity] = nil
     end
 
     local file = lf.newFile(self.filename)
@@ -93,8 +98,13 @@ function Chunk:load()
 end
 
 function Chunk:add_entity(entity)
-    table.insert(self.entities, entity)
+    self.entities[entity] = true
 end
+
+function Chunk:remove_entity(entity)
+    self.entities[entity] = nil
+end
+
 
 local seed = lm.random()*1000
 function Chunk:generate()
@@ -126,7 +136,7 @@ function Chunk:generate()
     end
 end
 
-local chunkpos = Vec()
+local chunkpos
 function process_chunks()
     -- Unload chunks that are too far
     local dist
@@ -159,3 +169,5 @@ function get_chunk_at_pos(x, y)
     local key = ckey(math.floor((x/8)/CHUNKSIZE), math.floor((y/8)/CHUNKSIZE))
     return loaded_chunks[key]
 end
+
+return init

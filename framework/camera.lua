@@ -1,7 +1,4 @@
 
-require "framework.ecs"
-require "framework.transform"
-
 -- <Camera class>
 global_camera = nil
 Camera = class()

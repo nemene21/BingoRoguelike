@@ -1,5 +1,3 @@
-require "framework.drawable"
-
 font_manager = ResManager(function(path)
     return lg.newFont(path, 8)
 end)

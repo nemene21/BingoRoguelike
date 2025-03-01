@@ -1,8 +1,3 @@
-require "framework.class"
-require "framework.misc"
-require "framework.signal"
-require "framework.drawable"
-
 -- <Scene>
 local function register_comp(scene, comp)
     -- If component is registered for the first time create it's table

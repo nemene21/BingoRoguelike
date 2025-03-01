@@ -1,7 +1,3 @@
-require "framework.ecs"
-require "framework.vector"
-require "src.chunk"
-
 function RectCollider(x, y, width, height)
     local width  = width  * 0.5
     local height = height * 0.5

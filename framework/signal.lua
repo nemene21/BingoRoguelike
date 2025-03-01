@@ -1,5 +1,3 @@
-require("framework.class")
-
 Signal = class()
 
 function Signal:new()

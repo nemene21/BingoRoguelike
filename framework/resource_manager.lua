@@ -1,4 +1,3 @@
-require "framework.class"
 local imgui = require "cimgui"
 
 -- <Resource>
