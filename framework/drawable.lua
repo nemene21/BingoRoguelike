@@ -1,19 +1,6 @@
-DrawLayers = enum({
-    "BACKGROUND",
-    "VFX_UNDER",
-    "DEFAULT",
-    "VFX_OVER",
-    "TILES",
-    "TILE_CRACKS",
-    "COUNT",
-    "UI"
-})
 
 local ui_draw_layer = {}
 local draw_layers = {}
-for i = 1, DrawLayers.COUNT do
-    draw_layers[i] = {}
-end
 
 local function drawable_comparator(a, b)
     return a.footprint > b.footprint
@@ -59,9 +46,6 @@ function draw_UI_drawables()
     draw_layer(ui_draw_layer)
     lg.setShader()
 end
-
-image_manager = ResManager(lg.newImage)
-shader_manager = ResManager(lg.newShader)
 
 Drawable = class()
 function Drawable:new()
@@ -110,3 +94,23 @@ end
 
 function Drawable:_process(delta) end
 function Drawable:_draw() end
+
+return function()
+    DrawLayers = enum({
+        "BACKGROUND",
+        "VFX_UNDER",
+        "DEFAULT",
+        "VFX_OVER",
+        "TILES",
+        "TILE_CRACKS",
+        "COUNT",
+        "UI"
+    })
+
+    for i = 1, DrawLayers.COUNT do
+        draw_layers[i] = {}
+    end
+
+    image_manager = ResManager(lg.newImage)
+    shader_manager = ResManager(lg.newShader)
+end

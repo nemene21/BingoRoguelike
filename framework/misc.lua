@@ -2,9 +2,9 @@
 PI = 3.14159265359
 require "framework.class"
 
+local init_funcs = {}
 -- From my good friend cheeseman :), also modified by yours truly
 function load_directory(dir, recurse)
-    local init_funcs = {}
     local items = love.filesystem.getDirectoryItems(dir)
     for _, item in ipairs(items) do
         local path = dir .. "/" .. item
@@ -14,7 +14,7 @@ function load_directory(dir, recurse)
                 if path:match("%.lua$") then
                     local require_path = path:gsub("%.lua$", ""):gsub("%/", ".")
                     local init_func = require(require_path)
-                    if init_func then
+                    if type(init_func) == "function" then
                         table.insert(init_funcs, init_func)
                     end
                 end
@@ -23,9 +23,13 @@ function load_directory(dir, recurse)
             end
         end
     end
+end
+
+function call_init_funcs()
     for i, func in ipairs(init_funcs) do
         func()
     end
+    init_func = {}
 end
 
 function btoi(boolean)

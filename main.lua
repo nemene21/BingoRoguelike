@@ -1,9 +1,12 @@
 
 require "framework.misc"
+require "framework.class"
+require "framework.ecs"
 
 function love.load()
     load_directory("src")
     load_directory("framework")
+    call_init_funcs()
     
 --[[     if love.system.getOS() == "Windows" then
         local ffi = require'ffi'

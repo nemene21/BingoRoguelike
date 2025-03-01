@@ -1,6 +1,6 @@
 local SLOTSIZE = 12
 
-local SLOT_NUM_OFFSET = Vec(7, 2)
+local SLOT_NUM_OFFSET
 
 local SlotRenderer = class(Drawable)
 Slot = class(Entity)
@@ -113,4 +113,8 @@ function MouseSlot:_process(delta)
     self.item_sprite.pos:setv(self.Trans.pos)
     self.amount_label.pos:setv(self.Trans.pos)
     self.amount_label.pos:addv(SLOT_NUM_OFFSET)
+end
+
+return function()
+   SLOT_NUM_OFFSET = Vec(7, 2)
 end

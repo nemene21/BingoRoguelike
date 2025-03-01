@@ -4,33 +4,6 @@ local BIOME_DATA
 local cave_noise
 local biome_noise
 
-local function init()
-    BIOME_DATA = {
-        {
-            name = "Cave",
-            base_tile = Tilenames.ROCK
-        },
-        {
-            name = "Nonsense test biome",
-            base_tile = Tilenames.PLANK
-        }
-    }
-    cave_noise = fnl.createState()
-    cave_noise:setNoiseType("perlin")
-    cave_noise:setFrequency(0.075)
-
-    biome_noise = fnl.createState()
-    biome_noise:setNoiseType("cellular")
-    biome_noise:setFrequency(0.02)
-    biome_noise:setSeed(0)
-    biome_noise:setLacunarity(0)
-    biome_noise:setOctaves(0)
-    biome_noise:setGain(100)
-    biome_noise:setCellularReturnType("cellvalue")
-
-    chunkpos = Vec()
-end
-
 CHUNK_DIST = 2
 CHUNKSIZE = 16
 
@@ -170,4 +143,29 @@ function get_chunk_at_pos(x, y)
     return loaded_chunks[key]
 end
 
-return init
+return function()
+    BIOME_DATA = {
+        {
+            name = "Cave",
+            base_tile = Tilenames.ROCK
+        },
+        {
+            name = "Nonsense test biome",
+            base_tile = Tilenames.PLANK
+        }
+    }
+    cave_noise = fnl.createState()
+    cave_noise:setNoiseType("perlin")
+    cave_noise:setFrequency(0.075)
+
+    biome_noise = fnl.createState()
+    biome_noise:setNoiseType("cellular")
+    biome_noise:setFrequency(0.02)
+    biome_noise:setSeed(0)
+    biome_noise:setLacunarity(0)
+    biome_noise:setOctaves(0)
+    biome_noise:setGain(100)
+    biome_noise:setCellularReturnType("cellvalue")
+
+    chunkpos = Vec()
+end

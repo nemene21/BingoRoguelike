@@ -40,7 +40,7 @@ function TransComp:set_collider(collider)
     self.collides = collider ~= nil
 end
 
-local collision_point = Vec()
+local collision_point
 function TransComp:get_collision(point, movx, movy)
     local chunk = get_chunk_at_pos(self.pos.x + point[1], self.pos.y + point[2])
     if not chunk then return false end
@@ -107,4 +107,8 @@ function TransComp:move(vec)
     self:do_collision(vec.x, 0)
     self.pos.y = self.pos.y + vec.y
     self:do_collision(0, vec.y)
+end
+
+return function()
+   collision_point = Vec()
 end

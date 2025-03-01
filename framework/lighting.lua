@@ -1,4 +1,4 @@
-local thread = love.thread.newThread("framework/light_thread.lua")
+local thread = love.thread.newThread("threads/light_thread.lua")
 local channel_in  = love.thread.getChannel("light_request")
 local channel_out = love.thread.getChannel("light_result")
 thread:start(channel_in, channel_out)

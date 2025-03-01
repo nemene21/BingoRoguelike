@@ -1,6 +1,3 @@
-font_manager = ResManager(function(path)
-    return lg.newFont(path, 8)
-end)
 DEFAULT_FONT = "assets/nokia.ttf"
 
 Label = class(Drawable)
@@ -39,4 +36,10 @@ end
 
 function Label:_draw()
     draw_text_outline(self.text, self.font_res:get(), 0, 0, self.color)
+end
+
+return function()
+    font_manager = ResManager(function(path)
+        return lg.newFont(path, 8)
+    end)
 end

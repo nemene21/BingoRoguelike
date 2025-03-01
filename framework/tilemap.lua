@@ -1,14 +1,12 @@
+require "framework.enum"
+
+local TILE_DATA
 Tilenames = enum({
     "ROCK",
     "LOG",
     "PLANK",
     "COUNT"
 })
-
-local TILE_DATA = {}
-TILE_DATA[Tilenames.ROCK] = {
-    loot_table = LootTables.ROCK
-}
 
 local TileRenderer = class(Drawable)
 local TileBreakRenderer = class(Drawable)
@@ -160,4 +158,11 @@ function TileBreakRenderer:_draw()
         end
     end
     lg.translate(-tilemap.tilepos.x * tilemap.tilesize, -tilemap.tilepos.y * tilemap.tilesize)
+end
+
+return function()
+    TILE_DATA = {}
+    TILE_DATA[Tilenames.ROCK] = {
+        loot_table = LootTables.ROCK
+    }
 end

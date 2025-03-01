@@ -4,7 +4,7 @@ function ChunkLoaderComp:new()
     self.chunkpos = Vec()
 end
 
-local calc_chunkpos = Vec()
+local calc_chunkpos
 function ChunkLoaderComp:_process(delta)
     local trans = self.entity.Trans
     assert(trans, "Parent entity has no TransComp")
@@ -32,4 +32,8 @@ function ChunkLoaderComp:_process(delta)
             end
         end
     end
+end
+
+return function()
+    calc_chunkpos = Vec()
 end

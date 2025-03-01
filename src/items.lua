@@ -14,24 +14,10 @@ function ItemData:copy()
     return cpy
 end
 
-ItemTextures = enum0({
-    "NULL",
-    "STONE",
-    "WOOD",
-    "STONE_PICKAXE",
-    "STONE_SWORD",
-    "DYNAMITE",
-    "GLOWSTICK",
-    "HEALTH_POTION",
-    "COUNT"
-})
-
-local ITEM_REGISTRY = {
-    stone = ItemData("Stone", ItemTextures.STONE),
-    stone_pickaxe = ItemData("Stone pickaxe", ItemTextures.STONE_PICKAXE, 1),
-}
+local ITEM_REGISTRY
 
 function get_item(name)
+    assert(ITEM_REGISTRY[name], name.." is not an item.")
     return ITEM_REGISTRY[name]:copy()
 end
 
@@ -74,14 +60,15 @@ function ItemStack:add(adding)
 end
 
 FloorItem = class(Entity)
-function FloorItem:new(stack, x, y)
+function FloorItem:new(name, amount, x, y)
     Entity.new(self)
     self:add(TransComp(x, y, PointCollider(0, 4)))
-    self:add(ChunkHandler())
+    self:add(ChunkHandlerComp())
 
-    self.stack = stack
+    self.stack = ItemStack(get_item(name), amount)
+    self.item_name = name
     self:add_drawable("sprite", Spritesheet("assets/itemsheet.png", 8, 8))
-    self.sprite.framepos.x = stack.data.tex_id
+    self.sprite.framepos.x = self.stack.data.tex_id
 end
 
 function FloorItem:_process(delta)
@@ -103,28 +90,50 @@ function FloorItem:_process(delta)
     end
 end
 
+function FloorItem:stringify()
+    return class2string(self, {self.item_name, self.stack.amount, self.Trans.pos.x, self.Trans.pos.y})
+end
+
 LootTable = class()
 function LootTable:new(drops)
     self.drops = drops
 end
 
 function LootTable:drop(x, y)
-    local item_stack
     local floor_item
-
     for name, amount in pairs(self.drops) do
-        item_stack = ItemStack(get_item(name), amount)
-        floor_item = FloorItem(item_stack, x, y)
+        floor_item = FloorItem(name, amount, x, y)
 
         current_scene:add_entity(floor_item)
     end
 end
 
-LootTables = enum({
-    "ROCK"
-})
+return function()
+    -- ITEM TEXTURES
+    ItemTextures = enum0({
+        "NULL",
+        "STONE",
+        "WOOD",
+        "STONE_PICKAXE",
+        "STONE_SWORD",
+        "DYNAMITE",
+        "GLOWSTICK",
+        "HEALTH_POTION",
+        "COUNT"
+    })
+    -- ITEM DATA
+    ITEM_REGISTRY = {
+        stone = ItemData("Stone", ItemTextures.STONE),
+        stone_pickaxe = ItemData("Stone pickaxe", ItemTextures.STONE_PICKAXE, 1),
+    }
 
-loot_table_data = {}
-loot_table_data[LootTables.ROCK] = LootTable({
-    stone = 5
-})
+    -- LOOT TABLES
+    LootTables = enum({
+        "ROCK"
+    })
+
+    loot_table_data = {}
+    loot_table_data[LootTables.ROCK] = LootTable({
+        stone = 5
+    })
+end

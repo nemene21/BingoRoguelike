@@ -20,8 +20,6 @@ function Camera:get_origin()
     return self.pos.x + self.offset.x, self.pos.y + self.offset.y
 end
 
-global_camera = Camera()
-
 -- <Camera comp>
 CamComp = class(Comp)
 
@@ -35,4 +33,8 @@ function CamComp:_process(delta)
     if trans then
         self.camera:follow(trans.pos)
     end
+end
+
+return function()
+    global_camera = Camera()
 end

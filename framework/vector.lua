@@ -29,7 +29,7 @@ function Vec:distance_to(other)
 end
 
 function Vec:compare(other)
-    return other.x == self.x or other.y == self.y
+    return other.x == self.x and other.y == self.y
 end
 
 function Vec:addv(other)

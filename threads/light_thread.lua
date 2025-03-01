@@ -1,4 +1,5 @@
 require "love.image"
+require "framework.misc"
 
 local channel_in = love.thread.getChannel("light_request")
 local channel_out = love.thread.getChannel("light_result")

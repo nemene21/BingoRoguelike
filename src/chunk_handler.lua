@@ -15,7 +15,16 @@ function ChunkHandlerComp:_process(delta)
         math.floor((trans.pos.y / 8) / CHUNKSIZE)
     )
 
-    if self.chunkpos:compare(calc_chunkpos) then
+    if not self.chunkpos:compare(calc_chunkpos) then
+        local chunk = loaded_chunks[ckey(self.chunkpos:get())]
+        if chunk then chunk:remove_entity(self.entity) end
+
         self.chunkpos:setv(calc_chunkpos)
+        chunk = loaded_chunks[ckey(self.chunkpos:get())]
+        chunk:add_entity(self.entity)
     end
+end
+
+return function()
+    calc_chunkpos = Vec()
 end
