@@ -31,6 +31,10 @@ function Vec:distance_to(other)
     return math.sqrt(diffx*diffx + diffy*diffy)
 end
 
+function Vec:compare(other)
+    return other.x == self.x or other.y == self.y
+end
+
 function Vec:addv(other)
     self.x = self.x + other.x
     self.y = self.y + other.y

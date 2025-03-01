@@ -16,4 +16,8 @@ function ChunkHandlerComp:_process(delta)
         math.floor((trans.pos.x / 8) / CHUNKSIZE),
         math.floor((trans.pos.y / 8) / CHUNKSIZE)
     )
+
+    if self.chunkpos:compare(calc_chunkpos) then
+        self.chunkpos:setv(calc_chunkpos)
+    end
 end
