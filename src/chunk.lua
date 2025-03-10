@@ -78,6 +78,30 @@ function Chunk:remove_entity(entity)
     self.entities[entity] = nil
 end
 
+function chunk_fugitive(entity)
+    local chunkpos = entity.ChunkHandler.chunkpos
+    local path = "chunkdata/fugitives/"..tostring(entity.ChunkHandler.chunkpos.x)..","..tostring(entity.ChunkHandler.chunkpos.y)..".chunk"
+
+    local frozen_ents
+
+    local file = lf.newFile(path)
+    if lf.getInfo(path) then
+        file:open("r")
+        local strdata = file:read()
+        local offset, ents = msgpack.unpack(strdata)
+        frozen_ents = ents
+        file:close()
+    else
+        frozen_ents = {}
+    end
+
+    table.insert(frozen_ents, entity:stringify())
+    file:open("w")
+    file:write(msgpack.pack(frozen_ents))
+    file:close()
+
+    entity:kill()
+end
 
 local seed = lm.random()*1000
 function Chunk:generate()
@@ -131,11 +155,16 @@ function clear_world()
     if not love.filesystem.getInfo("chunkdata", "directory") then
         love.filesystem.createDirectory("chunkdata")
     end
+    if not love.filesystem.getInfo("chunkdata/fugitives", "directory") then
+        love.filesystem.createDirectory("chunkdata/fugitives")
+    end
+
     for key, chunk in pairs(loaded_chunks) do
         chunk:unload()
         loaded_chunks[key] = nil
     end
     clear_dir("chunkdata")
+    clear_dir("chunkdata/fugitives")
 end
 
 function get_chunk_at_pos(x, y)

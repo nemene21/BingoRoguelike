@@ -21,7 +21,11 @@ function ChunkHandlerComp:_process(delta)
 
         self.chunkpos:setv(calc_chunkpos)
         chunk = loaded_chunks[ckey(self.chunkpos:get())]
-        chunk:add_entity(self.entity)
+        if chunk then
+            chunk:add_entity(self.entity)
+        else
+            chunk_fugitive(self.entity)
+        end
     end
 end
 

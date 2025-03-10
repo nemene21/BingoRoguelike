@@ -1,8 +1,10 @@
 
 uniform VolumeImage color_pallete;
 uniform vec3 outline_color = vec3(0, 0, 0);
-uniform float pixel_height = 1.0 / 90.0;
-uniform float pixel_width  = 1.0 / 160.0;
+const float pixel_height = 1.0 / 90.0;
+const float pixel_width  = 1.0 / 160.0;
+
+uniform vec2 shadow_dist = vec2(pixel_width, -pixel_height) * 2;
 
 vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
     vec4 pixel = Texel(texture, texture_coords) * color;
@@ -16,6 +18,8 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
         float alpha = left + right + up + down;
         if (alpha > 0) {
             return vec4(0, 0, 0, alpha);
+        } else if (Texel(texture, texture_coords + shadow_dist).a > 0) {
+            return vec4(0, 0, 0, 0.33);
         }
     }
     
