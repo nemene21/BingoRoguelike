@@ -91,7 +91,6 @@ function FloorItem:_process(delta)
 end
 
 function FloorItem:stringify()
-    print(self, self.Trans)
     return class2string(self, {self.item_name, self.stack.amount, self.Trans.pos.x, self.Trans.pos.y})
 end
 

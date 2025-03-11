@@ -33,6 +33,7 @@ function Chunk:new(x, y)
     else
         self:generate()
     end
+    self:load_fugitives()
 end
 
 function Chunk:unload()
@@ -41,9 +42,11 @@ function Chunk:unload()
     }
     local entity
     for entity, _ in pairs(self.entities) do
+        if not entity.alive then goto continue end
         entity:kill()
         table.insert(chunk_data.entities, entity:stringify())
         self.entities[entity] = nil
+        ::continue::
     end
 
     local file = lf.newFile(self.filename)
@@ -80,10 +83,10 @@ end
 
 function chunk_fugitive(entity)
     local chunkpos = entity.ChunkHandler.chunkpos
-    local path = "chunkdata/fugitives/"..tostring(entity.ChunkHandler.chunkpos.x)..","..tostring(entity.ChunkHandler.chunkpos.y)..".chunk"
+    local path = "chunkdata/fugitives/"..tostring(chunkpos.x)..","..tostring(chunkpos.y)..".ents"
 
     local frozen_ents
-
+ 
     local file = lf.newFile(path)
     if lf.getInfo(path) then
         file:open("r")
@@ -101,6 +104,24 @@ function chunk_fugitive(entity)
     file:close()
 
     entity:kill()
+end
+
+function Chunk:load_fugitives()
+    local path = "chunkdata/fugitives/"..tostring(self.x)..","..tostring(self.y)..".ents"
+    if not lf.getInfo(path) then return end
+
+    local file = lf.newFile(path)
+    file:open("r")
+    local str_data = file:read()
+    local offset, frozen_ents = msgpack.unpack(str_data)
+    file:close()
+    lf.remove(path)
+
+    for _, ent_str in ipairs(frozen_ents) do
+        local entity = string2class(ent_str)
+        self.entities[entity] = true
+        current_scene:add_entity(entity)
+    end
 end
 
 local seed = lm.random()*1000
