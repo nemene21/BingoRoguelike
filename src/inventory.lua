@@ -56,16 +56,15 @@ function Slot:_process(delta)
     local mx, my = mouse_pos()
     local pos = self.Trans.pos
 
-    self.sprite.scale:set(1)
     if centered_quad_has_point(pos.x, pos.y, SLOTSIZE, SLOTSIZE, mx, my) then
-        self.sprite.scale:dlerp(1.2, delta * 30)
+        self.sprite.scale:dlerp(1.1, 1.1, delta * 40)
         if is_just_pressed("click") then
             self:_clicked()
         elseif is_just_pressed("secondary_click") then
             self:_secondary_clicked()
         end
     else
-        self.sprite.scale:dlerp(1, delta * 30)
+        self.sprite.scale:dlerp(1, 1, delta * 40)
     end
 end
 
@@ -89,7 +88,7 @@ end
 
 function Slot:_secondary_clicked()
     self.sprite.scale:set(1.2)
-    
+
     local mouse_stack = self.mouse_slot.stack
     if mouse_stack and self.stack then
         self.stack:take_from(mouse_stack)
