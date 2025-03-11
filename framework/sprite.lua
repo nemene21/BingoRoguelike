@@ -54,7 +54,28 @@ function Spritesheet:update_footprint()
     self.footprint = self.shader_res.id + 1000 * self.img_res.id
 end
 
-function Spritesheet:_draw()
+function Spritesheet:_draw(ox, oy)
+    local ox = ox or 0
+    local oy = oy or 0
+
     self.quad:setViewport(self.framepos.x * 8, self.framepos.y * 8, 8, 8)
-    lg.draw(self.img_res:get(), self.quad, 0, 0)
+    lg.draw(self.img_res:get(), self.quad, ox, oy)
+end
+
+OutlineSpritesheet = class(Spritesheet)
+function OutlineSpritesheet:new(path, width, height, centered)
+    Spritesheet.new(self, path, width, height, centered)
+    self.thickness = 1
+    self.outline_color = {0/255, 0/255, 0/255, 1}
+end
+
+function OutlineSpritesheet:_draw()
+    lg.setColor(self.outline_color)
+    Spritesheet._draw(self, -1,  0)
+    Spritesheet._draw(self,  1,  0)
+    Spritesheet._draw(self,  0,  1)
+    Spritesheet._draw(self,  0, -1)
+
+    lg.setColor(self.color)
+    Spritesheet._draw(self)
 end

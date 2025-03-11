@@ -12,11 +12,10 @@ function Slot:new(x, y)
     self:add_drawable("amount_label", Label(nil, 0, 0, Vec(-1, 0)))
     self.amount_label.scale:set(0.5)
 
-    self:add_drawable("item_sprite", Spritesheet("assets/itemsheet.png", 8, 8))
+    self:add_drawable("item_sprite", OutlineSpritesheet("assets/itemsheet.png", 8, 8))
     self.item_sprite.pos:setv(self.Trans.pos)
     self.item_sprite.layer = DrawLayers.UI
     self.item_sprite.framepos.x = ItemTextures.NULL
-    self.item_sprite.pos:add(0, -1)
     self.item_sprite:hide()
 
     self:add_drawable("sprite", Sprite("assets/itemslot.png"))
