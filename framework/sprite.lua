@@ -21,8 +21,27 @@ function Sprite:set_texture(path)
     self:update_footprint()
 end
 
-function Sprite:_draw()
-    lg.draw(self.img_res:get(), 0, 0)
+function Sprite:_draw(ox, oy)
+    local ox = ox or 0
+    local oy = oy or 0
+    lg.draw(self.img_res:get(), ox, oy)
+end
+
+OutlineSprite = class(Sprite)
+function OutlineSprite:new(path, centered)
+    Sprite.new(self, path, centered)
+    self.outline_color = EDG_BLACK
+end
+
+function OutlineSprite:_draw()
+    lg.setColor(self.outline_color)
+    Sprite._draw(self, -1,  0)
+    Sprite._draw(self,  1,  0)
+    Sprite._draw(self,  0,  1)
+    Sprite._draw(self,  0, -1)
+
+    lg.setColor(self.color)
+    Sprite._draw(self)
 end
 
 Spritesheet = class(Drawable)
@@ -65,8 +84,7 @@ end
 OutlineSpritesheet = class(Spritesheet)
 function OutlineSpritesheet:new(path, width, height, centered)
     Spritesheet.new(self, path, width, height, centered)
-    self.thickness = 1
-    self.outline_color = {0/255, 0/255, 0/255, 1}
+    self.outline_color = EDG_BLACK
 end
 
 function OutlineSpritesheet:_draw()

@@ -1,5 +1,6 @@
 
 PI = 3.14159265359
+EDG_BLACK = {24/255, 20/255, 37/255, 1}
 require "framework.class"
 
 local init_funcs = {}
