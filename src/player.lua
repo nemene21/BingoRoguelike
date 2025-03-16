@@ -157,6 +157,9 @@ end
 
 function Player:update_held_item()
     self.on_held_update:emit()
+    current_scene:add_entity(
+        self.hotbar[self.slot_on].stack.data.holdent()
+    )
 end
 
 function give(name, amount)

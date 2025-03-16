@@ -5,12 +5,16 @@ function Signal:new()
 end
 
 function Signal:connect(callback)
-    table.insert(self.callbacks, callback)
+    self.callbacks[callback] = true
+end
+
+function Signal:disconnect(callback)
+    self.callbacks[callback] = nil
 end
 
 function Signal:emit(...)
-    for i = 1, #self.callbacks do
-        self.callbacks[i](...)
+    for callback, _ in pairs(self.callbacks) do
+        callback(...)
     end
 end
 
