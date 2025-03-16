@@ -15,6 +15,7 @@ function Player:new(x, y)
 end
 
 function Player:_init_inventory()
+    self.on_held_update = Signal()
     self.inventory = {}
     self.inventory_no_hotbar = {}
     self.hotbar = {}
@@ -152,6 +153,10 @@ function Player:give_item(stack)
             slot:update_data()
         end
     end
+end
+
+function Player:update_held_item()
+    self.on_held_update:emit()
 end
 
 function give(name, amount)

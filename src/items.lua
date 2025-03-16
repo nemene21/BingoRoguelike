@@ -1,5 +1,6 @@
 ItemData = class()
-function ItemData:new(name, tex_id, maxstack)
+function ItemData:new(name, tex_id, maxstack, holdent)
+    self.holdent = holdent or BasicHeldItem
     self.name = name or "NULL"
     self.tex_id = tex_id or ItemTextures.NULL
     self.maxstack = maxstack or 16
@@ -122,10 +123,9 @@ return function()
         "COUNT"
     })
     -- ITEM DATA
-    ITEM_REGISTRY = {
-        stone = ItemData("Stone", ItemTextures.STONE),
-        stone_pickaxe = ItemData("Stone pickaxe", ItemTextures.STONE_PICKAXE, 1),
-    }
+    ITEM_REGISTRY = {}
+    ITEM_REGISTRY.STONE = ItemData("Stone", ItemTextures.STONE)
+    ITEM_REGISTRY.STONE_PICKAXE = ItemData("Stone pickaxe", ItemTextures.STONE_PICKAXE, 1)
 
     -- LOOT TABLES
     LootTables = enum({

@@ -66,6 +66,7 @@ function Slot:_process(delta)
     else
         self.sprite.scale:dlerp(1, 1, delta * 40)
     end
+    self.item_sprite.scale:setv(self.sprite.scale)
 end
 
 function Slot:_clicked()

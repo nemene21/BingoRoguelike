@@ -56,7 +56,7 @@ function Spritesheet:new(path, width, height, centered)
     local img = self.img_res:get()
     self.quad = lg.newQuad(0, 0, width, height, img:getWidth(), img:getHeight())
 
-    if centered or true then
+    if centered or (centered == nil) then
         self.offset:set(
             -self.width  * 0.5,
             -self.height * 0.5
