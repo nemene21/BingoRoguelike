@@ -24,7 +24,7 @@ function Player:_init_inventory()
     self.slot_on = 1
 
     self.mouse_slot = MouseSlot()
-    self.mouse_slot:set_stack(ItemStack(get_item("stone_pickaxe")))
+    self.mouse_slot:set_stack(ItemStack(get_item("STONE_PICKAXE")))
     current_scene:add_entity(self.mouse_slot)
 
     local slot_margin = 15
@@ -93,13 +93,17 @@ function Player:_process(delta)
     self.slot_on_outline.pos:setv(self.hotbar[self.slot_on].Trans.pos)
     self.slot_on_outline.scale:setv(self.hotbar[self.slot_on].sprite.scale)
 
-    if is_just_pressed("slot_1") then self.slot_on = 1 end
-    if is_just_pressed("slot_2") then self.slot_on = 2 end
-    if is_just_pressed("slot_3") then self.slot_on = 3 end
-    if is_just_pressed("slot_4") then self.slot_on = 4 end
-    if is_just_pressed("slot_5") then self.slot_on = 5 end
+    if is_just_pressed("slot_1") then self.slot_on = 1; self:update_held_item() end
+    if is_just_pressed("slot_2") then self.slot_on = 2; self:update_held_item() end
+    if is_just_pressed("slot_3") then self.slot_on = 3; self:update_held_item() end
+    if is_just_pressed("slot_4") then self.slot_on = 4; self:update_held_item() end
+    if is_just_pressed("slot_5") then self.slot_on = 5; self:update_held_item() end
 
-    self.slot_on = self.slot_on + get_scroll()
+    local scroll = get_scroll()
+    if scroll ~= 0 then
+        self.slot_on = self.slot_on + scroll
+        self:update_held_item()
+    end
     if self.slot_on > 5 then self.slot_on = 1 end
     if self.slot_on < 1 then self.slot_on = 5 end 
 
@@ -157,8 +161,13 @@ end
 
 function Player:update_held_item()
     self.on_held_update:emit()
+
+    local slot = self.hotbar[self.slot_on]
+    local stack = slot.stack
+    if not stack then return end
+
     current_scene:add_entity(
-        self.hotbar[self.slot_on].stack.data.holdent()
+        stack.data.holdent(self, stack)
     )
 end
 

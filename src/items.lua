@@ -134,6 +134,6 @@ return function()
 
     loot_table_data = {}
     loot_table_data[LootTables.ROCK] = LootTable({
-        stone = 5
+        STONE = 5
     })
 end
