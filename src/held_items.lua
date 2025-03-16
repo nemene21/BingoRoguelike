@@ -19,5 +19,8 @@ end
 
 function BasicHeldItem:_process(delta)
     self.Trans.pos:setv(self.player.Trans.pos)
+
     self.sprite.pos:setv(self.Trans.pos)
+    self.sprite.pos:add(self.player.look_dir * 6, 0)
+    self.sprite.flipx = self.player.sprite.flipx
 end

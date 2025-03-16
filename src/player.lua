@@ -119,8 +119,9 @@ function Player:_process(delta)
         )
     end
     local mx, my = global_mouse_pos()
+    self.look_dir = btoi2(mx > self.Trans.pos.x)
     self.sprite.pos:setv(self.Trans.pos)
-    self.sprite.flipx = mx < self.Trans.pos.x
+    self.sprite.flipx = self.look_dir < 0
 
     if self.Trans:on_floor() then
         self.sprite.angle = math.sin(lt.getTime() * PI * 10) * self.Trans.vel.x * 0.0025
