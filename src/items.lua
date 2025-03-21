@@ -1,6 +1,10 @@
 ItemData = class()
 function ItemData:new(name, tex_id, maxstack, holdent)
-    self.holdent = holdent or BasicHeldItem
+    if holdent == nil then
+        self.holdent = BasicHeldItem
+    else
+        self.holdent = holdent
+    end
     self.name = name or "NULL"
     self.tex_id = tex_id or ItemTextures.NULL
     self.maxstack = maxstack or 16
@@ -11,7 +15,7 @@ function item_compare(a, b)
 end
 
 function ItemData:copy()
-    local cpy = ItemData(self.name, self.tex_id, self.maxstack)
+    local cpy = ItemData(self.name, self.tex_id, self.maxstack, self.holdent)
     return cpy
 end
 
@@ -125,7 +129,7 @@ return function()
     -- ITEM DATA
     ITEM_REGISTRY = {}
     ITEM_REGISTRY.STONE = ItemData("Stone", ItemTextures.STONE)
-    ITEM_REGISTRY.STONE_PICKAXE = ItemData("Stone pickaxe", ItemTextures.STONE_PICKAXE, 1)
+    ITEM_REGISTRY.STONE_PICKAXE = ItemData("Stone pickaxe", ItemTextures.STONE_PICKAXE, 1, MiningHeldItem)
 
     -- LOOT TABLES
     LootTables = enum({

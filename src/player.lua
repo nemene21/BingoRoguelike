@@ -102,22 +102,14 @@ function Player:_process(delta)
     local scroll = get_scroll()
     if scroll ~= 0 then
         self.slot_on = self.slot_on + scroll
+        if self.slot_on > 5 then self.slot_on = 1 end
+        if self.slot_on < 1 then self.slot_on = 5 end 
+
         self:update_held_item()
     end
-    if self.slot_on > 5 then self.slot_on = 1 end
-    if self.slot_on < 1 then self.slot_on = 5 end 
 
     if self.Trans.vel.y > 256 then self.Trans.vel.y = 256 end
 
-    local mx, my = global_mouse_pos()
-    if is_pressed("break") then
-        local chunk = get_chunk_at_pos(mx, my)
-        chunk.tilemap:damage_tile(
-            math.floor(mx / 8),
-            math.floor(my / 8),
-            0.1
-        )
-    end
     local mx, my = global_mouse_pos()
     self.look_dir = btoi2(mx > self.Trans.pos.x)
     self.sprite.pos:setv(self.Trans.pos)
