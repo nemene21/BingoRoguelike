@@ -30,14 +30,19 @@ function MiningHeldItem:new(player, stack)
     BasicHeldItem.new(self, player, stack)
 end
 
+local look_vec
 function MiningHeldItem:_process(delta)
+    local mx, my = global_mouse_pos()
     self.Trans.pos:setv(self.player.Trans.pos)
 
-    self.sprite.pos:setv(self.Trans.pos)
-    self.sprite.pos:add(self.player.look_dir * 6, 0)
-    self.sprite.flipx = self.player.sprite.flipx
+    look_vec:set(mx - self.player.Trans.pos.x, my - self.player.Trans.pos.y)
+    look_vec:normalize()
+    look_vec:mul(8)
 
-    local mx, my = global_mouse_pos()
+    self.sprite.pos:setv(self.Trans.pos)
+    self.sprite.pos:addv(look_vec)
+    self.sprite.angle = look_vec:angle()
+
     if is_pressed("break") then
         local chunk = get_chunk_at_pos(mx, my)
         chunk.tilemap:damage_tile(
@@ -46,4 +51,8 @@ function MiningHeldItem:_process(delta)
             0.1
         )
     end
+end
+
+return function()
+    look_vec = Vec()
 end
