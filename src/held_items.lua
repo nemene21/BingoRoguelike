@@ -42,6 +42,7 @@ function MiningHeldItem:_process(delta)
     self.sprite.pos:setv(self.Trans.pos)
     self.sprite.pos:addv(look_vec)
     self.sprite.angle = look_vec:angle()
+    self.sprite.flipx = self.player.look_dir < 0
 
     if is_pressed("break") then
         local chunk = get_chunk_at_pos(mx, my)
