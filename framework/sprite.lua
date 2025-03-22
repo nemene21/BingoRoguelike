@@ -3,7 +3,7 @@ function Sprite:new(path, centered)
     Drawable.new(self)
     self:set_texture(path)
 
-    if centered or true then
+    if centered ~= false then
         local img = self.img_res:get()
         self.offset:set(
             -img:getWidth() * 0.5,
