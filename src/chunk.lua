@@ -133,6 +133,39 @@ function tile_raycast(fromx, fromy, tox, toy)
 
     return tox, toy
 end
+
+function tile_edge_raycast(fromx, fromy, tox, toy)
+    local x, y = math.floor(fromx), math.floor(fromy)
+    local dx, dy = tox - fromx, toy - fromy
+    local sx, sy = (dx >= 0) and 1 or -1, (dy >= 0) and 1 or -1
+    dx, dy = math.abs(dx), math.abs(dy)
+
+    local lx, ly = x, y
+
+    local tDeltaX = (dx == 0) and math.huge or 1 / dx
+    local tDeltaY = (dy == 0) and math.huge or 1 / dy
+
+    local tMaxX = (sx > 0) and ((1 - (fromx - x)) * tDeltaX) or ((fromx - x) * tDeltaX)
+    local tMaxY = (sy > 0) and ((1 - (fromy - y)) * tDeltaY) or ((fromy - y) * tDeltaY)
+
+    while true do
+        local chunk = get_chunk_at_pos(math.floor(x) * 8, math.floor(y) * 8)
+        if chunk and chunk.tilemap:get_tile(math.floor(x), math.floor(y)) then
+            return lx, ly
+        end
+        lx, ly = x, y
+
+        if x == math.floor(tox) and y == math.floor(toy) then break end
+        if tMaxX < tMaxY then
+            x, tMaxX = x + sx, tMaxX + tDeltaX
+        else
+            y, tMaxY = y + sy, tMaxY + tDeltaY
+        end
+    end
+
+    return x, y
+end
+
 function Chunk:load_fugitives()
     local path = "chunkdata/fugitives/"..tostring(self.x)..","..tostring(self.y)..".ents"
     if not lf.getInfo(path) then return end
@@ -152,6 +185,7 @@ function Chunk:load_fugitives()
 end
 
 local seed = lm.random()*1000
+local ore_seed = seed + 10000
 function Chunk:generate()
     local tilepos = Vec(self.x * CHUNKSIZE, self.y * CHUNKSIZE)
     local tilemap = Tilemap(
@@ -174,8 +208,14 @@ function Chunk:generate()
             biome_noise_val = (biome_noise:getNoise2D(x+seed, y+seed) + 1) * 0.5
             biome_index = math.ceil(#BIOME_DATA * biome_noise_val)
             biome = BIOME_DATA[biome_index]
+            local tile = biome.base_tile
 
-            self.tilemap:set_tile(x, y, biome.base_tile)
+            noise_val = (ore_noise:getNoise2D(x+ore_seed, y+ore_seed) + 1) * 0.5
+            if noise_val > 0.9 then
+                tile = Tilenames.IRON_ORE
+            end
+
+            self.tilemap:set_tile(x, y, tile)
             ::continue::
         end
     end
@@ -243,6 +283,10 @@ return function()
     biome_noise:setOctaves(0)
     biome_noise:setGain(100)
     biome_noise:setCellularReturnType("cellvalue")
+
+    ore_noise = fnl.createState()
+    ore_noise:setNoiseType("perlin")
+    ore_noise:setFrequency(0.075)
 
     chunkpos = Vec()
 end

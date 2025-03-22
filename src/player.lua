@@ -22,6 +22,7 @@ function Player:_init_inventory()
     self.inventory_open = false
 
     self.slot_on = 1
+    self.held_item = nil
 
     self.mouse_slot = MouseSlot()
     self.mouse_slot:set_stack(ItemStack(get_item("STONE_PICKAXE")))
@@ -108,6 +109,10 @@ function Player:_process(delta)
         self:update_held_item()
     end
 
+    if self.hotbar[self.slot_on].stack ~= self.held_item then
+        self:update_held_item()
+    end
+
     if self.Trans.vel.y > 256 then self.Trans.vel.y = 256 end
 
     local mx, my = global_mouse_pos()
@@ -157,10 +162,12 @@ function Player:update_held_item()
 
     local slot = self.hotbar[self.slot_on]
     local stack = slot.stack
+    self.held_item = stack
+
     if not stack then return end
 
     current_scene:add_entity(
-        stack.data.holdent(self, stack)
+        stack.data.holdent(self, slot)
     )
 end
 

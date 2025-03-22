@@ -124,20 +124,27 @@ return function()
         "DYNAMITE",
         "GLOWSTICK",
         "HEALTH_POTION",
+        "IRON_SCRAP",
         "COUNT"
     })
     -- ITEM DATA
     ITEM_REGISTRY = {}
-    ITEM_REGISTRY.STONE = ItemData("Stone", ItemTextures.STONE)
+    ITEM_REGISTRY.IRON_SCRAP = ItemData("Iron scrap", ItemTextures.IRON_SCRAP)
+    ITEM_REGISTRY.STONE = ItemData("Stone", ItemTextures.STONE, nil, BlockHeldItem)
     ITEM_REGISTRY.STONE_PICKAXE = ItemData("Stone pickaxe", ItemTextures.STONE_PICKAXE, 1, MiningHeldItem)
 
     -- LOOT TABLES
     LootTables = enum({
-        "ROCK"
+        "ROCK",
+        "IRON_ORE"
     })
 
     loot_table_data = {}
     loot_table_data[LootTables.ROCK] = LootTable({
         STONE = 1
+    })
+
+    loot_table_data[LootTables.IRON_ORE] = LootTable({
+        IRON_SCRAP = 1
     })
 end

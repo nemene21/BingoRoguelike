@@ -34,7 +34,7 @@ function Input:is_pressed()
 end
 
 local actions = {
-    ["break"] = {Input(1, "mouse")},
+    ["action"] = {Input(1, "mouse")},
     ["inventory open"] = {Input("e")},
 
     slot_1 = {Input("1")},
