@@ -28,6 +28,8 @@ end
 MiningHeldItem = class(BasicHeldItem)
 function MiningHeldItem:new(player, stack)
     BasicHeldItem.new(self, player, stack)
+    self:add_drawable("block_hover", Sprite("assets/block_hover.png", false))
+    self.block_hover.draw_layer = DrawLayers.VFX_OVER
 end
 
 local look_vec
@@ -42,13 +44,16 @@ function MiningHeldItem:_process(delta)
     self.sprite.pos:setv(self.Trans.pos)
     self.sprite.pos:addv(look_vec)
     self.sprite.angle = look_vec:angle()
-    self.sprite.flipx = self.player.look_dir < 0
+    self.sprite.flipy = self.player.look_dir < 0
+
+    local snapped_mx, snapped_my = math.floor(mx / 8), math.floor(my / 8)
+    self.block_hover.pos:set(snapped_mx * 8, snapped_my * 8)
 
     if is_pressed("break") then
         local chunk = get_chunk_at_pos(mx, my)
         chunk.tilemap:damage_tile(
-            math.floor(mx / 8),
-            math.floor(my / 8),
+            snapped_mx,
+            snapped_my,
             0.1
         )
     end
