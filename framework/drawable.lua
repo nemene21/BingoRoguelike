@@ -16,9 +16,9 @@ local function draw_layer(layer)
         lg.setShader(drawable.shader_res:get())
         
         lg.translate(drawable.pos:get())
+        lg.rotate(drawable.angle)
         lg.scale(drawable.scale.x * btoi2(not drawable.flipx), drawable.scale.y * btoi2(not drawable.flipy))
         
-        lg.rotate(drawable.angle)
         lg.translate(drawable.offset:get())
 
         drawable:_draw()
