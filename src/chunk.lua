@@ -106,6 +106,33 @@ function chunk_fugitive(entity)
     entity:kill()
 end
 
+function tile_raycast(fromx, fromy, tox, toy)
+    local x, y = math.floor(fromx), math.floor(fromy)
+    local dx, dy = tox - fromx, toy - fromy
+    local sx, sy = (dx >= 0) and 1 or -1, (dy >= 0) and 1 or -1
+    dx, dy = math.abs(dx), math.abs(dy)
+
+    local tDeltaX = (dx == 0) and math.huge or 1 / dx
+    local tDeltaY = (dy == 0) and math.huge or 1 / dy
+
+    local tMaxX = (sx > 0) and ((1 - (fromx - x)) * tDeltaX) or ((fromx - x) * tDeltaX)
+    local tMaxY = (sy > 0) and ((1 - (fromy - y)) * tDeltaY) or ((fromy - y) * tDeltaY)
+
+    while true do
+        local chunk = get_chunk_at_pos(math.floor(x) * 8, math.floor(y) * 8)
+        if chunk and chunk.tilemap:get_tile(math.floor(x), math.floor(y)) then
+            return x, y
+        end
+        if x == math.floor(tox) and y == math.floor(toy) then break end
+        if tMaxX < tMaxY then
+            x, tMaxX = x + sx, tMaxX + tDeltaX
+        else
+            y, tMaxY = y + sy, tMaxY + tDeltaY
+        end
+    end
+
+    return tox, toy
+end
 function Chunk:load_fugitives()
     local path = "chunkdata/fugitives/"..tostring(self.x)..","..tostring(self.y)..".ents"
     if not lf.getInfo(path) then return end

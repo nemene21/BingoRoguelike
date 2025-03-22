@@ -66,6 +66,7 @@ function love.draw()
     lg.translate(RES.x * 0.5 - camx, RES.y * 0.5 - camy)
 
     draw_drawables()
+
     lg.origin()
     lg.scale(8, 8)
     lg.setBlendMode("multiply", "premultiplied")

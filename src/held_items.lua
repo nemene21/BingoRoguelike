@@ -25,6 +25,10 @@ function BasicHeldItem:_process(delta)
     self.sprite.flipx = self.player.sprite.flipx
 end
 
+-- BLOCK ITEM
+BlockItem = class(BasicHeldItem)
+
+-- MINING ITEM
 MiningHeldItem = class(BasicHeldItem)
 function MiningHeldItem:new(player, stack)
     BasicHeldItem.new(self, player, stack)
@@ -37,12 +41,20 @@ function MiningHeldItem:new(player, stack)
 end
 
 local look_vec
+local player_mine_range = 24
 function MiningHeldItem:_process(delta)
     local mx, my = global_mouse_pos()
     self.Trans.pos:setv(self.player.Trans.pos)
 
     look_vec:set(mx - self.player.Trans.pos.x, my - self.player.Trans.pos.y)
-    look_vec:normalize()
+    local dist = look_vec:length()
+    look_vec.x = look_vec.x / dist
+    look_vec.y = look_vec.y / dist
+
+    if dist > player_mine_range then
+        mx = self.player.Trans.pos.x + look_vec.x * player_mine_range
+        my = self.player.Trans.pos.y + look_vec.y * player_mine_range
+    end
     look_vec:mul(8)
 
     self.sprite.pos:setv(self.Trans.pos)
@@ -52,24 +64,27 @@ function MiningHeldItem:_process(delta)
 
     self.sprite.angle = self.sprite.angle + math.sin(lt.getTime() * 30) * 0.6 * self.anim_coeff
 
-    local snapped_mx, snapped_my = math.floor(mx / 8), math.floor(my / 8)
-    self.block_hover.pos:set(snapped_mx * 8, snapped_my * 8)
-    self.block_hover:hide()
+    local lookx, looky = tile_raycast(
+        self.player.Trans.pos.x / 8,
+        self.player.Trans.pos.y / 8,
+        mx/8, my/8
+    )
+    lookx, looky = math.floor(lookx), math.floor(looky)
 
-    local chunk = get_chunk_at_pos(mx, my)
+    local chunk = get_chunk_at_pos(lookx * 8, looky * 8)
+    self.block_hover.pos:set(lookx * 8, looky * 8)
+    self.block_hover:hide()
 
     if is_pressed("break") then 
         chunk.tilemap:damage_tile(
-            snapped_mx,
-            snapped_my,
-            0.1
+            lookx, looky, 0.1
         )
         self.anim_coeff = lerp(self.anim_coeff, 1, delta * 20)
     else
         self.anim_coeff = lerp(self.anim_coeff, 0, delta * 20)
     end
 
-    if chunk.tilemap:get_tile(snapped_mx, snapped_my) then
+    if chunk.tilemap:get_tile(lookx, looky) then
         self.block_hover:show()
     end
 end
