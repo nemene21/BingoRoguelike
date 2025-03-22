@@ -22,6 +22,10 @@ function Vec:get()
     return self.x, self.y
 end
 
+function Vec:angle()
+    return math.atan2(self.y, self.x)
+end
+
 function Vec:distance_to(other)
     local diffx = other.x - self.x
     local diffy = other.y - self.y
