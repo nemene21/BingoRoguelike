@@ -41,6 +41,14 @@ function btoi2(boolean)
     return boolean and 1 or -1
 end
 
+function map01(x)
+    return (x + 1) * 0.5
+end
+
+function map_neg11(x)
+    return (x * 2) - 1
+end
+
 function lerp(a, b, c)
     return a + (b - a) * c
 end

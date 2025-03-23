@@ -129,15 +129,17 @@ return function()
         "HEALTH_POTION",
         "IRON_SCRAP",
         "CARVED_STONE",
+        "COAL",
         "COUNT"
     })
     -- ITEM DATA
     ITEM_REGISTRY = {}
     ITEM_REGISTRY.IRON_SCRAP = ItemData("Iron scrap", ItemTextures.IRON_SCRAP)
-    ITEM_REGISTRY.STONE = ItemData("Stone", ItemTextures.STONE, nil, BlockHeldItem)
     ITEM_REGISTRY.STONE_PICKAXE = ItemData("Stone pickaxe", ItemTextures.STONE_PICKAXE, 1, MiningHeldItem)
 
-    ITEM_REGISTRY.CARVED_STONE = ItemData("Carved stone", ItemTextures.CARVED_STONE)
+    ITEM_REGISTRY.CARVED_STONE = ItemData("Carved stone", ItemTextures.CARVED_STONE, nil, BlockHeldItem)
+    ITEM_REGISTRY.STONE = ItemData("Stone", ItemTextures.STONE)
+    ITEM_REGISTRY.COAL = ItemData("Coal", ItemTextures.COAL)
 
     for id, item in pairs(ITEM_REGISTRY) do
         item.item_id = id
@@ -146,16 +148,19 @@ return function()
     -- LOOT TABLES
     LootTables = enum({
         "ROCK",
-        "IRON_ORE"
+        "IRON_ORE",
+        "COAL_ORE"
     })
 
     loot_table_data = {}
     loot_table_data[LootTables.ROCK] = LootTable({
         STONE = 1
     })
-
     loot_table_data[LootTables.IRON_ORE] = LootTable({
         IRON_SCRAP = 1
+    })
+    loot_table_data[LootTables.COAL_ORE] = LootTable({
+        COAL = 1
     })
 
     -- CRAFTING RECIPES

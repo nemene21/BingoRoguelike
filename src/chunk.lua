@@ -185,7 +185,6 @@ function Chunk:load_fugitives()
 end
 
 local seed = lm.random()*1000
-local ore_seed = seed + 10000
 function Chunk:generate()
     local tilepos = Vec(self.x * CHUNKSIZE, self.y * CHUNKSIZE)
     local tilemap = Tilemap(
@@ -202,17 +201,22 @@ function Chunk:generate()
     local noise_val, biome_noise_val, biome_index, biome
     for x = tilepos.x, tilepos.x + CHUNKSIZE - 1 do
         for y = tilepos.y, tilepos.y + CHUNKSIZE - 1 do
-            noise_val = (cave_noise:getNoise2D(x+seed, y+seed) + 1) * 0.5
+
+            noise_val = map01(cave_noise:getNoise2D(x + seed, y + seed))
             if noise_val > 0.5 or math.abs(x) < 5 then goto continue end
 
-            biome_noise_val = (biome_noise:getNoise2D(x+seed, y+seed) + 1) * 0.5
+            biome_noise_val = map01(biome_noise:getNoise2D(x + seed, y + seed))
             biome_index = math.ceil(#BIOME_DATA * biome_noise_val)
             biome = BIOME_DATA[biome_index]
             local tile = biome.base_tile
 
-            noise_val = (ore_noise:getNoise2D(x+ore_seed, y+ore_seed) + 1) * 0.5
-            if noise_val > 0.8 then
-                tile = Tilenames.IRON_ORE
+            for ore_tile, data in pairs(biome.ores) do
+                local ore_seed = 100 * ore_tile
+                noise_val = map01(data.noise:getNoise2D(x + ore_seed, y + ore_seed))
+
+                if noise_val < data.chance then
+                    tile = ore_tile
+                end
             end
 
             self.tilemap:set_tile(x, y, tile)
@@ -261,16 +265,35 @@ function get_chunk_at_pos(x, y)
 end
 
 return function()
+    local BASIC_ORES = {
+        [Tilenames.IRON_ORE] = {0.2, 0.25},
+        [Tilenames.COAL_ORE] = {0.2, 0.25}
+    }
     BIOME_DATA = {
         {
             name = "Cave",
-            base_tile = Tilenames.ROCK
+            base_tile = Tilenames.ROCK,
+            ores = table.shallow_copy(BASIC_ORES)
         },
         {
             name = "Nonsense test biome",
-            base_tile = Tilenames.PLANK
+            base_tile = Tilenames.PLANK,
+            ores = table.shallow_copy(BASIC_ORES)
         }
     }
+    for i, biome in ipairs(BIOME_DATA) do
+        for ore, data in pairs(biome.ores) do
+            local noise = fnl.createState()
+            noise:setNoiseType("perlin")
+            noise:setFrequency(data[1])
+
+            biome.ores[ore] = {
+                noise = noise,
+                chance = data[2]
+            }
+        end
+    end
+
     cave_noise = fnl.createState()
     cave_noise:setNoiseType("perlin")
     cave_noise:setFrequency(0.075)
@@ -278,15 +301,11 @@ return function()
     biome_noise = fnl.createState()
     biome_noise:setNoiseType("cellular")
     biome_noise:setFrequency(0.02)
-    biome_noise:setSeed(0)
+    biome_noise:setSeed(seed)
     biome_noise:setLacunarity(0)
     biome_noise:setOctaves(0)
     biome_noise:setGain(100)
     biome_noise:setCellularReturnType("cellvalue")
-
-    ore_noise = fnl.createState()
-    ore_noise:setNoiseType("perlin")
-    ore_noise:setFrequency(0.075)
 
     chunkpos = Vec()
 end
