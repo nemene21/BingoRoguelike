@@ -123,10 +123,27 @@ end
 CraftSlot = class(Slot)
 function CraftSlot:new(x, y)
     Slot.new(self, x, y)
+    self.on_craft = Signal()
 end
 
 function CraftSlot:_process(delta)
     Slot._process(self, delta)
+end
+
+function CraftSlot:_secondary_clicked()
+    if is_pressed("craft") then
+        self.on_craft:emit(self)
+    else
+        Slot._secondary_clicked(self)
+    end
+end
+
+function CraftSlot:_clicked()
+    if is_pressed("craft") then
+        self.on_craft:emit(self)
+    else
+        Slot._clicked(self)
+    end
 end
 
 return function()

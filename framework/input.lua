@@ -36,7 +36,7 @@ end
 local actions = {
     ["action"] = {Input(1, "mouse")},
     ["inventory open"] = {Input("r")},
-    ["craft"] = {Input("control")},
+    ["craft"] = {Input("lctrl")},
 
     slot_1 = {Input("1")},
     slot_2 = {Input("2")},

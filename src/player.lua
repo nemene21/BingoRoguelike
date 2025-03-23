@@ -14,6 +14,17 @@ function Player:new(x, y)
     self:_init_inventory()
 end
 
+function Player:_craft(slot)
+    if self.craft_select then
+        self.craft_select = nil
+        self.craft_outline:hide()
+    else
+        self.craft_select = slot
+        self.craft_outline.pos:setv(self.craft_select.sprite.pos)
+        self.craft_outline:show()
+    end
+end
+
 function Player:_init_inventory()
     self.on_held_update = Signal()
     self.inventory = {}
@@ -23,6 +34,7 @@ function Player:_init_inventory()
 
     self.slot_on = 1
     self.held_item = nil
+    self.craft_select = nil
 
     self.mouse_slot = MouseSlot()
     self.mouse_slot:set_stack(ItemStack(get_item("STONE_PICKAXE")))
@@ -35,6 +47,8 @@ function Player:_init_inventory()
     local slot
     for i = 0, 4 do
         slot = CraftSlot(inventory_origin + i * slot_margin, inventory_origin)
+        slot.on_craft:connect(function(slot) self:_craft(slot) end)
+
         current_scene:add_entity(slot)
         table.insert(self.inventory, slot)
         table.insert(self.hotbar, slot)
@@ -45,6 +59,8 @@ function Player:_init_inventory()
     for y = 1, 3 do
         for x = 0, 4 do
             slot = CraftSlot(inventory_origin + x * slot_margin, inventory_origin + y * slot_margin + hotbar_distance)
+            slot.on_craft:connect(function(slot) self:_craft(slot) end)
+            
             current_scene:add_entity(slot)
             table.insert(self.inventory, slot)
             table.insert(self.inventory_no_hotbar, slot)
@@ -57,6 +73,10 @@ function Player:_init_inventory()
 
     self:add_drawable("slot_on_outline", Sprite("assets/slot_on_outline.png"))
     self.slot_on_outline.layer = DrawLayers.UI
+
+    self:add_drawable("craft_outline", Sprite("assets/craft_select.png"))
+    self.craft_outline.layer = DrawLayers.UI
+    self.craft_outline:hide()
 end
 
 local GRAVITY = 800
@@ -111,6 +131,14 @@ function Player:_process(delta)
 
     if self.hotbar[self.slot_on].stack ~= self.held_item then
         self:update_held_item()
+    end
+
+    if self.craft_select then
+        self.craft_outline.pos:setv(self.craft_select.sprite.pos)
+        self.craft_outline.scale:setv(self.craft_select.sprite.scale)
+
+        local bob = math.abs(math.sin(lt.getTime() * 20) * 0.05)
+        self.craft_outline.scale:add(bob)
     end
 
     if self.Trans.vel.y > 256 then self.Trans.vel.y = 256 end
