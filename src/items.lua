@@ -13,11 +13,12 @@ function ItemData:new(name, tex_id, maxstack, holdent)
 end
 
 function item_compare(a, b)
-    return a.id == b.id
+    return a.item_id == b.item_id
 end
 
 function ItemData:copy()
     local cpy = ItemData(self.name, self.tex_id, self.maxstack, self.holdent)
+    cpy.item_id = self.item_id
     return cpy
 end
 
@@ -139,7 +140,7 @@ return function()
     ITEM_REGISTRY.CARVED_STONE = ItemData("Carved stone", ItemTextures.CARVED_STONE)
 
     for id, item in pairs(ITEM_REGISTRY) do
-        item.id = id
+        item.item_id = id
     end 
 
     -- LOOT TABLES

@@ -15,15 +15,36 @@ function Player:new(x, y)
 end
 
 function Player:_craft(slot)
+    if slot.stack == nil then
+        self.craft_select = nil
+        self.craft_outline:hide()
+        return
+    end
+
     if self.craft_select then
-        local first_recipe = slot.id.." + "..self.craft_select.id
-        local other_recipe = self.craft_select.id.." + "..slot.id
+        local slot1 = slot
+        local slot2 = self.craft_select
+        local stack1 = slot1.stack
+        local stack2 = slot2.stack
+        local item1 = stack1.data
+        local item2 = stack2.data
+
+        local first_recipe = item1.item_id.." + "..item2.item_id
+        local other_recipe = item2.item_id.." + "..item1.item_id
 
         local crafted = CRAFTING_RECIPES[first_recipe] or CRAFTING_RECIPES[other_recipe]
         if crafted then
-            print("Did crafty - "..crafted.id)
-        else
-            print("lmao rarded idyot")
+            local maximum = stack1.amount < stack2.amount and stack1.amount or stack2.amount
+            stack1.amount = stack1.amount - maximum
+            stack2.amount = stack2.amount - maximum
+
+            if stack1.amount == 0 then
+                slot1:set_stack(ItemStack(crafted:copy(), maximum))
+            else
+                slot2:set_stack(ItemStack(crafted:copy(), maximum))
+            end
+            slot1:update_data()
+            slot2:update_data()
         end
 
         self.craft_select = nil
