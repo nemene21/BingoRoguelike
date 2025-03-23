@@ -1,3 +1,5 @@
+DEFAULT_STACK_SIZE = 64
+
 ItemData = class()
 function ItemData:new(name, tex_id, maxstack, holdent)
     if holdent == nil then
@@ -7,11 +9,11 @@ function ItemData:new(name, tex_id, maxstack, holdent)
     end
     self.name = name or "NULL"
     self.tex_id = tex_id or ItemTextures.NULL
-    self.maxstack = maxstack or 16
+    self.maxstack = maxstack or DEFAULT_STACK_SIZE
 end
 
 function item_compare(a, b)
-    return a.name == b.name
+    return a.id == b.id
 end
 
 function ItemData:copy()
@@ -125,6 +127,7 @@ return function()
         "GLOWSTICK",
         "HEALTH_POTION",
         "IRON_SCRAP",
+        "CARVED_STONE"
         "COUNT"
     })
     -- ITEM DATA
@@ -132,6 +135,12 @@ return function()
     ITEM_REGISTRY.IRON_SCRAP = ItemData("Iron scrap", ItemTextures.IRON_SCRAP)
     ITEM_REGISTRY.STONE = ItemData("Stone", ItemTextures.STONE, nil, BlockHeldItem)
     ITEM_REGISTRY.STONE_PICKAXE = ItemData("Stone pickaxe", ItemTextures.STONE_PICKAXE, 1, MiningHeldItem)
+
+    ITEM_REGISTRY.CARVED_STONE = ItemData("Carved stone", ItemTextures.CARVED_STONE)
+
+    for id, item in pairs(ITEM_REGISTRY) do
+        item.id = id
+    end 
 
     -- LOOT TABLES
     LootTables = enum({
@@ -147,4 +156,10 @@ return function()
     loot_table_data[LootTables.IRON_ORE] = LootTable({
         IRON_SCRAP = 1
     })
+
+    -- CRAFTING RECIPES
+
+    CRAFTING_RECIPES = {
+
+    }
 end
