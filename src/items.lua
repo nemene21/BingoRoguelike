@@ -127,7 +127,7 @@ return function()
         "GLOWSTICK",
         "HEALTH_POTION",
         "IRON_SCRAP",
-        "CARVED_STONE"
+        "CARVED_STONE",
         "COUNT"
     })
     -- ITEM DATA
@@ -158,8 +158,7 @@ return function()
     })
 
     -- CRAFTING RECIPES
-
     CRAFTING_RECIPES = {
-
+        ["STONE + STONE"] = ITEM_REGISTRY.CARVED_STONE
     }
 end

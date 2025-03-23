@@ -16,6 +16,16 @@ end
 
 function Player:_craft(slot)
     if self.craft_select then
+        local first_recipe = slot.id.." + "..self.craft_select.id
+        local other_recipe = self.craft_select.id.." + "..slot.id
+
+        local crafted = CRAFTING_RECIPES[first_recipe] or CRAFTING_RECIPES[other_recipe]
+        if crafted then
+            print("Did crafty - "..crafted.id)
+        else
+            print("lmao rarded idyot")
+        end
+
         self.craft_select = nil
         self.craft_outline:hide()
     else
