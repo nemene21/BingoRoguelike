@@ -120,6 +120,15 @@ function MouseSlot:_process(delta)
     self.amount_label.pos:addv(SLOT_NUM_OFFSET)
 end
 
+CraftSlot = class(Slot)
+function CraftSlot:new(x, y)
+    Slot.new(self, x, y)
+end
+
+function CraftSlot:_process(delta)
+    Slot._process(self, delta)
+end
+
 return function()
    SLOT_NUM_OFFSET = Vec(7, 2)
 end

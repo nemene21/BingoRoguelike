@@ -34,7 +34,7 @@ function Player:_init_inventory()
     
     local slot
     for i = 0, 4 do
-        slot = Slot(inventory_origin + i * slot_margin, inventory_origin)
+        slot = CraftSlot(inventory_origin + i * slot_margin, inventory_origin)
         current_scene:add_entity(slot)
         table.insert(self.inventory, slot)
         table.insert(self.hotbar, slot)
@@ -44,7 +44,7 @@ function Player:_init_inventory()
 
     for y = 1, 3 do
         for x = 0, 4 do
-            slot = Slot(inventory_origin + x * slot_margin, inventory_origin + y * slot_margin + hotbar_distance)
+            slot = CraftSlot(inventory_origin + x * slot_margin, inventory_origin + y * slot_margin + hotbar_distance)
             current_scene:add_entity(slot)
             table.insert(self.inventory, slot)
             table.insert(self.inventory_no_hotbar, slot)
