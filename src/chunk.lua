@@ -211,7 +211,7 @@ function Chunk:generate()
             local tile = biome.base_tile
 
             noise_val = (ore_noise:getNoise2D(x+ore_seed, y+ore_seed) + 1) * 0.5
-            if noise_val > 0.9 then
+            if noise_val > 0.8 then
                 tile = Tilenames.IRON_ORE
             end
 
