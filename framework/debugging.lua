@@ -79,7 +79,12 @@ function render_debug()
     end
     imgui.Unindent(16)
 
-    imgui.Text("Ents ("..tostring(largest_ent_id - #free_ent_ids).."):")
+    local ents = 0
+    for i, entity in pairs(current_scene.entities) do
+        if entity then ents = ents + 1 end
+    end
+
+    imgui.Text("Ents ("..tostring(ents).."):")
     imgui.Text("Loaded chunks ("..tostring(table.entries(loaded_chunks)).."):")
 
     imgui.Indent(16)
