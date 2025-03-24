@@ -82,6 +82,7 @@ end
 
 function FloorItem:_process(delta)
     self.sprite.pos:setv(self.Trans.pos)
+    self.sprite.pos:add(0, math.sin(lt.getTime() * 2 + self.Trans.pos.x * 0.1) * 2 - 2)
     self.Trans.vel.y = self.Trans.vel.y + 800 * delta
     if self.Trans:on_floor() then self.Trans.vel.y = 0 end
 
