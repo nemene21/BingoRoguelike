@@ -70,7 +70,7 @@ function love.draw()
     lg.origin()
     lg.scale(8, 8)
     lg.setBlendMode("multiply", "premultiplied")
-    -- lg.draw(lightmap_image, 0, 0)
+    lg.draw(lightmap_image, 0, 0)
     lg.reset()
 
     local screenpos = Vec(

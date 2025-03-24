@@ -193,7 +193,7 @@ function Player:_process(delta)
     self.walk_particles.pos:setv(self.Trans.pos)
     self.walk_particles.pos:add(0, 3)
     self.walk_particles.emitting = math.abs(self.Trans.vel.x) > 16
-    add_light(self.Trans.pos, 5)
+    add_light(self.Trans.pos, 4)
 end
 
 function Player:give_item(stack)

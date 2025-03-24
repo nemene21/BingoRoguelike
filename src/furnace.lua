@@ -8,6 +8,6 @@ function Furnace:new(x, y, block)
     self:add(TransComp(x*8, y*8))
 end
 
-function Furnace:_process()
+function Furnace:_process(delta)
     add_light(self.Trans.pos, 5)
 end

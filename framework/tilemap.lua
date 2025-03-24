@@ -62,7 +62,7 @@ function Tilemap:set_tile(x, y, type, variation, hp)
     if TILE_DATA[type] then
         local tile_entity = TILE_DATA[type].tile_entity
         if tile_entity then
-            tile_entity = tile_entity(x, y, data)
+            tile_entity = tile_entity(x + self.tilepos.x, y + self.tilepos.y, data)
             current_scene:add_entity(tile_entity)
             data[4] = tile_entity.Block
         end
