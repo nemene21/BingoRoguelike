@@ -14,6 +14,8 @@ vec4 lerp(vec4 col1, vec4 col2, float c) {
 
 vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
     vec4 pixel = Texel(texture, texture_coords) * color;
-    return lerp(pixel, vec4(1, 1, 1, pixel.a), abs(sin(time)));
+    float anim = sin((texture_coords.y) + time);
+    anim = smoothstep(0.9, 1, anim);
+    return lerp(pixel, vec4(1, 1, 1, pixel.a), anim * 0.9);
 }
 #endif

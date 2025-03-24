@@ -14,6 +14,7 @@ local function draw_layer(layer)
         lg.push()
         lg.setColor(unpack(drawable.color))
         lg.setShader(drawable.shader_res:get())
+        drawable:_push_uniforms()
         
         lg.translate(drawable.pos:get())
         lg.rotate(drawable.angle)
@@ -61,6 +62,8 @@ function Drawable:new()
     self.offset = Vec()
     self.flipx = false
     self.flipy = false
+
+    self.unsent_uniforms = {}
 end
 
 function Drawable:show()
@@ -78,6 +81,18 @@ end
 function Drawable:set_shader(path)
     self.shader_res = shader_manager:get(path or "assets/default.glsl")
     self:update_footprint()
+end
+
+function Drawable:send_uniform(name, ...)
+    self.unsent_uniforms[name] = {...}
+end
+
+function Drawable:_push_uniforms()
+    local shader = self.shader_res:get()
+    
+    for name, data in pairs(self.unsent_uniforms) do
+        shader:send(name, unpack(data))
+    end
 end
 
 function Drawable:_push_to_layer()

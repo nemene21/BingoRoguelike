@@ -76,6 +76,7 @@ function FloorItem:new(name, amount, x, y)
 
     self.stack = ItemStack(get_item(name), amount)
     self.item_name = name
+
     self:add_drawable("sprite", Spritesheet("assets/itemsheet.png", 8, 8))
     self.sprite:set_shader("assets/item_shine.glsl")
     self.sprite.framepos.x = self.stack.data.tex_id
@@ -84,6 +85,8 @@ end
 function FloorItem:_process(delta)
     self.sprite.pos:setv(self.Trans.pos)
     self.sprite.pos:add(0, math.sin(lt.getTime() * 2 + self.Trans.pos.x * 0.1) * 2 - 2)
+    self.sprite:send_uniform("time", self.Trans.pos.x * 0.03 + lt.getTime() * 2)
+
     self.Trans.vel.y = self.Trans.vel.y + 800 * delta
     if self.Trans:on_floor() then self.Trans.vel.y = 0 end
 
