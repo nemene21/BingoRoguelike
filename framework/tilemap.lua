@@ -41,15 +41,34 @@ function Tilemap:new(texture_path, tilesize, tileposx, tileposy, width)
 end
 
 function Tilemap:set_tile(x, y, type, variation, hp)
-    x = x - self.tilepos.x
-    y = y - self.tilepos.y
+    local x = x - self.tilepos.x
+    local y = y - self.tilepos.y
+    local tileindex = x + y*self.tilewidth
+
+    local data = self.tiledata[tileindex]
+    if data then
+        if data[4] then
+            data[4]:_destroyed()
+        end
+    end
 
     if type == -1 then
-        self.tiledata[x + y*self.tilewidth] = nil
+        self.tiledata[tileindex] = nil
     end
 
     local variation = variation or (1 + lm.random() * self.tile_vars)
-    self.tiledata[x + y*self.tilewidth] = {type, math.floor(variation), hp or 1}
+    data = {type, math.floor(variation), hp or 1}
+
+    if TILE_DATA[type] then
+        local tile_entity = TILE_DATA[type].tile_entity
+        if tile_entity then
+            tile_entity = tile_entity(x, y, data)
+            current_scene:add_entity(tile_entity)
+            data[4] = tile_entity.Block
+        end
+    end
+
+    self.tiledata[x + y*self.tilewidth] = data
 end
 
 function Tilemap:set_tilev(pos, type, variation, hp)
@@ -76,6 +95,8 @@ function Tilemap:damage_tile(x, y, damage)
 
     if tile[3] > 0 then return end
     self.tiledata[tx + ty*self.tilewidth] = nil
+    
+    if tile[4] then tile[4]:_destroyed() end
 
     local data = TILE_DATA[tile[1]]
     if not data then return end
@@ -177,6 +198,7 @@ return function()
         loot_table = LootTables.COAL_ORE
     }
     TILE_DATA[Tilenames.FURNACE] = {
-        loot_table = LootTables.FURNACE
+        loot_table = LootTables.FURNACE,
+        tile_entity = Furnace
     }
 end
