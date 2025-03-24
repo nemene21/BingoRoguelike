@@ -77,6 +77,7 @@ function FloorItem:new(name, amount, x, y)
     self.stack = ItemStack(get_item(name), amount)
     self.item_name = name
     self:add_drawable("sprite", Spritesheet("assets/itemsheet.png", 8, 8))
+    self.sprite:set_shader("assets/item_shine.glsl")
     self.sprite.framepos.x = self.stack.data.tex_id
 end
 
