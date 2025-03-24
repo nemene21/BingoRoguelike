@@ -19,6 +19,7 @@ end
 function ItemData:copy()
     local cpy = ItemData(self.name, self.tex_id, self.maxstack, self.holdent)
     cpy.item_id = self.item_id
+    cpy.block = self.block
     return cpy
 end
 
@@ -140,7 +141,11 @@ return function()
     ITEM_REGISTRY.STONE_PICKAXE = ItemData("Stone pickaxe", ItemTextures.STONE_PICKAXE, 1, MiningHeldItem)
 
     ITEM_REGISTRY.CARVED_STONE = ItemData("Carved stone", ItemTextures.CARVED_STONE, nil, BlockHeldItem)
+    ITEM_REGISTRY.CARVED_STONE.block = Tilenames.ROCK
+
     ITEM_REGISTRY.FURNACE = ItemData("Furnace", ItemTextures.FURNACE, nil, BlockHeldItem)
+    ITEM_REGISTRY.FURNACE.block = Tilenames.FURNACE
+
     ITEM_REGISTRY.STONE = ItemData("Stone", ItemTextures.STONE)
     ITEM_REGISTRY.COAL = ItemData("Coal", ItemTextures.COAL)
 

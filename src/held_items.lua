@@ -35,7 +35,7 @@ function BlockHeldItem:new(player, slot)
 
     self:add_drawable("block_hologram", Spritesheet("assets/tileset.png", 8, 8, false))
     self.block_hologram.layer = DrawLayers.TILES
-    self.block_hologram.framepos:set(0, 0)
+    self.block_hologram.framepos:set(self.stack.data.block - 1, 0)
 
     self.place_cooldown = 0
 end
@@ -73,7 +73,7 @@ function BlockHeldItem:_process(delta)
             self.player:update_held_item()
         end
 
-        chunk.tilemap:set_tile(snapped_mx, snapped_my, 1)
+        chunk.tilemap:set_tile(snapped_mx, snapped_my, self.stack.data.block)
         ::continue::
     end
 end
