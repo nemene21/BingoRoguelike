@@ -7,6 +7,9 @@ Tilenames = enum({
     "PLANK",
     "IRON_ORE",
     "COAL_ORE",
+    "FURNACE",
+    "VASE",
+    "TORCH",
     "COUNT"
 })
 
@@ -172,5 +175,8 @@ return function()
     }
     TILE_DATA[Tilenames.COAL_ORE] = {
         loot_table = LootTables.COAL_ORE
+    }
+    TILE_DATA[Tilenames.FURNACE] = {
+        loot_table = LootTables.FURNACE
     }
 end

@@ -130,6 +130,8 @@ return function()
         "IRON_SCRAP",
         "CARVED_STONE",
         "COAL",
+        "FURNACE",
+        "TORCH",
         "COUNT"
     })
     -- ITEM DATA
@@ -138,6 +140,7 @@ return function()
     ITEM_REGISTRY.STONE_PICKAXE = ItemData("Stone pickaxe", ItemTextures.STONE_PICKAXE, 1, MiningHeldItem)
 
     ITEM_REGISTRY.CARVED_STONE = ItemData("Carved stone", ItemTextures.CARVED_STONE, nil, BlockHeldItem)
+    ITEM_REGISTRY.FURNACE = ItemData("Furnace", ItemTextures.FURNACE, nil, BlockHeldItem)
     ITEM_REGISTRY.STONE = ItemData("Stone", ItemTextures.STONE)
     ITEM_REGISTRY.COAL = ItemData("Coal", ItemTextures.COAL)
 
@@ -149,7 +152,8 @@ return function()
     LootTables = enum({
         "ROCK",
         "IRON_ORE",
-        "COAL_ORE"
+        "COAL_ORE",
+        "FURNACE"
     })
 
     loot_table_data = {}
@@ -162,9 +166,13 @@ return function()
     loot_table_data[LootTables.COAL_ORE] = LootTable({
         COAL = 1
     })
+    loot_table_data[LootTables.FURNACE] = LootTable({
+        FURNACE = 1
+    })
 
     -- CRAFTING RECIPES
     CRAFTING_RECIPES = {
-        ["STONE + STONE"] = ITEM_REGISTRY.CARVED_STONE
+        ["STONE + STONE"] = ITEM_REGISTRY.CARVED_STONE,
+        ["CARVED_STONE + COAL"] = ITEM_REGISTRY.FURNACE
     }
 end
