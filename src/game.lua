@@ -6,7 +6,7 @@ end
 
 function Game:restart()
     clear_world()
-    self.player = Player(100, 100)
+    self.player = Player(0, 0)
 
     self:add_entity(self.player)
     give("STONE_PICKAXE", 1)

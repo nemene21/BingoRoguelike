@@ -8,13 +8,19 @@ function Furnace:new(x, y)
     
     self:add(TransComp(x*8, y*8))
     self:add_drawable("chimney", Sprite("assets/furnace_chimney.png"))
+    self.chimney.pos:setv(self.Trans.pos)
+    self.chimney.pos:add(6, -4)
+    
+    self:add_drawable("chimney_smoke", ParticleSys("assets/furnace_smoke.json"))
+    self.chimney_smoke.pos:setv(self.Trans.pos)
+    self.chimney_smoke.pos:add(6, -8)
+    self.chimney_smoke.layer = DrawLayers.VFX_OVER
+    self.chimney_smoke.emitting = true
 end
 
 function Furnace:_process(delta)
-    self.chimney.pos:setv(self.Trans.pos)
-    self.chimney.pos:add(6, -4)
-    self.chimney.pos:floor()
-    
+
+
     add_light(self.Trans.pos, 5)
 end
 

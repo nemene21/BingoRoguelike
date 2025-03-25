@@ -2,8 +2,8 @@
     "texture_path": "assets/dust_particle.png",
 
     "time_scale": 1,
-    "firerate_min": 12,
-    "firerate_max": 16,
+    "firerate_min": 1,
+    "firerate_max": 3,
     "amount_min": 1,
     "amount_max": 2,
     "lifetime_min": 0.2,
@@ -12,9 +12,9 @@
     "local_coords": true,
 
     "start_velocity_min": 0,
-    "start_velocity_max": 16,
-    "direction": 0,
-    "spread": 360,
+    "start_velocity_max": 48,
+    "direction": -90,
+    "spread": 8,
     "velocity_curve": "NONE",
 
     "scale_min": 0.1,
