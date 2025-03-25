@@ -22,6 +22,7 @@ function Tilemap:new(texture_path, tilesize, tileposx, tileposy, width)
     self.texture_res = image_manager:get(texture_path)
     self.break_texture_res = image_manager:get("assets/tilebreaksheet.png")
     self.tiledata = {}
+    self.tileents = {}
 
     self.tile_types = self.texture_res:get():getWidth() / tilesize
     self.tile_vars = self.texture_res:get():getHeight() / tilesize
@@ -47,8 +48,8 @@ function Tilemap:set_tile(x, y, type, variation, hp)
 
     local data = self.tiledata[tileindex]
     if data then
-        if data[4] then
-            data[4]:_destroyed()
+        if tileents[tileindex] then
+            tileents[tileindex]:_destroyed()
         end
     end
 
@@ -58,17 +59,15 @@ function Tilemap:set_tile(x, y, type, variation, hp)
 
     local variation = variation or (1 + lm.random() * self.tile_vars)
     data = {type, math.floor(variation), hp or 1}
+    self.tiledata[x + y*self.tilewidth] = data
 
     if TILE_DATA[type] then
         local tile_entity = TILE_DATA[type].tile_entity
         if tile_entity then
             tile_entity = tile_entity(x + self.tilepos.x, y + self.tilepos.y, data)
             current_scene:add_entity(tile_entity)
-            data[4] = tile_entity.Block
         end
     end
-
-    self.tiledata[x + y*self.tilewidth] = data
 end
 
 function Tilemap:set_tilev(pos, type, variation, hp)
