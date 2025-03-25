@@ -84,18 +84,27 @@ function Tilemap:get_tilev(vec)
     return self:get_tile(vec.x, vec.y)
 end
 
+function Tilemap:register_tile_entity(x, y, entity)
+    local tx = x - self.tilepos.x
+    local ty = y - self.tilepos.y
+    local tileindex = tx + ty*self.tilewidth
+
+    self.tileents[tileindex] = entity
+end
+
 function Tilemap:damage_tile(x, y, damage)
     local tx = x - self.tilepos.x
     local ty = y - self.tilepos.y
-    local tile = self.tiledata[tx + ty*self.tilewidth]
+    local tileindex = tx + ty*self.tilewidth
+    local tile = self.tiledata[tileindex]
 
     if not tile then return end
     tile[3] = tile[3] - damage
 
     if tile[3] > 0 then return end
-    self.tiledata[tx + ty*self.tilewidth] = nil
-    
-    if tile[4] then tile[4]:_destroyed() end
+
+    if self.tileents[tileindex] then self.tileents[tileindex]:_destroyed() end
+    self.tiledata[tileindex] = nil
 
     local data = TILE_DATA[tile[1]]
     if not data then return end

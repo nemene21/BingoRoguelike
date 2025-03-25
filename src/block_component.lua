@@ -9,7 +9,7 @@ function BlockComp:new(x, y)
 
     self.chunk = get_chunk_at_pos(x*8, y*8)
     local tilemap = self.chunk.tilemap
-    tilemap.tileents[x + y * tilemap.tilewidth] = self
+    tilemap:register_tile_entity(x, y, self)
     self.block = tilemap:get_tile(x, y)
 end
 
