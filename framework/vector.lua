@@ -9,6 +9,11 @@ function Vec:length()
     return math.sqrt(self.x*self.x + self.y*self.y)
 end
 
+function Vec:floor()
+    self.x = math.floor(self.x)
+    self.y = math.floor(self.y)
+end
+
 function Vec:normalize()
     if self.x == 0 and self.y == 0 then return false end
     self:div(self:length())

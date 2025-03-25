@@ -63,7 +63,7 @@ function love.draw()
     lg.setCanvas(screen)
     lg.clear(0, 0, 0, 0)
     local camx, camy = global_camera:get_origin()
-    lg.translate(RES.x * 0.5 - camx, RES.y * 0.5 - camy)
+    lg.translate(math.floor(RES.x * 0.5 - camx), math.floor(RES.y * 0.5 - camy))
 
     draw_drawables()
 

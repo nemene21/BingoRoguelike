@@ -9,6 +9,8 @@ function Game:restart()
     self.player = Player(100, 100)
 
     self:add_entity(self.player)
+    give("STONE_PICKAXE", 1)
+    give("FURNACE", 3)
 end
 
 function Game:_process(delta)

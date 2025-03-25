@@ -68,7 +68,6 @@ function Player:_init_inventory()
     self.craft_select = nil
 
     self.mouse_slot = MouseSlot()
-    self.mouse_slot:set_stack(ItemStack(get_item("STONE_PICKAXE")))
     current_scene:add_entity(self.mouse_slot)
 
     local slot_margin = 15

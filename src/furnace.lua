@@ -7,9 +7,14 @@ function Furnace:new(x, y)
     self.Block.block[2] = 2
     
     self:add(TransComp(x*8, y*8))
+    self:add_drawable("chimney", Sprite("assets/furnace_chimney.png"))
 end
 
 function Furnace:_process(delta)
+    self.chimney.pos:setv(self.Trans.pos)
+    self.chimney.pos:add(6, -4)
+    self.chimney.pos:floor()
+    
     add_light(self.Trans.pos, 5)
 end
 
