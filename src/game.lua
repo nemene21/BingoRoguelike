@@ -11,6 +11,7 @@ function Game:restart()
     self:add_entity(self.player)
     give("STONE_PICKAXE", 1)
     give("REFINER", 3)
+    give("LOG", 16)
 end
 
 function Game:_process(delta)

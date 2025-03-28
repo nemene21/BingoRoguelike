@@ -127,7 +127,7 @@ return function()
     ItemTextures = enum0({
         "NULL",
         "STONE",
-        "WOOD",
+        "LOG",
         "STONE_PICKAXE",
         "STONE_SWORD",
         "DYNAMITE",
@@ -144,6 +144,7 @@ return function()
     -- ITEM DATA
     ITEM_REGISTRY = {}
     ITEM_REGISTRY.IRON_SCRAP = ItemData("Iron scrap", ItemTextures.IRON_SCRAP)
+    ITEM_REGISTRY.LOG = ItemData("Log", ItemTextures.LOG)
     ITEM_REGISTRY.STONE_PICKAXE = ItemData("Stone pickaxe", ItemTextures.STONE_PICKAXE, 1, MiningHeldItem)
 
     ITEM_REGISTRY.CARVED_STONE = ItemData("Carved stone", ItemTextures.CARVED_STONE, nil, BlockHeldItem)
@@ -192,5 +193,11 @@ return function()
     CRAFTING_RECIPES = {
         ["STONE + STONE"] = ITEM_REGISTRY.CARVED_STONE,
         ["CARVED_STONE + COAL"] = ITEM_REGISTRY.FURNACE
+    }
+
+    -- REFINER RECIPES
+    REFINER_RECIPES = {
+        STONE = CARVED_STONE,
+        WOOD = PLANK
     }
 end
