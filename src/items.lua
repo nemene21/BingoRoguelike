@@ -138,6 +138,7 @@ return function()
         "COAL",
         "FURNACE",
         "TORCH",
+        "REFINER",
         "COUNT"
     })
     -- ITEM DATA
@@ -151,6 +152,9 @@ return function()
     ITEM_REGISTRY.FURNACE = ItemData("Furnace", ItemTextures.FURNACE, nil, BlockHeldItem)
     ITEM_REGISTRY.FURNACE.block = Tilenames.FURNACE
 
+    ITEM_REGISTRY.REFINER = ItemData("Refiner", ItemTextures.REFINER, nil, BlockHeldItem)
+    ITEM_REGISTRY.REFINER.block = Tilenames.REFINER
+
     ITEM_REGISTRY.STONE = ItemData("Stone", ItemTextures.STONE)
     ITEM_REGISTRY.COAL = ItemData("Coal", ItemTextures.COAL)
 
@@ -163,7 +167,8 @@ return function()
         "ROCK",
         "IRON_ORE",
         "COAL_ORE",
-        "FURNACE"
+        "FURNACE",
+        "REFINER"
     })
 
     loot_table_data = {}
@@ -178,6 +183,9 @@ return function()
     })
     loot_table_data[LootTables.FURNACE] = LootTable({
         FURNACE = 1
+    })
+    loot_table_data[LootTables.REFINER] = LootTable({
+        REFINER = 1
     })
 
     -- CRAFTING RECIPES

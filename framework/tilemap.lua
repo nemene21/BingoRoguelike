@@ -10,6 +10,7 @@ Tilenames = enum({
     "FURNACE",
     "VASE",
     "TORCH",
+    "REFINER",
     "COUNT"
 })
 
@@ -208,5 +209,9 @@ return function()
     TILE_DATA[Tilenames.FURNACE] = {
         loot_table = LootTables.FURNACE,
         tile_entity = Furnace
+    }
+    TILE_DATA[Tilenames.REFINER] = {
+        loot_table = LootTables.REFINER,
+        tile_entity = Refiner
     }
 end
