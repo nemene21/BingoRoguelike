@@ -11,6 +11,9 @@ function Player:new(x, y)
     self.walk_particles.layer = DrawLayers.VFX_UNDER
     self:add_drawable("sprite", Sprite("assets/test.png"))
 
+    self:add_drawable("test_particles", ParticleSys("assets/test_particles.json"))
+    self.test_particles.emitting = true
+
     self:_init_inventory()
 end
 
@@ -111,6 +114,8 @@ end
 
 local GRAVITY = 800
 function Player:_process(delta)
+    self.test_particles.pos:setv(self.Trans.pos)
+
     local xinput =  btoi(is_pressed("right")) - btoi(is_pressed("left"))
     xinput = xinput * 128
     self.Trans.vel.x = dlerp(self.Trans.vel.x, xinput, 30 * delta)
