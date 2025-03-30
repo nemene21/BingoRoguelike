@@ -16,10 +16,12 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
         float down  = Texel(texture, texture_coords + vec2(0,  pixel_height)).a;
 
         float alpha = left + right + up + down;
+        float shaded = Texel(texture, texture_coords + shadow_dist).a;
+
         if (alpha > 0) {
             return vec4(0, 0, 0, alpha);
-        } else if (Texel(texture, texture_coords + shadow_dist).a > 0) {
-            return vec4(0, 0, 0, 0.33);
+        } else if (shaded > 0) {
+            return vec4(0, 0, 0, 0.33 * shaded);
         }
     }
     

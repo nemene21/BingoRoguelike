@@ -15,7 +15,8 @@
     "start_velocity_max": 48,
     "direction": -90,
     "spread": 8,
-    "velocity_curve": "NONE",
+    "end_velocity_ratio": 0,
+    "velocity_curve": "in_out_quad",
 
     "scale_min": 0.1,
     "scale_max": 0.3,

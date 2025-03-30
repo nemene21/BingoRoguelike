@@ -33,14 +33,16 @@ function ParticleSys:update_batch()
 end
 
 function ParticleSys:process_particle(pcl, delta)
-    pcl.x = pcl.x + pcl.vx * delta
-    pcl.y = pcl.y + pcl.vy * delta
+    local blend = 1 - pcl.lf / pcl.lf_max
+    local v_scale = lerp(1, self.end_velocity_ratio, Ease[self.velocity_curve](blend))
+    pcl.x = pcl.x + pcl.vx * delta * v_scale
+    pcl.y = pcl.y + pcl.vy * delta * v_scale
     pcl.angle = pcl.angle + pcl.angle_vel * delta
 
     pcl.lf = pcl.lf - delta
 
-    local blend = 1 - Ease[self.scale_curve](1 - pcl.lf / pcl.lf_max)
-    pcl.curr_scale = pcl.scale * blend
+    local scale_blend = 1 - Ease[self.scale_curve](blend)
+    pcl.curr_scale = pcl.scale * scale_blend
 
     local color_blend = Ease[self.color_curve](1 - pcl.lf / pcl.lf_max)
     pcl.curr_color[1] = lerp(pcl.color[1], pcl.color_end[1], color_blend)

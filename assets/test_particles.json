@@ -13,13 +13,15 @@
 
     "start_velocity_min": 48,
     "start_velocity_max": 64,
+    "end_velocity_ratio": 0,
+    "velocity_curve": "linear",
     "direction": 0,
     "spread": 360,
 
     "scale_min": 0.5,
     "scale_max": 1,
     "scale_end": 0,
-    "scale_curve": "NONE",
+    "scale_curve": "in_out_quad",
 
     "angle_min": 0,
     "angle_max": 0,
@@ -29,6 +31,6 @@
     "color_min": [0, 0, 0, 255],
     "color_max": [255, 255, 255, 255],
     "color_end": [null, null, null, 0],
-    "color_curve": "in_out_quad",
+    "color_curve": "out_quad",
     "color_deviation": 0.5
 }
