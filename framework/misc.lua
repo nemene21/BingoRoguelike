@@ -26,6 +26,33 @@ function load_directory(dir, recurse)
     end
 end
 
+-- EASING
+Ease = {}
+function Ease.out_quad(x)
+    return 1 - (1 - x) * (1 - x)
+end
+
+function Ease.out_back(x)
+    local c1 = 1.70158;
+    local c3 = c1 + 1;
+
+    return 1 + c3 * math.pow(x - 1, 3) + c1 * math.pow(x - 1, 2)
+end
+
+function Ease.in_out_quad(x)
+    return x < 0.5 and 2 * x * x or 1 - math.pow(-2 * x + 2, 2) / 2
+end
+
+function Ease.out_elastic(x)
+    local c4 = (2 * PI) / 3;
+
+    return x == 0 and 0 or (
+        x == 1 and 1 or math.pow(2, -10 * x) * math.sin((x * 10 - 0.75) * c4) + 1
+    )
+end
+
+function Ease.NONE(x) return 0 end
+
 function call_init_funcs()
     for i, func in ipairs(init_funcs) do
         func()

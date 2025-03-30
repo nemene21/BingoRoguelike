@@ -39,10 +39,10 @@ function ParticleSys:process_particle(pcl, delta)
 
     pcl.lf = pcl.lf - delta
 
-    local blend = pcl.lf / pcl.lf_max
+    local blend = 1 - Ease[self.scale_curve](1 - pcl.lf / pcl.lf_max)
     pcl.curr_scale = pcl.scale * blend
 
-    local color_blend = 1 - blend
+    local color_blend = Ease[self.color_curve](1 - pcl.lf / pcl.lf_max)
     pcl.curr_color[1] = lerp(pcl.color[1], pcl.color_end[1], color_blend)
     pcl.curr_color[2] = lerp(pcl.color[2], pcl.color_end[2], color_blend)
     pcl.curr_color[3] = lerp(pcl.color[3], pcl.color_end[3], color_blend)
