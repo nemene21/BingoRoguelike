@@ -37,7 +37,9 @@ function ParticleSys:process_particle(pcl, delta)
     local v_scale = lerp(1, self.end_velocity_ratio, Ease[self.velocity_curve](blend))
     pcl.x = pcl.x + pcl.vx * delta * v_scale
     pcl.y = pcl.y + pcl.vy * delta * v_scale
-    pcl.angle = pcl.angle + pcl.angle_vel * delta
+
+    local angle_v_scale = lerp(1, self.end_angle_velocity_curve, Ease[self.angle_velocity_curve](blend))
+    pcl.angle = pcl.angle + pcl.angle_vel * delta * angle_v_scale
 
     pcl.lf = pcl.lf - delta
 

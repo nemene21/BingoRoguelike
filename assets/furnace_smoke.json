@@ -27,6 +27,8 @@
     "angle_max": 0,
     "start_angle_velocity_min": 0,
     "start_angle_velocity_max": 0,
+    "end_angle_velocity_curve": 0,
+    "angle_velocity_curve": "linear",
 
     "color_min": [255, 255, 255, 255],
     "color_max": [255, 255, 255, 255],

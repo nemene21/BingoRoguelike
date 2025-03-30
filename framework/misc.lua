@@ -51,6 +51,8 @@ function Ease.out_elastic(x)
     )
 end
 
+function Ease.linear(x) return x end
+
 function Ease.NONE(x) return 0 end
 
 function call_init_funcs()
