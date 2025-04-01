@@ -12,7 +12,7 @@ function Player:new(x, y)
     self:add_drawable("sprite", Sprite("assets/test.png"))
 
     self:add_drawable("test_particles", ParticleSys("assets/test_particles.json"))
-    self.test_particles.emitting = true
+    self.test_particles.emitting = false -- true
 
     self:_init_inventory()
 end

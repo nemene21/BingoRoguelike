@@ -7,6 +7,7 @@ function ParticleSys:new(path)
     Drawable.new(self)
     self.particles = {}
     self:set_data(path)
+    self.emitting = true
 end
 
 function ParticleSys:set_data(path)
